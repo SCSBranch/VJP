@@ -1,0 +1,86 @@
+﻿
+@{
+
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <style>
+        .panel-title {
+            font-size:25px;
+        }
+        
+       
+    </style>
+</head>
+
+<body>
+    <div class="box box-info" style=" border-top: #ffffff;margin-bottom:0px">
+        <div id="box_header" class="box-header" style="padding:0px">
+            <div class="row" id="form_head" style="background-color: #f5f5f5">
+                <div class="col-sm-6" id="frm_save_lay">
+                    <div class="breadcrumb" style="background-color: #f5f5f5;margin-bottom:0px">
+                        <label class="title" id="lblFormTitle">@ViewBag.Form</label>
+                    </div>
+                    </div>
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-4 pulll-right">
+                        <div class="breadcrumb" id="form1" style="background-color: #f5f5f5;margin-bottom:0px">
+                            <button id="btnCreate" class="btn-head btn btn-sm btn-primary" data-placement="bottom" title="Clear" onclick="form_create()">Create</button>
+                            <button id="btnSave" class="btn-head btn btn-sm btn-primary" data-placement="bottom" title="Save" onclick="Master_Save()">Save</button>
+                            <button id="btnDelete" class="btn-head btn btn-sm btn-primary" data-placement="bottom" title="Delete">Delete</button>
+                            <button id="btnClear" class="btn-head btn btn-sm btn-primary" data-placement="bottom" title="Clear" onclick="form_clear()">Clear</button>
+                            <button id="btn_convert" style="font-size:15px;display:none">ScreenShot &nbsp;&nbsp;<i class="fa fa-camera"></i></button>
+                        </div>
+                        <div id="div_status" style="display:none">
+                            <label class="col-sm-3 control-label">Status</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="txtStatus" />
+                            </div>
+                        </div>
+                    </div>
+                </div>            
+        </div>
+        <div id="formlayer">
+            <div class="panel panel-default" style="margin-bottom:-1px;margin-left:-6px;margin-right:-6px;">
+                <div class="panel-body">
+                    @RenderBody()
+                </div>
+                </div>
+            </div>
+        </div>
+            @*<div class="row">
+            <div class="panel-group">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="col-sm-4 pull-right">
+                            <button id="btnCreate" class="btn-head btn btn-sm btn-primary" data-placement="bottom" title="Clear" onclick="form_create()">Create</button>
+                            <button id="btnSave" class="btn-head btn btn-sm btn-primary" data-placement="bottom" title="Save" onclick="Master_Save()">Save</button>
+                            <button id="btnDelete" class="btn-head btn btn-sm btn-primary" data-placement="bottom" title="Delete">Delete</button>
+                            <button id="btnClear" class="btn-head btn btn-sm btn-primary" data-placement="bottom" title="Clear" onclick="form_clear()">Clear</button>
+                        </div>
+                        <div  id="div_status" style="display:none">
+                            <label class="col-sm-3 control-label" >Status</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="txtStatus" />
+                            </div>
+                        </div>
+                        <h4 class="panel-title">
+                            Customer
+                        </h4>
+                    </div>
+                    @*<div class="panel panel-default">
+        <div class="panel-body fixed-panel">
+            @RenderBody()
+        </div>
+        @*</div>
+
+        </div>
+        </div>
+        </div>*@
+</body>
+</html>

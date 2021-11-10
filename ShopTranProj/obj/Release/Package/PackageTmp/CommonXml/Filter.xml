@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ListFilter>
+  <filters>
+
+    <filter id='DOC_SETUP' description='Document Setp List Record' table='document_struct_header' datefield='type_code'>
+      <item seqno='1' 	colname='type_code' 	 coldesc='Type'  datatype='Q'  defval=''   defcondt='like' 	mstcode='TYPE'/>
+      <item seqno='2' 	colname='doc_type_code' 	 coldesc='Document Type'  datatype='Q'  defval=''   	 defcondt='=' mstcode='DOC_TYPE'/>
+      <item seqno='3' 	colname='fin_year_code' 	 coldesc='Financial Year' 	 datatype='Q' defval=''  	  defcondt='=' mstcode='FIN_YEAR'/>
+      <item seqno='4' 	colname='struct_example' 	 coldesc='Document Structure Example'  datatype='S'  defval=''   defcondt='like' 	mstcode=''/>
+
+    </filter>
+
+    <filter id='DOWN_TEMP' description='Downloadable Template List Record' table='excel_Template' datefield='t.tmpl_rowid'>
+      <item seqno='1' 	colname='t.screen_id' 	 coldesc='Screen Name'  datatype='Q'  defval=''   defcondt='=' 	mstcode='SCRN_ID'/>
+      <item seqno='2' 	colname='t.type_code' 	 coldesc='Type Desc'  datatype='Q'  defval=''   	 defcondt='=' mstcode='TEMPLATE'/>
+      <item seqno='3' 	colname='t.template_name' 	 coldesc='Template File Name' 	 datatype='S' defval=''  	  defcondt='like' mstcode=''/>
+    </filter>
+
+
+    <filter id='NOTIFY' description='Notification Alert Setup List Record' table='excel_Template' datefield='t.notification_id'>
+      <item seqno='1' 	colname='t.notification_id' 	 coldesc='ID'  datatype='S'  defval=''   defcondt='like' 	mstcode=''/>
+      <item seqno='2' 	colname='t.notification_short_desc' 	 coldesc='Notification'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='3' 	colname='t.notification_description' 	 coldesc='Description' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='4' 	colname='t.schedule' 	 coldesc='Schedule' 	 datatype='Q' defval=''  	  defcondt='=' mstcode='TEMPLATE'/>
+      <item seqno='5' 	colname='t.notification_status_desc' 	 coldesc='Status' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+    </filter>
+
+    <filter id='SETUP_REP' description='Setup  Report List Record' table='excel_Template' datefield='t.report_id'>
+      <item seqno='1' 	colname='t.report_id' 	 coldesc='Report ID'  datatype='S'  defval=''   defcondt='like' 	mstcode=''/>
+      <item seqno='2' 	colname='t.report_name' 	 coldesc='Report Name'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='3' 	colname='t.report_desc' 	 coldesc='Report Description' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+    </filter>
+
+    <filter id='REPORTS' description='Report List Record' table='excel_Template' datefield='t.notification_id'>
+      <item seqno='1' 	colname='t.module' 	 coldesc='Module'  datatype='S'  defval=''   defcondt='like' 	mstcode=''/>
+      <item seqno='2' 	colname='t.report_id' 	 coldesc='Report Id'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='3' 	colname='t.report_name' 	 coldesc='Report Name' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='4' 	colname='t.report_description' 	 coldesc='Report Description' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='5' 	colname='t.rdl_name' 	 coldesc='Rdl Name' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+    </filter>
+
+    <filter id='MAIL_TEMP' description='Mail Template List Record' table='eTemplate' datefield='etmpl_rowid'>
+      <item seqno='1' 	colname='template_name' 	 coldesc='Template Name'  datatype='S'  defval=''   defcondt='like' 	mstcode=''/>
+      <item seqno='2' 	colname='template_based_on_code' 	 coldesc='Based On' 	 datatype='Q' defval=''  	  defcondt='=' mstcode='BASED_ON'/>
+      <item seqno='3' 	colname='template_type_flag' 	 coldesc='Template Flag' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='4' 	colname='template_type' 	 coldesc='Template Type' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='5' 	colname='convert(Date,template_eff_from)' 	 coldesc='Effective From'  datatype='D'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='6' 	colname='convert(Date,template_eff_to)' 	 coldesc='Effective To'  datatype='D'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='7' 	colname='sms_content' 	 coldesc='SMS Content' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+    </filter>
+
+    <filter id='MAS_DFN' description='Master List Record' table='excel_Template' datefield='t.master_code'>
+      <item seqno='1' 	colname='t.master_code' 	 coldesc='Master Code'  datatype='S'  defval=''   defcondt='like' 	mstcode=''/>
+      <item seqno='2' 	colname='t.master_description' 	 coldesc='Master Description'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='3' 	colname='t.status_desc' 	 coldesc='Status' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+    </filter>
+
+    <filter id='RL_DFN' description='Role List Record' table='Role_Details' datefield='role_id'>
+      <item seqno='1' 	colname='role_id' 	 coldesc='Role ID'  datatype='S'  defval=''   defcondt='=' 	mstcode=''/>
+      <item seqno='2' 	colname='role_description' 	 coldesc='Role Name'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>
+    </filter>
+
+    <filter id='USR_DFN' description='User List Record' table='User_Details' datefield='a.user_id'>
+      <item seqno='1' 	colname='a.user_id' 	 coldesc='User ID'  datatype='S'  defval=''   defcondt='=' 	mstcode=''/>
+      <item seqno='2' 	colname='a.user_name' 	 coldesc='User Name'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='3' 	colname='a.user_mobile' 	 coldesc='Mobile No' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='4' 	colname='a.email_id' 	 coldesc='Email ID' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='5' 	colname='convert(Date,a.valid_until)' 	 coldesc='Valid Until'  datatype='D'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='6' 	colname='a.status_desc' 	 coldesc='Status' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+    </filter>
+
+
+    <filter id='SCRN_SETUP' description='Screen Data List Record' table='screen_label_tooltip' datefield='rowid'>
+      <item seqno='1' 	colname='screen_id' 	 coldesc='Screen ID'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='2' 	colname='screen_id' 	 coldesc='Screen Name'  datatype='Q'  defval=''   defcondt='like' 	mstcode='SCRN_NAME'/>
+      <item seqno='3' 	colname='localeId' 	 coldesc='Locale Id' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='4' 	colname='localeId' 	 coldesc='Locale Description'  datatype='Q'  defval=''   defcondt='like' 	mstcode='LANG'/>
+    </filter>
+
+    <filter id='POSP_PROFILE' description='Profile List Record' table='posp_profile_details' datefield='posp_rowid'>
+      <item seqno='1' 	colname='user_id' 	 coldesc='User ID'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='2' 	colname='first_name' 	 coldesc='First Name'  datatype='S'  defval=''   	 defcondt='like' mstcode=''/>
+      <item seqno='3' 	colname='last_name' 	 coldesc='Last Name' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='4' 	colname='mobile_number' 	 coldesc='Mobile Number' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='5' 	colname='posp_status_code' 	 coldesc='POSP Status' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='6' 	colname='email_id' 	 coldesc='Email ID' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='7' 	colname='cur_address' 	 coldesc='Address' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='8' 	colname='cur_pincode' 	 coldesc='PinCode' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='9' 	colname='cur_city' 	 coldesc='City' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='10' 	colname='cur_state' 	 coldesc='State' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+
+    </filter>
+
+    <filter id='EMP_PROFILE' description='Employee Profile List Record' table='employee_profile_details' datefield='emp_rowid'>
+      <item seqno='1' 	colname='user_id' 	 coldesc='User ID'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='2' 	colname='first_name' 	 coldesc='First Name'  datatype='S'  defval=''   	 defcondt='like' mstcode=''/>
+      <item seqno='3' 	colname='last_name' 	 coldesc='Last Name' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='4' 	colname='mobile_number' 	 coldesc='Mobile Number' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='5' 	colname='posp_status_code' 	 coldesc='POSP Status' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='6' 	colname='email_id' 	 coldesc='Email ID' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='7' 	colname='cur_address' 	 coldesc='Address' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='8' 	colname='cur_pincode' 	 coldesc='PinCode' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='9' 	colname='cur_city' 	 coldesc='City' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='10' 	colname='cur_state' 	 coldesc='State' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+    </filter>
+
+
+    <filter id='CUST_PROFILE' description='Customer Profile List Record' table='customer_profile_details' datefield='e.cust_rowid'>
+      <item seqno='1' 	colname='e.user_id' 	 coldesc='User ID'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='2' 	colname='e.cust_id' 	 coldesc='Customer ID'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='3' 	colname='e.cust_assigned_to' 	 coldesc='POSP ID'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='4' 	colname='e.title' 	 coldesc='Saluation'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='5' 	colname='e.first_name' 	 coldesc='First Name'  datatype='S'  defval=''   	 defcondt='like' mstcode=''/>
+      <item seqno='6' 	colname='e.last_name' 	 coldesc='Last Name' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='7' 	colname='e.mobile_number' 	 coldesc='Mobile Number' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='8' 	colname='e.cust_status_code' 	 coldesc='Customer Status' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='9' 	colname='e.email_id' 	 coldesc='Email ID' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='10' 	colname='e.cur_address' 	 coldesc='Address' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='11' 	colname='e.cur_pincode' 	 coldesc='PinCode' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='12' 	colname='e.cur_city' 	 coldesc='City' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+      <item seqno='13' 	colname='e.cur_state' 	 coldesc='State' 	 datatype='S' defval=''  	  defcondt='=' mstcode=''/>
+    </filter>
+   
+<filter id='H_INS_PRODUCT_DET' description='Insurance Product List Record' table='insurance_products' datefield='p.prod_rowid'>
+      <item seqno='1' 	colname='p.prod_id' 	 coldesc='Product ID'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='2' 	colname='p.prod_name' 	 coldesc='Product Name'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='3' 	colname='p.prod_long_name' 	 coldesc='Product Long Name'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='4' 	colname='p.prod_description' 	 coldesc='Product Description'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='5' 	colname='p.insurance_comp_code' 	 coldesc='Insurance Company'  datatype='Q'  defval=''   	 defcondt='like' mstcode='INS_COMPANY'/>
+      <item seqno='6' 	colname='p.prod_catg_code' 	 coldesc='Category'  datatype='Q'  defval=''   	 defcondt='like' mstcode='INS_CATEGORY'/>
+      <item seqno='7' 	colname='p.Prod_subcatg_code' 	 coldesc='Sub Category'  datatype='Q'  defval=''   	 defcondt='like' mstcode='INS_SUBCATEGORY'/>
+      <item seqno='8' 	colname='convert(Date,p.prod_eff_from_date)' 	 coldesc='Product Start Date'  datatype='D'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='9' 	colname='convert(Date,p.prod_eff_to_date)' 	 coldesc='Product End Date'  datatype='D'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='10' 	colname='p.prod_status_code' 	 coldesc='Product status'  datatype='Q'  defval=''   	 defcondt='like' mstcode='PROD_STATUS'/>
+      <item seqno='11' 	colname='p.status_code' 	 coldesc='Status'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>     
+    </filter>
+    
+  <filter id='H_INS_PRODUCT_MAP' description='Insurance Product List Record' table='insurance_products' datefield='p.prod_rowid'>
+      <item seqno='1' 	colname='p.prod_catg_code' 	 coldesc='Category'  datatype='Q'  defval=''   	 defcondt='like' mstcode='INS_CATEGORY'/>
+      <item seqno='2' 	colname='p.Prod_subcatg_code' 	 coldesc='Sub Category'  datatype='Q'  defval=''   	 defcondt='like' mstcode='INS_SUBCATEGORY'/>
+      <item seqno='3' 	colname='p.prod_name' 	 coldesc='Product Name'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='4' 	colname='p.insurance_comp_code' 	 coldesc='Insurance Company'  datatype='Q'  defval=''   	 defcondt='like' mstcode='INS_COMPANY'/>
+      <item seqno='5' 	colname='p.prod_feature_flag' 	 coldesc='Product Feature Mapped'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>
+      <item seqno='6' 	colname='p.prod_feature_condt_flag' 	 coldesc='Product Feature Condition Filled'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>        
+      <item seqno='7' 	colname='p.status_code' 	 coldesc='Status'  datatype='S'  defval=''   	 defcondt='=' mstcode=''/>     
+    </filter>
+
+  </filters>
+  <condition>
+    <condt>equal to</condt>
+    <condt>like</condt>
+    <condt>greater than</condt>
+    <condt>not equal to</condt>
+    <condt>not like</condt>
+  </condition>
+
+</ListFilter>

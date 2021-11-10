@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://silvercloudsolutions.net/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://silvercloudsolutions.net/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://silvercloudsolutions.net/">
+      <s:element name="Sql_Service">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="objUserContext" type="tns:ContextVO" />
+            <s:element minOccurs="0" maxOccurs="1" name="securityToken" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="dbdataIn" type="tns:Sql_WebService_Content" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ContextVO">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="dbServer" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="dbName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="userID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="password" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Sql_WebService_Content">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="obj_Sql_Service" type="tns:ArrayOfSql_WebService" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfSql_WebService">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Sql_WebService" nillable="true" type="tns:Sql_WebService" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Sql_WebService">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="execString" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="Sql_ServiceResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Sql_ServiceResult" type="tns:Sql_WebService_Response" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Sql_WebService_Response">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="arr_resultList" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="errorList" type="tns:ArrayOfErrorVO" />
+          <s:element minOccurs="0" maxOccurs="1" name="method" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="success" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfErrorVO">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ErrorVO" nillable="true" type="tns:ErrorVO" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ErrorVO">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="errorID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="errorDescription" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="instanceNo" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="Sql_ServiceSoapIn">
+    <wsdl:part name="parameters" element="tns:Sql_Service" />
+  </wsdl:message>
+  <wsdl:message name="Sql_ServiceSoapOut">
+    <wsdl:part name="parameters" element="tns:Sql_ServiceResponse" />
+  </wsdl:message>
+  <wsdl:portType name="SqlWebServicesSoap">
+    <wsdl:operation name="Sql_Service">
+      <wsdl:input message="tns:Sql_ServiceSoapIn" />
+      <wsdl:output message="tns:Sql_ServiceSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="SqlWebServicesSoap" type="tns:SqlWebServicesSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Sql_Service">
+      <soap:operation soapAction="http://silvercloudsolutions.net/Sql_Service" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="SqlWebServicesSoap12" type="tns:SqlWebServicesSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Sql_Service">
+      <soap12:operation soapAction="http://silvercloudsolutions.net/Sql_Service" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="SqlWebServices">
+    <wsdl:port name="SqlWebServicesSoap" binding="tns:SqlWebServicesSoap">
+      <soap:address location="http://208.109.11.245:850/ws/sqlwebservice/sqlwebservice.asmx" />
+    </wsdl:port>
+    <wsdl:port name="SqlWebServicesSoap12" binding="tns:SqlWebServicesSoap12">
+      <soap12:address location="http://208.109.11.245:850/ws/sqlwebservice/sqlwebservice.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

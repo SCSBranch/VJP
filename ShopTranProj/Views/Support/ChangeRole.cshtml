@@ -1,0 +1,98 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/Scripts/Support/ChangeRole.js"></script>
+</head>
+<body>
+    <form id="form_change_role" class="form-horizontal" data-role="validator" novalidate="novalidate">
+        <div class="modal-header k-header" style="padding: 5px; color: black; background-color: #367FA9; border-radius: 4px">
+            <button type="button" class="close" data-dismiss="modal" style="padding: 0px 8px;font-size: 25px;" onclick="btn_role_cancel()">
+                &times;
+            </button>
+            <h4 class="modal-title" id="file_attach_title">Change Role</h4>
+        </div>
+        <div class="modal-body">           
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <label for="cmbChangeRole" id="lbl_cmbChangeRole" class="col-sm-5 control-label required">Change Role</label>
+                        <div class="col-sm-7">
+                            <input id="cmbChangeRole" name="Saluation" data-role="filtercombo" style="width :100%" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*</div>
+                </div>*@
+        </div>
+
+        <div class="modal-footer">
+            <div style=" float:right">
+                <button type="button" class="btn-head btn btn-primary btn-sm" id="btnSave" data-toggle="tooltip" data-placement="bottom" onclick="Role_change()">Save</button>
+                <button type="button" class="btn-head btn btn-primary btn-sm" id="btnCancel" onclick="btn_role_cancel();" data-toggle="tooltip" data-placement="bottom">Cancel</button>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
+
+<script type="text/x-kendo-template" id="roleok-confirmation">
+    <div id="oksuppcon_close_div">
+        <div class="col-sm-3">
+        </div>
+        <div class="col-sm-6">
+            <button class="oksuppcon_close k-button k-state-active" style="width:45%">OK</button>
+        </div>
+        <div class="col-sm-3">
+        </div>
+    </div>
+</script>
+<script>
+    window.kendoVerifyAlert = function (msg) {
+        var win = $("<div />").kendoWindow({
+            title: "Message",
+            width: "350px",
+            height: "130px",
+            resizable: false,
+            modal: true
+        });
+        win.data("kendoWindow")
+            .content(msg + "<br><br>" + $("#roleok-confirmation").html()).center().open();
+        win
+            .find(".oksuppcon_close")
+            .click(function () {
+                $('.k-window').css('display', 'none');
+                $('.k-overlay').css('display', 'none');
+                win.data("kendoWindow").close();
+                $('#ChangeRoleModal').modal('toggle');
+            })
+            .end()
+    }
+
+</script>
+
+<style>
+    .ytp-chrome-top-buttons {
+        display: none;
+    }
+
+    .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+        border: 1px solid #ddd;
+    }
+
+    .table-bordered {
+        border: 1px solid #ddd;
+    }
+
+    .radio-inline {
+        font-weight: 700;
+    }
+</style>
+
+

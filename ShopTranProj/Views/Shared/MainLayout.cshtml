@@ -1,0 +1,1530 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>VEE J PEE</title>
+    <link rel="shortcut icon" href="../images/company_logo.png" type="image/x-icon">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!--Style Sheet-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link href="~/CSS/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/CSS/AdminLTE.min.css" rel="stylesheet" />
+    <!-- Ionicons -->
+    <link href="~/CSS/_all-skins.css" rel="stylesheet" />
+    <link href="~/CSS/kendo.common.min.css" rel="stylesheet" />
+    <link href="~/CSS/kendo.default.min.css" rel="stylesheet" />
+    <link href="~/CSS/Common.css" rel="stylesheet" />
+    <!--Scripts-->
+    <script src="~/Scripts/jQuery-2.1.4.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/app.min.js"></script>
+    <script src="~/Scripts/jquery.slimscroll.min.js"></script>
+    <script src="~/Scripts/kendo.all.min.js"></script>
+    <script src="~/Scripts/jquery.fileDownload.js"></script>
+    <script src="~/CommonScripts/Common_func.js"></script>
+    <script src="~/CommonScripts/AjaxScript.js"></script>
+    <script src="~/CommonScripts/ValidationScript.js"></script>
+    <script src="~/CommonScripts/shoptran_common.js"></script>
+    <script src="~/CommonScripts/PersonalizeView.js"></script>
+    <script src="~/CommonScripts/AdvanceFilter.js"></script>
+    <script src="~/CommonScripts/HelpFile.js"></script>
+    <script src="~/CommonScripts/ExportExcel.js"></script>
+    <script src="~/Scripts/jszip.min.js"></script>
+    <style>
+        /*.skin-blue .main-header .navbar {
+            background-color: #8c8c8c;
+        }*/
+        /************** TAB Design - Gopi  *************/
+        .panel-design {
+            border: none;
+        }
+
+        .navbar-nav.tabs {
+            overflow-x: hidden;
+            overflow-y: hidden;
+            display: -webkit-box;
+            display: -moz-box;
+            width: 99%;
+        }
+
+        .accordion-name {
+            color: white;
+            padding-left: 15px;
+            margin-top: -5px;
+        }
+
+        .accordion-design, .nav.tabs > li > a:hover, .nav.tabs > li > a:focus {
+            display: inline-block;
+            font-size: 14px;
+            height: 4em;
+            position: relative;
+            background: var(--my-color);
+            text-align: center;
+            margin: 0.6em 0.8em;
+        }
+
+        .navbar-nav.tabs > li.active > a {
+            font-weight: bold;
+            box-shadow: 8px 8px 8px black;
+        }
+
+        .accordion-design:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-left: 1.5em solid white;
+            border-top: 2em solid transparent;
+            border-bottom: 2em solid transparent;
+        }
+
+        .accordion-design:before {
+            content: "";
+            position: absolute;
+            right: -1.45em;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-left: 1.5em solid var(--my-color);
+            border-top: 2em solid transparent;
+            border-bottom: 2em solid transparent;
+        }
+
+        .accordion-design-start, .accordion-design-start:hover, .accordion-design-start:focus {
+            display: inline-block;
+            font-size: 14px;
+            height: 4em;
+            position: relative;
+            background: var(--my-color);
+            text-align: center;
+            margin: 0.6em 0.8em;
+        }
+
+            .accordion-design-start:after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 0;
+                height: 0;
+                border-left: 1.5em solid white;
+                border-top: 0em solid transparent;
+                border-bottom: 0em solid transparent;
+            }
+
+            .accordion-design-start:before {
+                content: "";
+                position: absolute;
+                right: -1.5em;
+                bottom: 0;
+                width: 0;
+                height: 0;
+                border-left: 1.5em solid var(--my-color);
+                border-top: 2em solid transparent;
+                border-bottom: 2em solid transparent;
+            }
+
+        .accordion-design-end, .accordion-design-end:hover, .accordion-design-end:focus {
+            display: inline-block;
+            font-size: 14px;
+            height: 4em;
+            position: relative;
+            background: var(--my-color);
+            text-align: center;
+            margin: 0.6em 0.8em;
+        }
+
+            .accordion-design-end:after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 0;
+                height: 0;
+                border-left: 1.5em solid white;
+                border-top: 2em solid transparent;
+                border-bottom: 2em solid transparent;
+            }
+
+            .accordion-design-end:before {
+                content: "";
+                position: absolute;
+                right: -1.45em;
+                bottom: 0;
+                width: 0;
+                height: 0;
+                border-left: 0em solid var(--my-color);
+                border-top: 0em solid transparent;
+                border-bottom: 2em solid transparent;
+            }
+
+        .btn-tab, .btn-tab:hover {
+            float: right;
+            width: 70px;
+            background: var(--my-color);
+            color: white;
+            margin: 0px 15px 15px;
+        }
+
+        .panel {
+            margin-bottom: 0px !important;
+        }
+
+        .cr_required::after {
+            content: "*";
+            color: red;
+            font-size: 25px;
+            vertical-align: -5px;
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+<body class="hold-transition skin-blue sidebar-collapse sidebar-mini">  
+    <div class="wrapper">
+        <header class="main-header">
+            <input id="txtserverExit" type="hidden" value="@ViewBag.serverExit" />
+            <a href="#" class="logo" style="background-color:#333;">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini" style="font-size:12px"><img src="~/images/newLogo.png" style="height:20px;width:60px"  /></span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><img src="~/images/Logo1.png"   /></span>
+            </a>
+            <nav class="navbar navbar-fixed-top" role="navigation" style="height:50px">
+                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+
+                @*<a style="margin-top:10px;position:absolute;display:block" id="client_Org">
+            <label for="cmb_organization" style="color:white">Client Organization </label>
+            <span id="valIn" style="color: black; font-weight: 600; font-style: italic; padding:5px;background:white;border-radius:20px"></span>
+        </a>*@
+                <div class="navbar-custom-menu1">
+                    <ul class="nav navbar-nav" style="display:inline-block; padding-left:10px;">
+                        <li class="dropdown messages-menu" id="li_org">
+                            <p class="mm" style="margin-left: -90px"><strong style="font-size: 15px; color: #E7E7E8"><img src="~/images/Figure 4.png" style="height:25px" /><label id="org" class="whi" style="font-size: 14px; font-weight: bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VEE J PEE Aluminium Casting Manufacturers</label> </strong></p>
+
+                        </li>
+                        <li class="dropdown messages-menu hidden-xs" id="li_org">
+                            <p><strong><label id="Frm_name" class="whi" style="font-size: 12px; font-weight: bold;"></label> </strong></p>
+                        </li>
+                    </ul>
+                </div>
+                <!-- Navbar Right Menu -->
+                <div class="navbar-custom-menu pull-right">
+                    <ul class="nav navbar-nav ">
+                        <li class="dropdown notifications-menu">
+                            <a href="/Home/Home" class="dropdown-toggle">
+                                <i id="btn_Home" class="fa fa-home fa-lg" data-placement="bottom"></i>
+                            </a>
+                        </li>
+                        <li class="dropdown notifications-menu">
+                            <a data-toggle="modal" id="change_role_modal" href="~/Support/ChangeRole" data-target="#ChangeRoleModal">
+                                <i id="btn_role" class="fa fa-asterisk" data-placement="bottom"></i>
+                            </a>
+                        </li>
+                        <li class="dropdown notifications-menu">
+                            <a data-toggle="modal" class="ChangePassword" href="/ChangePassword/ChangePassword" data-target="#ChangePasswordModal">
+                                <i id="btn_password" class="fa fa-lock fa-lg" data-placement="bottom"></i>
+                            </a>
+                        </li>
+
+                        <li class="dropdown notifications-menu">
+                            <!-- Menu toggle button -->
+                            <a href="#" class="dropdown-toggle" onclick="loadHelp()" title="Help">
+                                <i id="btn_help" class="fa fa-question-circle fa-lg" data-placement="bottom"> </i>
+                            </a>
+                        </li>
+                        <li class="dropdown user user-menu">
+                            <!-- Menu toggle button -->
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <i id="btn_aboutus" class="fa fa-info fa-lg" data-placement="bottom"></i>
+                            </a>
+                            <ul class="dropdown-menu" style="width:160px">
+                                <!-- User image -->
+                                <li class="user-header" style="background-color: #367FA9;height:80px">
+                                    <p>
+                                        <small>
+                                            <label id="lblAboutus"><a href="#" onclick="window.open('https://www.vjp.in/', '_blank', 'toolbar=yes, scrollbars=yes, resizable=yes, top=100, bottom = 300, left=400, width=1150, height=600', 'fullscreen=yes'); return false;" style="text-decoration:underline;color:white">About US</a></label><br>
+                                        </small>
+                                    </p>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown user user-menu">
+                            <!-- Menu toggle button -->
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="height:50px">
+                                <img id="profileImg" src="~/images/user2-160x160.jpg" title="Sign Out" data-placement="bottom" class="user-image" alt="User Image" />
+                                <span class="hidden-xs username" style="font-weight: bold;color: black;"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header" style="background-color: #367FA9;">
+                                    <img id="profileImg1" src="~/images/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                    <p class="role" />
+                                    <p>
+                                        <small>
+                                            <label id="lblRoleID"></label><br />
+                                            <label id="lblRoleName"></label><br />
+                                            <label id="lblloginTimeMsg"></label>
+                                        </small>
+                                    </p>
+                                </li>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-right">
+                                        <a href="#" class="btn btn-default btn-flat" style="background: black;border-radius: 30px;color: white;width:auto" onclick="chatLogout()">Sign Out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="main-sidebar" id="menu_sidebar">
+            <section class="sidebar" style="margin-top:12px">
+                <ul id="menus" class="sidebar-menu">
+                    @*<li>
+                        <a title="Admin">
+                            <i class="fa fa-user-md"></i> <span>Admin</span>
+                        </a>
+                        <ul class="treeview-menu submenu">
+                            <li class="dirty_anger"><a href="/Admin/MasterDefinition" onclick="header_title('Master Definition');" title="Master Definition"><i class="fa fa-tasks"></i> <span style="font-size: 13px;">Master Definition</span> </a></li>
+                            <li class="dirty_anger"><a href="/Admin/RoleDefinition" onclick="header_title('Role Definition');" title="Role Definition"><i class="fa fa-tasks"></i> <span style="font-size: 13px;">Role Definition</span> </a></li>
+                            <li class="dirty_anger"><a href="/Admin/UserDefinition" onclick="header_title('User Definition');" title="Role Definition"><i class="fa fa-tasks"></i> <span style="font-size: 13px;">User Definition</span> </a></li>
+
+                        </ul>
+                    </li>
+                    <li>
+                        <a title="Report">
+                            <i class="fa fa-safari"></i> <span>Report</span>
+                        </a><ul class="treeview-menu submenu">
+                            <li class="dirty_anger"><a href="/Report/ChartForm" onclick="header_title('Charts');" title="Charts"><i class="fa fa-tasks"></i> <span style="font-size: 13px;">Charts</span> </a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a title="Master">
+                            <i class="fa fa-arrows"></i> <span>Master</span>
+                        </a>
+                        <ul class="treeview-menu submenu">
+                            <li class="dirty_anger"><a href="/Master/CustomerMaster" onclick="header_title('Customer Master');" title="Customer Master"><i class="fa fa-tasks"></i> <span style="font-size: 13px;">Customer Master</span> </a></li>
+                            <li class="dirty_anger"><a href="/Master/PartMaster" onclick="header_title('Part Master');" title="Part Master"><i class="fa fa-tasks"></i> <span style="font-size: 13px;">Part Master</span> </a></li>                            
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a title="Quote Order">
+                            <i class="fa fa-tasks"></i> <span>Quote Order</span>
+                        </a>
+                        <ul class="treeview-menu submenu">
+                            <li class="dirty_anger"><a href="/QutoeOrder/RFQEntry" onclick="header_title('RFQ Entry');" title="RFQ Entry"><i class="fa fa-tasks"></i> <span style="font-size: 13px;">RFQ Entry</span> </a></li>
+                            <li class="dirty_anger"><a href="/QutoeOrder/ToolCostSummary" onclick="header_title('Tool Costing Summary');" title="Development Summary"><i class="fa fa-tasks"></i> <span style="font-size: 13px;">Tool Costing Summary</span> </a></li>
+                            <li class="dirty_anger"><a href="/QutoeOrder/ProductCostSummary" onclick="header_title('Product Cost Summary');" title="Development Summary"><i class="fa fa-tasks"></i> <span style="font-size: 13px;">Product Cost Summary</span> </a></li>
+                            <li class="dirty_anger"><a href="/QutoeOrder/CEOApproval" onclick="header_title('CEO Approval');" title="CEO Approval"><i class="fa fa-tasks"></i> <span style="font-size: 13px;">CEO Approval</span> </a></li>
+                            <li class="dirty_anger"><a href="/QutoeOrder/CustomerApproval" onclick="header_title('Customer Approval');" title="Customer Approval"><i class="fa fa-tasks"></i> <span style="font-size: 13px;">Customer Approval</span> </a></li>
+                            <li class="dirty_anger"><a href="/QutoeOrder/OrderEntry" onclick="header_title('Order Entry');" title="Order Entry"><i class="fa fa-tasks"></i> <span style="font-size: 13px;">Order Entry</span> </a></li>
+                            <li class="dirty_anger"><a href="/QutoeOrder/RFQEntry_" onclick="header_title('Order Entry');" title="Order Entry"><i class="fa fa-tasks"></i> <span style="font-size: 13px;">RFQ Demo</span> </a></li>
+                        </ul>
+                    </li>*@
+
+                </ul>
+            </section>
+        </aside>
+        <div class="modal fade" id="ChangePasswordModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="    padding-top: 40px;">
+            <div class="modal-dialog" style="width: 50%;">
+                <div class="modal-content" style="border-radius: 5px;">
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="SupportModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="    padding-top: 40px;">
+            <div class="modal-dialog" style="width: 40%;">
+                <div class="modal-content" style="border-radius: 5px;">
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="HelpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="z-index:1206">
+            <div class="modal-dialog" style="width:65%;height:500px;">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="display:none">
+            <div class="modal-dialog" style="width:80%;">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="ChangeRoleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="    padding-top: 40px;">
+            <div class="modal-dialog" style="width: 40%;">
+                <div class="modal-content" style="border-radius: 5px;">
+                </div>
+            </div>
+        </div>
+        <div class="content-wrapper">
+            <div class="loadProgress"></div>
+            <section id="sec_list" class="content" style="padding-bottom:1px;padding-top:50px">
+                @RenderBody()
+            </section>
+        </div>
+        <div class="modal fade" id="frm_attachment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" style="width: 68%;">
+                <div class="modal-content" style="border-radius: 5px;">
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="QueryModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="    padding-top: 40px;">
+            <div class="modal-dialog" style="width: 50%;">
+                <div class="modal-content" style="border-radius: 5px; width:70%">
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="TaskModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false" style="padding-top: 40px;">
+            <div class="modal-dialog" style="min-width: 90%;margin-top:17px;">
+                <div class="modal-content" style="border-radius: 5px; width:100%">
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="frm_RFQEntry" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" style="min-width: 90%;margin-top:17px;">
+                <div class="modal-content" style="border-radius: 5px;">
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="frm_PartName" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" style="min-width: 90%;margin-top:17px;">
+                <div class="modal-content" style="border-radius: 5px;">
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="frm_Customer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" style="min-width: 60%;margin-top:17px;">
+                <div class="modal-content" style="border-radius: 5px;">
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="frm_OrderNo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" style="min-width: 90%;margin-top:17px;">
+                <div class="modal-content" style="border-radius: 5px;">
+                </div>
+            </div>
+        </div>
+        <input type="hidden" id="hdnHelp" value="@ViewBag.helpName" />
+        <footer class="main-footer" style="height:30px;display:block;padding: 3px 10px">
+            <!-- To the right -->
+            <div class="pull-right hidden-xs">
+                Version 1.0.1
+            </div>
+            <!-- Default to the left -->
+            <i>Copyright © 2021.VEE J PEE.All rights reserved.</i>
+        </footer>
+        <div class="control-sidebar-bg"></div>
+    </div>
+    <script type="text/x-kendo-template" id="ok-confirmation">
+        <div id="div">
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-6">
+                <button class="okcon_close k-button" id="btn_kendo" style="width:45%">OK</button>
+            </div>
+            <div class="col-sm-3">
+            </div>
+        </div>
+    </script>
+    <script type="text/x-kendo-template" id="ok-confirmationList">
+        <div id="div">
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-6">
+                <button class="okcon_closelist k-button" id="btn_kendo" style="width:45%" onclick="back_onClick();">OK</button>
+            </div>
+            <div class="col-sm-3">
+            </div>
+        </div>
+    </script>
+
+    <script type="text/x-kendo-template" id="deleteYesNo-confirmation">
+        <div class="row" style="padding: 20px;">
+            <strong>Are you sure you want to Delete this Record?</strong>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+            </div>
+            <div class="col-sm-2">
+                <button class="delete-confirm k-button" style="width:125%">Yes</button>
+            </div>
+            <div class="col-sm-2">
+                <button class="delete-cancel k-button" style="width:125%"> No</button>
+            </div>
+            <div class="col-sm-2">
+            </div>
+        </div>
+    </script>
+    <script type="text/x-kendo-template" id="grid_delete-confirmation">
+        <div class="row" style="padding-bottom: 20px; padding-left: 17px;">
+            <strong>Are you sure you want to delete this record?</strong>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+            </div>
+            <div class="col-sm-2">
+                <button class="grid_delete-confirm k-button" style="width:125%">Yes</button>
+            </div>
+            <div class="col-sm-2">
+                <button class="grid_delete-cancel k-button" style="width:125%"> No</button>
+            </div>
+            <div class="col-sm-2">
+            </div>
+        </div>
+    </script>
+    <script type="text/x-kendo-template" id="fileAttach-confirmation">
+        <div class="row" style="padding-bottom:20px">
+            <strong>File Name already exists. Do you want to upgrade version for this file?</strong>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+            </div>
+            <div class="col-sm-2">
+                <button class="fileAttach-confirm k-button">Yes</button>
+            </div>
+            <div class="col-sm-2">
+                <button class="fileAttach-cancel k-button"> No</button>
+            </div>
+            <div class="col-sm-2">
+            </div>
+        </div>
+    </script>
+
+    <script type="text/x-kendo-template" id="selectfile-confirmation">
+        <div class="row" style="padding-bottom: 20px; padding-left: 17px;">
+            <strong>Sure you want to remove the file?</strong>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+            </div>
+            <div class="col-sm-2">
+                <button class="selectfile-confirm k-button">Yes</button>
+            </div>
+            <div class="col-sm-2">
+                <button class="selectfile-cancel k-button"> No</button>
+            </div>
+            <div class="col-sm-2">
+            </div>
+        </div>
+    </script>
+
+    <script type="text/x-kendo-template" id="grid_undo-confirmation">
+        <div class="row" style="padding-bottom: 20px; padding-left: 17px;">
+            <strong>Are you sure you want to undo this delete?</strong>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+            </div>
+            <div class="col-sm-2">
+                <button class="grid_undo-confirm k-button" style="width:125%">Yes</button>
+            </div>
+            <div class="col-sm-2">
+                <button class="grid_undo-cancel k-button" style="width:125%"> No</button>
+            </div>
+            <div class="col-sm-2">
+            </div>
+        </div>
+    </script>
+
+    <script type="text/javascript">
+        var doc_url_path = ''; var docUrl;
+        var oldform_value = {};
+        $(document).ready(function () {
+            docUrl = '@System.Configuration.ConfigurationManager.AppSettings["docUrl"]';
+
+            $(function () {
+                $('body').on('mousedown', '.modal-header:not(.close)', function (e) {
+                    $('.modal-dialog').addClass('draggable').parents().on('mousemove', function (e) {
+                        $('.draggable').offset({
+                            top: e.pageY - $('.draggable').outerHeight() / 2,
+                            left: e.pageX - $('.draggable').outerWidth() / 2
+                        }).on('mouseup', function () {
+                            $(this).removeClass('draggable');
+                        });
+                    });
+                    e.preventDefault();
+                }).on('mouseup', function () {
+                    $('.draggable').removeClass('draggable');
+                });
+            });
+
+        });
+
+        var userid = getlocalStorage("User_Id_Value");
+        var role = getlocalStorage('role');
+        var weburl = '@System.Configuration.ConfigurationManager.AppSettings["weburl"]';
+
+        var OrgId = '@System.Configuration.ConfigurationManager.AppSettings["orgnId"]';;
+        var LocnId = '@System.Configuration.ConfigurationManager.AppSettings["locnId"]';;
+        var User = getlocalStorage('user_id');
+
+        var grid_data = [];
+        $(function () {
+           $('[data-toggle="tooltip"]').tooltip();
+            pageload_fn();
+            get_menu_submenu();
+            screen_lang_data("COMMON", "EN_US");
+            show_tooltip();
+            $('[data-toggle="tab"]').tooltip();
+        });
+
+        function pageload_fn() {
+            timeinterval_reset();
+            if ($("#lblloginTimeMsg").val() != undefined)
+                $("#lblloginTimeMsg").text("logged in Time is : " + getlocalStorage('crtloginTime'));
+            $("#lblRoleID").text("User Id : " + getlocalStorage('user_id'));
+            $("#lblRoleName").text("Role Name : " + getlocalStorage('role'));
+            $('.username').text(" " + getlocalStorage('user_name'));
+        }
+
+        function loadHelp() {
+            var uri_dec = '../help/' +  '@ViewBag.Title' + '.html';
+            window.open(uri_dec,"_blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=100, bottom = 300, left=400, width=850, height=600, fullscreen=yes");
+        }
+
+        function get_menu_submenu() {
+            $("#menus").empty();
+            var user_id = getlocalStorage('user_id');
+            var OrgId = 'SCS';
+            var LocnId = 'chn';
+            var User = 'sa';
+            var option = 'menu';
+            var a_option = 'submenu';
+            var role_id = getlocalStorage('role_id');
+            var sRequest = weburl + '/server/Common/fetch_menu_submenus.ashx?org=' + OrgId + '&locn=' + LocnId + '&user=' + User + '&lang=en_us&user_id=' + user_id + '&option=' + option + '&role_id=' + role_id + '';
+            var s = executeService(sRequest);
+            var responseJSON = JSON.parse(s);
+            if (responseJSON.update == "successful") {
+                if (responseJSON.data.context.Header.profile_photo != "") {
+                    document.getElementById("profileImg").src = responseJSON.data.context.Header.profile_photo;
+                    document.getElementById("profileImg1").src = responseJSON.data.context.Header.profile_photo;
+                }
+                else {
+                    document.getElementById("profileImg1").src = "/images/noimage.png";
+                    document.getElementById("profileImg").src = "/images/noimage.png";
+                }
+                var main_menu = responseJSON.data.context.Detail;
+            }
+            var sRequest = weburl + '/server/Common/fetch_menu_submenus.ashx?org=' + OrgId + '&locn=' + LocnId + '&user=' + User + '&lang=en_us&user_id=' + user_id + '&option=' + a_option + '&role_id=' + role_id + '';
+            var s = executeService(sRequest);
+            var responseJSON = JSON.parse(s);
+            if (responseJSON.update == "successful") {
+                var sub_menu = responseJSON.data.context.Detail;
+            }
+            var strmenu = "";
+            $.each(main_menu, function (mkey, mvalue) {
+                strmenu += '<li><a title="' + mvalue.menuname + '"> <i class="' + mvalue.urlicon + '"></i> <span>' + mvalue.menuname + '</span></a>';
+                strmenu += '<ul class="treeview-menu submenu">';
+                $.each(sub_menu, function (skey, svalue) {
+                    if (mvalue.menuid == svalue.menuid) {
+                        strmenu += '<li class="dirty_anger"><a href="/' + svalue.url + '" onclick="header_title(\'' + svalue.menuname + '\');" title="' + svalue.menuname + '"> <i class="' + svalue.urlicon + '"></i> <span style="font-size: 13px;">' + svalue.menuname + '</span> </a></li>';
+                    }
+                });
+                strmenu += '</ul></li>';
+            });
+            $("#menus").append(strmenu);
+            pageload_fn();
+        }
+
+        var tooltip_data = [];
+        var grid_data = [];
+        var type_code = "";
+        function screen_lang_data(screen_id, locale_id) {
+            if (screen_id != "" && locale_id != "") {
+                var data = getlocalStorage("ls_pageList");
+                var OrgId = 'SCS';
+                var LocnId = 'chn';
+                var user_id = getlocalStorage('user_id');
+                var sRequest = weburl + '/server/label_tooltip/fetch_screenlabeltooltip.ashx?org=' + OrgId + '&locn=' + LocnId + '&user=' + user_id + '&lang=' + type_code + '&screen_id=' + screen_id + '&localeid=' + locale_id + '';
+                var s = executeService(sRequest);
+                var responseJSON = JSON.parse(s);
+                tooltip_data = responseJSON.data.context.Detail
+            }
+        }
+
+        function show_tooltip() {
+            $.each(tooltip_data, function (key, val) {
+                if (tooltip_data[key].ctrl_type == "TEXT" || tooltip_data[key].ctrl_type == "TAB" || tooltip_data[key].ctrl_type == "LABEL" || tooltip_data[key].ctrl_type == "BUTTON" || tooltip_data[key].ctrl_type == "UPLOAD" || tooltip_data[key].ctrl_type == "DATE" || tooltip_data[key].ctrl_type == "AADHAR" || tooltip_data[key].ctrl_type == "PAN" || tooltip_data[key].ctrl_type == "GST" || tooltip_data[key].ctrl_type == "EMAIL" || tooltip_data[key].ctrl_type == "TEXTAREA" || tooltip_data[key].ctrl_type == "NUMBER") {
+                   // $("#" + tooltip_data[key].ctrl_id).attr("data-original-title", tooltip_data[key].lcl_tooltip);
+
+                    $("#" + tooltip_data[key].ctrl_id).tooltip({
+                        title: tooltip_data[key].lcl_tooltip,
+                        html: true,
+                        boundary: 'viewport',
+                        placement: 'bottom',
+                        container: 'body',
+                        sanitize: true,
+                        appendToBody: true
+                    });
+                }
+                if (tooltip_data[key].ctrl_type == "GRID") {
+                    grid_data.push(tooltip_data[key]);
+                }
+                if (tooltip_data[key].ctrl_type == "COMBO") {
+                    $("#" + tooltip_data[key].ctrl_id).data("kendoComboBox")
+                            .wrapper
+                            .kendoTooltip({
+                                content: tooltip_data[key].lcl_tooltip,
+                                show: function (e) {
+                                    e.sender.popup.element.addClass('black-tooltip');
+                                },
+                            });
+                }
+            });
+        }
+
+        function grid_tooltip(id) {
+            var grid = $("#" + id).data("kendoGrid");
+            grid.thead.kendoTooltip({
+                filter: "th",
+                content: function (e) {
+                    var target = e.target;
+                    var fld_name = target.context.attributes[1].value;
+                    var fld_desc_val = grid_data;
+                    ret_val = "";
+                    $.each(fld_desc_val, function (key, value) {
+                        if (fld_desc_val[key].data_field == fld_name) {
+                            ret_val = fld_desc_val[key].lcl_tooltip;
+                        }
+                    });
+                    return ret_val;
+                },
+                show: function (e) {
+                    e.sender.popup.element.addClass('black-tooltip');
+                },
+            });
+        }
+
+        // LOgout Functionality
+        var winclose_bool = true;
+        function chatLogout() {
+            winclose_bool = false;
+            window.onbeforeunload = null;
+           // user_login_log("Log Out");
+            window.close();
+        }
+
+        function app_exit() {
+            winclose_bool = false;
+            window.close();
+            window.onbeforeunload = null;
+           // user_login_log("Session timeout");
+        }
+
+        function assign_exit() {
+            ass_wnd.close();
+        }
+
+        function DetectBrowserExit() {
+            //user_login_log("Browser Close");
+        }
+
+        window.onbeforeunload = function () {
+            DetectBrowserExit();
+        }
+
+        function user_login_log_new(reason) {
+            try {
+                var r_no = getlocalStorage('user_log_rowno');
+                if (r_no == "")
+                    r_no = 0;
+                var data = {};
+                crtloginTime();
+                data.logout_time = getlocalStorage('crtloginTime');
+                data.rowno = parseInt(r_no);
+                data.logout_reason = reason;
+                loginvalue = ajaxcall_param_login('/Login/update_user_access_log', JSON.stringify(data));
+            }
+            catch (err) {
+                alert(err);
+            }
+        }
+
+        function crtloginTime() {
+            var date = new Date();
+            var day = (date.getDate() + 1) > 9 ? (date.getDate() + 0) : "0" + (date.getDate() + 1);
+            var month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : "0" + (date.getMonth() + 1);
+            var hours = (date.getHours()) > 9 ? (date.getHours()) : "0" + (date.getHours());
+            var minutes = (date.getMinutes()) > 9 ? (date.getMinutes()) : "0" + (date.getMinutes());
+            var seconds = (date.getSeconds()) > 9 ? (date.getSeconds()) : "0" + (date.getSeconds());
+            var dateString =
+                day + "/" +
+                month + "/" +
+                date.getFullYear() + " " +
+                hours + ":" +
+                minutes + ":" +
+                seconds;
+            setlocalStorage('crtloginTime', dateString);
+        }
+
+        //grid mandatory set color
+        function grid_mandatory(grid_id, title) {
+            $("#" + grid_id + " th[role='columnheader']").each(function () {
+                for (var i = 0; i < title.length; i++) {
+                    if (title[i] == $(this).text()) {
+                        if ($(this).find("a").length > 0) {
+                            $(this).children().append("<span class='cr_required'></span>");
+                        } else {
+                            $(this).append("<span class='cr_required'></span>");
+                        }
+                    }
+                }
+            });
+        }
+
+        /*---------------------------------------------------------------------  Customer Popup Single Fetch Method  ----------------------------------------------------------------------------------*/
+
+
+        function Load_Customer_popup(cust_rowid) {
+            if (cust_rowid != "") {
+                var sRequest = weburl + '/server/Customer/fetch_customer_details.ashx?org=' + OrgId + '&locn=' + LocnId + '&user=' + User + '&lang=en_us&cust_rowid=' + cust_rowid + '';
+                var s = executeService(sRequest);
+                var responseJSON = JSON.parse(s);
+                if (responseJSON.update == "successful") {
+                    generate_customer_popup_detail(responseJSON);
+                }
+            }
+        }
+
+        function generate_customer_popup_detail(res) {
+            if (res.data.context.Header != undefined) {
+                var res_data = res.data.context.Header;
+                $('#txtCustomerID').val(res_data.cust_id);
+                $('#txtCustomerName').val(res_data.cust_name);
+                $('#txtCustomerCity').val(res_data.cust_city);
+                $('#txtStatus').val(res_data.cust_status_code);
+                $('#txt_timestamp').val(res_data.timestamp);
+                $('#txtRowID').val(res_data.cust_rowid);
+                $('#cmbCustomerCountry').data("kendoComboBox").value(res_data.cust_country_code);
+                $('#cmbSelector').data("kendoComboBox").value(res_data.cust_sector_code);
+                $('#cmbDomestic').data("kendoComboBox").value(res_data.cust_type_code);
+                $('#cmbLeadType').data("kendoComboBox").value(res_data.cust_lead_type_code);
+
+            }
+
+        }
+
+
+        /*---------------------------------------------------------------------  RFQ Popup Single Fetch Method  ----------------------------------------------------------------------------------*/
+        function Load_RFQ_popup(rfq_number) {
+            try {
+               
+                var data = {};
+                data.orgnId = "scs";//getlocalStorage("orgnId");
+                data.locnId = "CHN";
+                data.rfq_no = rfq_number;
+                var rfq_data_detail = ajaxcall_param_new("/QutoeOrder/fetch_rfq_popup_details", data);
+                if (rfq_data_detail != undefined) {
+                    var rfq_val = JSON.parse(rfq_data_detail);
+                    if (rfq_val.success == true) {
+
+                        var header_data = JSON.parse(rfq_val.rfq_header);
+                        if (header_data != null)
+                        {
+                            //$('#txt_rfq_rowid').val(rfq_rowid);
+                            $('#txtRFQEnNO').val(header_data[0].rfq_no);
+                            $('#txtRfqReceiveDate').val(header_data[0].rfq_received_date);
+                            $('#txtCusName').val(cust_name);
+                            $('#txtPoc').val(header_data[0].poc_id);
+                            $('#txtQuoteDueDate').val(header_data[0].quote_due_date);
+                           // $('#txtDevApproved').val(header_data[0].aprv_internal_flag);
+                            //$('#txt_rfq_status_code').val(rfq_status_code);
+                        }
+                        else {
+                            $('#txtRFQEnNO').val("");
+                            $('#txtRfqReceiveDate').val("");
+                            $('#txtCusName').val("");
+                            $('#txtPoc').val("");
+                        }
+
+                        var data = JSON.parse(rfq_val.rfq_entry_details);
+                        if (data != null) {
+                            $("#rfq_popup_grid").empty();
+                            $("#rfq_popup_grid").append("<div id='grid_entry_data'></div>");
+                            grid_rfq_details(data);
+                            var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+                            grid_height = parseInt(full_height) - 410;  //415
+                            $('#grid_entry_data .k-grid-content').height(grid_height);
+                        }
+                        else {
+
+                            grid_rfq_details([]);
+                            var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+                            grid_height = parseInt(full_height) - 410;
+                            $('#grid_entry_data .k-grid-content').height(grid_height);
+                        }
+                        var data = JSON.parse(rfq_val.tool_cost_details);
+                        if (data != null) {
+                            $("#tool_cost_grid").empty();
+                            $("#tool_cost_grid").append("<div id='grid_popup_tool_cost_det'></div>");
+                            grid_popup_tool_cost_detail(data);
+
+                            var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+                            grid_height = parseInt(full_height) - 425;
+                            $('#grid_popup_tool_cost_det .k-grid-content').height(grid_height);
+                        }
+                        else {
+
+                            grid_popup_tool_cost_detail([]);
+                            var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+                            grid_height = parseInt(full_height) - 425;
+                            $('#grid_popup_tool_cost_det .k-grid-content').height(grid_height);
+                        }
+                        var data = JSON.parse(rfq_val.product_cost_details);
+                        if (data != null) {
+                            $("#product_cost_grid").empty();
+                            $("#product_cost_grid").append("<div id='grid_product_popup_det'></div>");
+                            product_cost_detail(data);
+
+                            var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+                            grid_height = parseInt(full_height) - 489;
+                            $('#grid_product_popup_det .k-grid-content').height(grid_height);
+                        }
+                        else {
+
+                            product_cost_detail([]);
+                            var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+                            grid_height = parseInt(full_height) - 489;
+                            $('#grid_product_popup_det .k-grid-content').height(grid_height);
+                        }
+                    }
+                    else {
+                        var message = rfq_val.msg;
+                        kendoAlert(message);
+                        grid_rfq_details([]);
+                    }
+                }
+                else {
+                    grid_rfq_details([]);
+                }
+
+            }
+            catch (err) {
+                kendoAlert(err);
+            }
+        }
+
+        function grid_rfq_details(user_data) {
+            $("#grid_entry_data").kendoGrid({
+                dataSource: {
+                    data: user_data,
+                    schema: {
+                        model: {
+                            fields: {
+                                rfq_dtl_rowid: {
+                                    type: "string",
+                                    //defaultValue: "0"
+                                },
+                                part_name: {
+                                    type: "string",
+                                    editable: false
+                                },
+                                pilot_lot_qty: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                casting_drwng_no: {
+                                    type: "string",
+                                    editable: false
+                                },
+                                machine_drwng_no: {
+                                    type: "string",
+                                    editable: false
+                                },
+                                no_of_attachment: {
+                                    type: "string",
+                                    defaultValue: "0"
+                                },
+                                mode_flag: {
+                                    type: "string",
+                                    //defaultValue: "I"
+                                }
+                            }
+                        }
+                    },
+                },
+                navigatable: true,
+                scrollable: true,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                //height: 285,
+                selectable: true,
+                selectable: "singl",
+                filterable: true,//  Grid Row Selection
+                dataBinding: setDefaultValues,
+                dataBound: function (e) {
+                    resultData = e.sender._data;
+                    var rows = $('#grid_entry_data').data('kendoGrid').tbody.children();
+                    setColor(rows, resultData);
+                },
+                //toolbar: "<a class=' k-grid-add'  id = 'btnSave' href=''><span class='fa fa-plus' style='color:Black'></span></a>",
+                columns: [
+                {
+                    field: "rfq_dtl_rowid",
+                    title: "RowId",
+                    hidden: true,
+                    width: 150,
+                },
+                 {
+                     field: "part_name",
+                     title: "Part Name",
+                     width: 150,
+                     //locked: true
+                 },
+                 {
+                     field: "pilot_lot_qty",
+                     title: "Expected Qty. p.a.",
+                     width: 150,                    
+                     attributes: { class: "text-right" },
+                 },
+                 {
+                     field: "expected_value",
+                     title: "Expected value of business p.a",
+                     width: 250,                    
+                     attributes: { class: "text-right" },
+                 },
+                 {
+                     field: "grade_of_rm_code",
+                     title: "Grade of RM",
+                     width: 150,
+                     hidden: true
+                 },
+                    {
+                        field: "grade_of_rm",
+                        title: "Grade of RM",
+                        editor: function (container, options) {
+                            combo_editor(container, "cmb_" + options.field, eval(options.field + "_list"), options.field, "grade_of_rm_code", "grid_rfg_entry_det")
+                        },
+                        width: 200,
+                    },
+                 {
+                     field: "remarks",
+                     title: "Remarks",
+                     width: 250,                     
+
+                 },
+                 {
+                     field: "criticality_product_code",
+                     title: "Status",
+                     hidden: true,
+                     width: "150px",
+                 },
+                    {
+                        field: "criticality_product",
+                        title: "Criticality of product",
+                        editor: function (container, options) {
+                            combo_editor(container, "cmb_" + options.field, eval(options.field + "_list"), options.field, "criticality_product_code", "grid_rfg_entry_det")
+                        },
+                        width: 200,
+                    },
+                 {
+                     field: "casting_drwng_no",
+                     title: "Casting Drawing No",
+                     width: 200,
+                 },
+                 {
+                     field: "machine_drwng_no",
+                     title: "Machine Drawing No",
+                     width: 200,
+                 },
+                 {
+                     field: "no_of_attachment",
+                     title: "Attachment",
+                     hidden: true
+                 },
+                 {
+                     field: "mode_flag",
+                     title: "Mode",
+                     width: 30,
+                     hidden: true
+                 }
+                ],
+                editable: false,
+            });
+        }
+
+        function grid_popup_tool_cost_detail(user_data) {
+            $("#grid_popup_tool_cost_det").kendoGrid({
+                dataSource: {
+                    data: user_data,
+                    schema: {
+                        model: {
+                            fields: {
+                                toolcost_dtl_rowid: {
+                                    type: "string",
+                                },
+                                part_name: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                tool_name: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                die_pattern_cost: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                other_cost: {
+                                    type: "string",
+                                    editable: false
+                                },
+                                total_tooling_cost: {
+                                    type: "number",
+                                    editable: false,
+                                },
+                                dev_leadtime_month: {
+                                    type: "string",
+                                    editable: false
+                                },
+
+                                mode_flag: {
+                                    type: "string",
+                                    defaultValue: "I"
+                                }
+
+                            }
+                        }
+                    },
+                },
+                navigatable: true,
+                scrollable: true,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                // height: 285,
+                selectable: true,
+                filterable: true,
+                selectable: "singl", //  Grid Row Selection
+                dataBinding: setDefaultValues,
+                dataBound: function (e) {
+                    resultData = e.sender._data;
+                    var rows = $('#grid_popup_tool_cost_det').data('kendoGrid').tbody.children();
+                    setColor(rows, resultData);
+                },
+                //toolbar: "<a class=' k-grid-add'  id = 'btnSave' href=''><span class='fa fa-plus' style='color:Black'></span></a>",
+                columns: [
+                {
+                    field: "toolcost_dtl_rowid",
+                    hidden: true,
+                    width: 100
+                },
+                {
+                    field: "part_name_code",
+                    hidden: true,
+                    width: 100
+                },
+
+                {
+                    field: "part_name",
+                    title: "Part Name",
+                    width: 250,
+                   // locked: true
+                },
+                {
+                    field: "tool_name",
+                    title: "Tool Name",
+                    width: 250,
+                    //locked: true
+                },
+                {
+                    field: "die_pattern_cost",
+                    title: "Die/Pattern Costs",
+                    width: 200,
+                    editor: function (container, options) {
+                        numeric_editor_dot(container, options.field, '5');
+                    },
+                    attributes: { class: "text-right" },
+                },
+
+                {
+                    field: "other_cost",
+                    title: "Other Costs",
+                    width: 200,
+                    editor: function (container, options) {
+                        numeric_editor_dot(container, options.field, '5');
+                    },
+                    attributes: { class: "text-right" },
+                },
+                {
+                    field: "total_tooling_cost",
+                    title: "Total Costing Cost",
+                    width: 200,
+                    editor: function (container, options) {
+                        numeric_editor_dot(container, options.field, '5');
+                    },
+                    attributes: { class: "text-right" },
+                },
+                {
+                    field: "dev_leadtime_month",
+                    title: "Development Lead Time(in months)",
+                    width: 300,
+                    editor: function (container, options) {
+                        numeric_editor(container, options.field, '5');
+                    },
+                },
+                {
+                    field: "mode_flag",
+                    title: "Mode",
+                    width: 30,
+                    hidden: true
+                },
+                ],
+                editable: false,
+            });
+        }
+
+        function product_cost_detail(user_data) {
+            $("#grid_product_popup_det").kendoGrid({
+                dataSource: {
+                    data: user_data,
+                    schema: {
+                        model: {
+                            fields: {
+                                prdncost_dtl_rowid: {
+                                    type: "string",
+                                    defaultValue: "0"
+                                },
+                                part_name: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                quantity: {
+                                    type: "string",
+                                    editable: true,
+                                },
+                                cast_weight: {
+                                    type: "string",
+                                    editable: true,
+                                },
+                                shot_weight: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                part_weight: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                net_rm_cost: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                vc_per_unit: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                fc_per_unit: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                tc_per_unit: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                target_sp: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                exp_annual_vol: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                alloy_rate_month: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                alloy_rate: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                alloy_rate_date: {
+                                    type: "date",
+                                    editable: false
+                                },
+                                yield_percentage: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                remarks: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                fai_no_pieces: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                margin_fai: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                fai_quoted_sp: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                mode_flag: {
+                                    type: "string",
+                                    defaultValue: "I"
+                                }
+
+                            }
+                        }
+                    },
+                },
+                navigatable: true,
+                scrollable: true,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                // height: 285,
+                filterable: true,
+                selectable: true,
+                selectable: "singl", //  Grid Row Selection
+                dataBinding: setDefaultValues,
+                dataBound: function (e) {
+                    resultData = e.sender._data;
+                    var rows = $('#grid_product_popup_det').data('kendoGrid').tbody.children();
+                    setColor(rows, resultData);
+                },
+                //toolbar: "<a class=' k-grid-add'  id = 'btnSave' href=''><span class='fa fa-plus' style='color:Black'></span></a>",
+                columns: [
+                {
+                    field: "prdncost_dtl_rowid",
+                    hidden: true,
+                    width: 100
+                },
+
+                {
+                    field: "part_name",
+                    title: "Part Name",
+                    width: 150,
+                    // locked: true
+                },
+                {
+                    field: "quantity",
+                    title: "Quantity",
+                    width: 100,
+                    editor: function (container, options) {
+                        numeric_editor(container, options.field, '5');
+                    },
+                    attributes: { class: "text-right" },
+                },
+                {
+                    field: "cast_weight",
+                    title: "As Cast Weight",
+                    width: 150,
+                    editor: function (container, options) {
+                        numeric_editor_dot(container, options.field, '5');
+                    },
+                    attributes: { class: "text-right" },
+                },
+                {
+                    field: "shot_weight",
+                    title: "Shot Weight",
+                    width: 150,
+                    editor: function (container, options) {
+                        numeric_editor_dot(container, options.field, '5');
+                    },
+                    attributes: { class: "text-right" },
+                },
+                {
+                    field: "part_weight",
+                    title: "Part weight",
+                    width: 150,
+                    editor: function (container, options) {
+                        numeric_editor_dot(container, options.field, '5');
+                    },
+                    attributes: { class: "text-right" },
+                },
+                {
+                    field: "net_rm_cost",
+                    title: "Net RM cost",
+                    width: 150,
+                    editor: function (container, options) {
+                        numeric_editor_dot(container, options.field, '5');
+                    },
+                    attributes: { class: "text-right" },
+                },
+                {
+                    field: "vc_per_unit",
+                    title: "Variable costs per unit",
+                    width: 180,
+                    editor: function (container, options) {
+                        numeric_editor_dot(container, options.field, '5');
+                    },
+                    attributes: { class: "text-right" },
+                },
+                {
+                    field: "fc_per_unit",
+                    title: "Fixed costs per unit",
+                    width: 160,
+                    editor: function (container, options) {
+                        numeric_editor_dot(container, options.field, '5');
+                    },
+                    attributes: { class: "text-right" },
+                },
+                {
+                    field: "tc_per_unit",
+                    title: "Total costs per unit",
+                    width: 160,
+                    editor: function (container, options) {
+                        numeric_editor_dot(container, options.field, '5');
+                    },
+                    attributes: { class: "text-right" },
+                },
+                {
+                    field: "target_sp",
+                    title: "Target Selling price if any",
+                    width: 180,
+                    editor: function (container, options) {
+                        numeric_editor_dot(container, options.field, '5');
+                    },
+                    attributes: { class: "text-right" },
+                },
+                {
+                    field: "reco_margin",
+                    title: "Recommended margin %",
+                    width: 180,                  
+                    attributes: { class: "text-right" },
+                },
+            {
+                field: "reco_sp",
+                title: "Recommended SP",
+                width: 180,
+            },
+                {
+                    field: "exp_annual_vol",
+                    title: "Expected annual volume",
+                    width: 200,
+                    editor: function (container, options) {
+                        numeric_editor_dot(container, options.field, '9');
+                    },
+
+                },
+                {
+                    field: "alloy_rate_month",
+                    title: "Alloy rate/kg for the month",
+                    width: 200,
+                    editor: function (container, options) {
+                        numeric_editor_dot(container, options.field, '9');
+                    },
+                },
+                {
+                    field: "alloy_rate",
+                    title: "Alloy rate",
+                    width: 200,
+                    editor: function (container, options) {
+                        numeric_editor_dot(container, options.field, '9');
+                    },
+                },
+                {
+                    field: "alloy_rate_date",
+                    title: "Alloy rate/kg as on date",
+                    format: "{0: dd/MM/yyyy}",
+                    width: 200,
+                },
+                {
+                    field: "yield_percentage",
+                    title: "Yield %",
+                    width: 100,
+                    editor: function (container, options) {
+                        numeric_editor(container, options.field, '5');
+                    },
+                    attributes: { class: "text-right" },
+                },
+                {
+                    field: "remarks",
+                    title: "Remarks if any",
+                    width: 250,
+                    editor: function (container, options) {
+                        textarea_editor(container, options.field);
+                    },
+                },
+                {
+                    field: "fai_no_pieces_1",
+                    title: "FAI no.of pieces - 1",
+                    width: 180,                   
+                    attributes: { class: "text-right" },
+                },
+                    {
+                        field: "margin_fai_2",
+                        title: "Margin loading % for FAI - 1",
+                        width: 250,                       
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "fai_quoted_sp_1",
+                        title: "Selling price quoted for FAI - 1",
+                        width: 250,
+                    },
+                    {
+                        field: "fai_no_pieces_2",
+                        title: "FAI no.of pieces - 2",
+                        width: 180,                       
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "margin_fai_2",
+                        title: "Margin loading % for FAI - 2",
+                        width: 250,
+                        editor: function (container, options) {
+                            numeric_editor(container, options.field, '5');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "fai_quoted_sp_2",
+                        title: "Selling price quoted for FAI - 2",
+                        width: 250,
+                    },
+                    {
+                        field: "fai_no_pieces_3",
+                        title: "FAI no.of pieces - 3",
+                        width: 180,                      
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "margin_fai_3",
+                        title: "Margin loading % for FAI - 3",
+                        width: 250,
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "fai_quoted_sp_3",
+                        title: "Selling price quoted for FAI - 3",
+                        width: 250,
+                    },
+                                        
+                {
+                    field: "mode_flag",
+                    title: "Mode",
+                    width: 30,
+                    hidden: true
+                }
+                ],
+                editable: false,
+            });
+
+        }
+    </script>
+
+
+</body>
+</html>
+
+

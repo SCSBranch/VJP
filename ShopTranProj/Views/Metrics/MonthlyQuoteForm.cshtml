@@ -1,0 +1,248 @@
+﻿@{
+    ViewBag.Title = "ChartForm";
+    Layout = "~/Views/Shared/Form_Layout.cshtml";
+}
+
+@*<div id="chart"></div>*@
+@*<script>
+        // Sample data
+        var data = [];
+        for (var i = 0; i < 100; i++) {
+            var val = Math.round(Math.random() * 10);
+            data.push({
+                category: "Category " + i,
+                value: val
+            });
+        }
+
+        function createChart() {
+            $("#chart").kendoChart({
+                renderAs: "canvas",
+                dataSource: {
+                    data: data
+                },
+                categoryAxis: {
+                    min: 0,
+                    max: 10,
+                    //labels: {
+                    //    rotation: "90"
+                    //}
+                },
+                seriesDefaults: {
+                    type: "bar",
+                    //stack: {
+                    //    type: "100%"
+                    //}
+                    stack:true
+                },
+                series: [{
+                    field: "value",
+                    categoryField: "category"
+                }, {
+                    field: "value",
+                    categoryField: "category"
+                }],
+                valueAxis: {
+                    min: 0,
+                    max: 1
+                },
+                pannable: {
+                    lock: "x"
+                },
+                panes: [{
+                    clip: true
+                }]
+            });
+        }
+
+        $(document).ready(createChart);
+    </script>*@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="~/Scripts/HtmlCanvas.js"></script>
+    <style>
+        html {
+            font-size: 14px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+    <title></title>
+</head>
+<body>
+    <script>
+        $(document).ready(function () {
+            $("#btn_convert").on('click', function () {
+                html2canvas(document.getElementById("example"),
+                    {
+                        allowTaint: true,
+                        useCORS: true
+                    }).then(function (canvas) {
+                        var anchorTag = document.createElement("a");
+                        document.body.appendChild(anchorTag);
+                        // document.getElementById("previewImg").appendChild(canvas);
+                        anchorTag.download = "filename.jpg";
+                        anchorTag.href = canvas.toDataURL();
+                        anchorTag.target = '_blank';
+                        anchorTag.click();
+                    });
+            });
+        });
+    </script>
+
+    <div class="row"style="height:600px">
+        <div class="col-sm-7">
+            <div class="col-xs-6" style="margin-left:30px;padding-bottom:10px;padding-top:10px">
+                <div class="form-group">
+                    <label for="cmbChart" id="lbl_cmbChart" class=" col-sm-4 control-label" data-toggle="tooltip" data-placement="bottom">Chart type:</label>
+                    <div class=" col-sm-7">
+                        <input id="cmbChart" name="chart_code" data-role="filtercombo" style="width:100%" data-toggle="tooltip" data-placement="bottom" onchange="chart_change()" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9"><div id="chart1"></div></div>
+        </div>
+        <div class="col-sm-5">
+            <div class="row" style="padding-bottom:20px">
+                OverAll : &nbsp;&nbsp;&nbsp;<input type="text"  id="txt_overall" disabled />
+                <div id="master_grid" style="margin-top:20px">
+                    <div id="grid" class="grid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        $("#btnCreate").hide();
+        $("#btnSave").hide();
+        $("#btnDelete").hide();
+        $("#btnClear").hide();
+        $("#btn_convert").show();
+        $("#lblFormTitle").text("Monthly Quote Conversion Ratio");
+        var ch_data = [{
+            category: 'Defence', value: 15, color: "#C48793"
+        }, {
+            category: 'AutoMobile', value: 5, color: "#C2DFFF"
+        }, {
+            category: 'Engineering', value: 10, color: "#7FFFD4"
+        }, {
+            category: 'Others', value: 2, color: "#FFC0CB"
+        }];
+
+        var ct_type = "pie";
+
+        var sData = [{ code: "pie", desc: "pie" }, { code: "donut", desc: "donut" }];
+
+        filter_combobox("cmbChart", sData);
+        $('#cmbChart').data("kendoComboBox").value('pie');
+        function createChart(ch_data) {
+            $("#chart1").kendoChart({
+                //  dataSource: { data: data },
+                seriesDefaults: {
+                    template: "#= category #: \n #= value#%",
+                    position: "outsideEnd",
+                    visible: true,
+                    background: "transparent"
+                },
+                series: [{
+                    type: ct_type,
+                    data: ch_data,
+                    //field: "value",
+                    //categoryField: "category",
+                    autoFit: true,
+                    labels: {
+                        color: "#000",
+                        position: "outsideEnd",
+                        template: "#= category #: \n #= value#%",
+                        visible: true
+                    }
+                }],
+                legend: {
+                    visible: true
+                },
+                tooltip: {
+                    visible: true,
+                    template: "#= category #: \n #= value#%",
+                    format: "{0}%"
+                }
+            });
+
+        }
+
+        function chart_change() {
+            ct_type = $('#cmbChart').data("kendoComboBox").value();
+            createChart(ch_data);
+        }
+
+    </script>
+   
+    <script>
+
+        var data = [{ segment: "Defence", po_received: "", q_sent: "", value: "15" }, { segment: "AutoMobile", po_received: "", q_sent: "", value: "5" }, { segment: "Engineering", po_received: "", q_sent: "", value: "10" }, { segment: "Others", po_received: "", q_sent: "", value: "2" }]
+
+        function chart_grid(user_data) {
+            $("#grid").kendoGrid({
+                dataSource: {
+                    data: user_data,
+                    schema: {
+                        model: {
+                            fields: {
+                                segment: {
+                                    type: "string",
+                                },
+                                value: {
+                                    type: "string",
+                                },
+                            }
+                        }
+                    },
+                },
+                navigatable: true,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                height: 350,
+                selectable: true,
+                selectable: "singl", //  Grid Row Selection
+                change: onchange,
+                columns: [
+                    {
+                        field: "segment",
+                        title: "Segment",
+                        width: 100,
+                        
+                    },
+                    {
+                        field: "po_received",
+                        title: "POs Received",
+                        width: 100,
+                    },
+                    {
+                        field: "q_sent",
+                        title: "Quote Sent",
+                        width: 100,
+                    },
+                    {
+                        field: "value",
+                        title: "%",
+                        width: 100,
+                    },
+                ],
+                editable: false,
+            });
+        }
+
+        $(document).ready(function () {
+
+            chart_grid(data);
+            createChart(ch_data);
+            $("#txt_overall").val("3");
+        });
+    </script>
+</body>
+</html>
+

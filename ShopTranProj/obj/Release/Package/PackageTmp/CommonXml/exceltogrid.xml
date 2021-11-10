@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<root>
+  <grid type_id="TSK_ASSIGN" sp_name= "iud_task_assignment_xls" type_description="Team Task">
+    <columns>
+      <column seqno="1"  df="Task_Type"					      coldesc="Task Type" 					dt="Text"	  format=""  edit= "true"/>
+      <column seqno="2"  df="Task_Reference_desc"			coldesc="Context" 						dt="Text"	  format=""  edit= "true"/>
+      <column seqno="3"  df="Task_Reference"				  coldesc="Detail1" 						dt="Text"	  format=""  edit= "true"/>
+      <column seqno="4"  df="Task_Reference_2"			  coldesc="Detail2"						  dt="Text" 	format=""  edit= "true"/>
+      <column seqno="5"  df="Task_Description"			  coldesc="Task Detail" 				dt="Text"	  format=""  edit= "true"/>
+      <column seqno="6"  df="Task_Start_Date"				  coldesc="Task Start Date"    	dt="Date" 	format=""  edit= "true"/>
+      <column seqno="7"  df="Task_Due_Date"				    coldesc="Due Date"  					dt="Date"	  format=""  edit= "true"/>
+      <column seqno="8"  df="Task_Owner"			    	  coldesc="Owner"    						dt="Text" 	format=""  edit= "true"/>
+      <column seqno="9" df="Task_Assigned_User"			  coldesc="Assigned To"					dt="Text" 	format=""  edit= "true"/>
+      <column seqno="10" df="Task_Priority"				    coldesc="Priority" 						dt="Text"	  format=""  edit= "true"/>
+      <column seqno="11" df="Task_Assign_Date"			  coldesc="Task Created Date" 	dt="Date"	  format=""  edit= "true"/>
+      <column seqno="12" df="Task_Status"					    coldesc="Task Status" 				dt="Text"	  format=""  edit= "true"/>
+    </columns>
+  </grid>
+  <grid type_id="TSK_INBOX" sp_name= "iud_task_assignment_xls" type_description="My Task">
+    <columns>
+      <column seqno="1" df="Task_Id"						    coldesc="Task ID" 						dt="Text"	  format="" edit= "false"/>
+      <column seqno="2"  df="Task_Row_id"					  coldesc="Task Row id"					dt="Text" 	format="" edit= "false" />
+      <column seqno="3"  df="Task_Type"					    coldesc="Task Type" 					dt="Text"	  format="" edit= "false"/>
+      <column seqno="4"  df="Task_Reference_desc"		coldesc="Context" 						dt="Text"	  format="" edit= "false"/>
+      <column seqno="5"  df="Task_Reference"				coldesc="Detail1" 						dt="Text"	  format="" edit= "false"/>
+      <column seqno="6"  df="Task_Reference_2"			coldesc="Detail2"						  dt="Text" 	format="" edit= "false"/>
+      <column seqno="7"  df="Task_Description"			coldesc="Task Detail" 				dt="Text"	  format="" edit= "false"/>
+      <column seqno="8"  df="Task_Start_Date"				coldesc="Task Start Date"    	dt="Date" 	format="" edit= "false"/>
+      <column seqno="9"  df="Task_Due_Date"				  coldesc="Due Date"  					dt="Date"	  format="" edit= "false"/>
+      <column seqno="10" df="Task_Completion_Percentage"	coldesc="Task Completion Percentage" 	dt="Text"	format="" edit= "true"/>
+      <column seqno="11" df="Remarks"						    coldesc="Action Taken" 				dt="Text"	  format="" edit= "true"/>
+      <column seqno="12" df="Task_Action_Date"			coldesc="Task Action Date" 		dt="Date"	  format="" edit= "true"/>
+      <column seqno="13" df="Next_Action_Date"			coldesc="Next Action Date" 		dt="Date"	  format="" edit= "true"/>
+      <column seqno="14" df="Task_Owner"			    	coldesc="Owner"    						dt="Text" 	format="" edit= "false"/>
+      <column seqno="15" df="Task_Assigned_User"		coldesc="Assigned To"					dt="Text" 	format="" edit= "false"/>
+      <column seqno="16" df="Task_Priority"				  coldesc="Priority" 						dt="Text"	  format="" edit= "true"/>
+      <column seqno="17" df="Task_Assign_Date"			coldesc="Task Created Date" 	dt="Date"	  format="" edit= "false"/>
+      <column seqno="18" df="Task_Status"					  coldesc="Task Status" 				dt="Text"	  format="" edit= "true"/>
+    </columns>
+  </grid>
+</root>

@@ -1,0 +1,396 @@
+﻿@{
+    ViewBag.Title = "ChartForm";
+    Layout = "~/Views/Shared/Form_Layout.cshtml";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="~/Scripts/HtmlCanvas.js"></script>
+    <style>
+        html {
+            font-size: 14px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+    <title></title>
+</head>
+<body>
+    <script>
+        $(document).ready(function () {
+            $("#btn_convert").on('click', function () {
+                html2canvas(document.getElementById("example"),
+                    {
+                        allowTaint: true,
+                        useCORS: true
+                    }).then(function (canvas) {
+                        var anchorTag = document.createElement("a");
+                        document.body.appendChild(anchorTag);
+                        // document.getElementById("previewImg").appendChild(canvas);
+                        anchorTag.download = "filename.jpg";
+                        anchorTag.href = canvas.toDataURL();
+                        anchorTag.target = '_blank';
+                        anchorTag.click();
+                    });
+            });
+        });
+    </script>
+
+    <div class="row">
+        <div class="col-sm-8">
+            <div id="example" style="height:600px;overflow-y:scroll">
+                <div class="col-sm-12">
+                    <div class="demo-section k-content wide">
+                        <div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-square-o" aria-hidden="true" style="color:red;background:red"></i> Rejected &nbsp;&nbsp;&nbsp;
+                            <i class="fa fa-square-o" aria-hidden="true" style="color:#00FF00;background:#00FF00"></i> Completed&nbsp;&nbsp;&nbsp;
+                            <i class="fa fa-square-o" aria-hidden="true" style="color:yellow;background:yellow"></i> Work In Progress
+
+                            <button class="btn-sm btn-primary" onclick="btn_click()">click</button>
+                        </div>
+                        <div id="chart"></div>
+                    </div>
+                </div>
+                @*<div class="col-sm-1">
+                        <div style="height:160px"></div>
+                        <div>
+                            <i class="fa fa-square-o" aria-hidden="true" style="color:red;background:red"></i> Rejected<br />
+                            <i class="fa fa-square-o" aria-hidden="true" style="color:#00FF00;background:#00FF00"></i> Completed<br />
+                            <i class="fa fa-square-o" aria-hidden="true" style="color:yellow;background:yellow"></i> Work In Progress
+                        </div>
+                    </div>*@
+
+
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+
+            <div class="row" style="padding-bottom:20px">
+                <div id="master_grid">
+                    <div id="grid" class="grid"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div id="master_grid">
+                    <div id="grid1" class="grid"></div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <script>
+
+        var stage1_color = ["#00FF00", "#00FF00", "#ff0000", "#00FF00", "#00FF00", "#00FF00", "#00FF00", "#00FF00", "#ff0000", "#00FF00", "#00FF00", "#ff0000", "#00FF00", "#00FF00", "#00FF00", "#00FF00", "#00FF00", "#ff0000", "#00FF00", "#00FF00", "#ff0000", "#00FF00", "#00FF00", "#00FF00", "#00FF00", "#00FF00", "#ff0000",];
+        var stage2_color = ["#00FF00", "#FFFF00", "", "#ff0000", "#00FF00", "#FFFF00", "#00FF00", "#00FF00", "", "#00FF00", "#FFFF00", "", "#ff0000", "#00FF00", "#FFFF00", "#00FF00", "#00FF00", "", "#00FF00", "#FFFF00", "", "#ff0000", "#00FF00", "#FFFF00", "#00FF00", "#00FF00", "",];
+        var stage3_color = ["#FFFF00", "", "", "", "#ff0000", "#FFFF00", "#ff0000", "#FFFF00", "", "#FFFF00", "", "", "", "#ff0000", "#FFFF00", "#ff0000", "#FFFF00", "", "#FFFF00", "", "", "", "#ff0000", "#FFFF00", "#ff0000", "#FFFF00", "",];
+
+        var stgae1_data = [4.5, 3, 2, 4, 6, 4, 8, 7, 8, 4.5, 3, 2, 4, 6, 4, 8, 7, 8, 4.5, 3, 2, 4, 6, 4, 8, 7, 8];
+        var stgae2_data = [6, 7, 0, 7, 7, 4, 3, 6, 0, 6, 7, 0, 7, 7, 4, 3, 6, 0, 6, 7, 0, 7, 7, 4, 3, 6, 0];
+        var stgae3_data = [7, 0, 0, 0, 9, 5, 3, 6, 0, 7, 0, 0, 0, 9, 5, 3, 6, 0, 7, 0, 0, 0, 9, 5, 3, 6, 0];
+
+        var cust_name = ["Customer A\n(12lakhs- Enq1)", "Customer B\n(13lakhs- Enq2)", "Customer C\n(14lakhs- Enq3)", "Customer D\n(15lakhs- Enq4)", "Customer E\n(16lakhs- Enq5)", "Customer F\n(17lakhs- Enq6)", "Customer G\n(18lakhs- Enq7)", "Customer H\n(19lakhs- Enq8)", "Customer I\n(20lakhs- Enq9)", "Customer J\n(21lakhs- Enq10)", "Customer K\n(42lakhs- Enq11)", "Customer L\n(72lakhs- Enq12)", "Customer M\n(62lakhs- Enq13)", "Customer N\n(82lakhs- Enq14)", "Customer O\n(72lakhs- Enq15)", "Customer P\n(32lakhs- Enq16)", "Customer Q\n(22lakhs- Enq17)", "Customer R\n(72lakhs- Enq18)", "Customer S\n(62lakhs- Enq19)", "Customer T\n(52lakhs- Enq20)", "Customer U\n(62lakhs- Enq21)", "Customer V\n(32lakhs- Enq22)", "Customer W\n(22lakhs- Enq23)", "Customer X\n(42lakhs- Enq24)", "Customer Y\n(42lakhs- Enq25)", "Customer Z\n(22lakhs- Enq26)", "Customer A1\n(32lakhs- Enq27)"];
+
+        var arr = [];
+        for (var i = 0; i < cust_name.length; ++i) {
+            arr.push({ key: i, cus_name: cust_name[i] })
+        }
+
+
+        $(document).ready(function () {
+            createChart(stgae1_data, stgae2_data, stgae3_data, cust_name, stage1_color, stage2_color, stage3_color);
+            chart_grid(arr);
+            chart_grid1([]);
+        });
+        function createChart(stgae1_data, stgae2_data, stgae3_data, cust_name, stage1_color, stage2_color, stage3_color) {
+
+            var chartHeight = stgae1_data.length * 45;
+
+            if (stgae1_data.length == 1) {
+                $("#chart").css("height", "550");
+            }
+            else {
+                $("#chart").css("height", chartHeight);
+            }
+
+
+            $("#chart").kendoChart({
+                title: {
+                    text: ""
+                },
+                legend: {
+                    visible: false,
+
+                },
+                overlay: {
+                    gradient: "none"
+                },
+                seriesDefaults: {
+                    type: "bar",
+                    stack: true
+                },
+                series: [{
+                    border: {
+                        width: 1,
+                         color: "black",
+                        // dashType: "dash",
+                    },
+                    name: "Stage1",
+                    data: stgae1_data,
+                    color: function (point) {
+                        return stage1_color[point.index];
+                    }
+                },
+                {
+                    border: {
+                        width: 1,
+                          color: "black",
+                        //dashType: "dash",
+                    },
+                    name: "Stage2",
+                    data: stgae2_data,
+                    color: function (point) {
+                        return stage2_color[point.index];
+                    }
+                },
+                {
+                    border: {
+                        width: 1,
+                         color: "black",
+                        //dashType: "dash",
+                    },
+                    name: "Stage3",
+                    data: stgae3_data,
+                    color: function (point) {
+                        return stage3_color[point.index];
+                    }
+                }],
+                valueAxis: {
+                    min: 1,
+                    max: 52,
+
+                    majorUnit: 1,
+                    line: {
+                        visible: false
+                    },
+                    minorGridLines: {
+                        visible: true
+                    },
+                    labels: {
+                        format: "N0",
+
+                    },
+                    position: "Fixed"
+                },
+                categoryAxis: {
+                    categories: cust_name,
+                    majorGridLines: {
+                        visible: false
+                    }
+                },
+                tooltip: {
+                    visible: true,
+                    template: "#= series.name #: #= value #"
+                },
+                //chartArea: {
+                //    height: 1000
+                //}
+            });
+        }
+
+        //  $(document).ready(createChart);
+        //  $(document).bind("kendo:skinChange", createChart);
+        $("#btnCreate").hide();
+        $("#btnSave").hide();
+        $("#btnDelete").hide();
+        $("#btnClear").hide();
+        $("#btn_convert").show();
+        $("#lblFormTitle").text("Chart");
+    </script>
+    <script>
+
+        var gridRowID = -1;
+
+        function sel_user_checkbox() {
+            gridRowID++;
+            return '<input id="chk_sel_' + gridRowID + '" class="checkbox" type="checkbox" />';
+        }
+
+        function chart_grid(user_data) {
+            gridRowID = -1;
+            user_data = addRandomNum(user_data);
+            $("#grid").kendoGrid({
+                dataSource: {
+                    data: user_data,
+                    schema: {
+                        model: {
+                            fields: {
+                                key: {
+                                    type: "string",
+                                },
+                                cust_name: {
+                                    type: "string",
+                                },
+                            }
+                        }
+                    },
+                },
+                navigatable: true,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                height: 500,
+                dataBound: function (o) {
+                    reset_Selected_GridRows("grid_userList", o);
+                },
+               // selectable: true,
+
+
+              //  change: selectRow,
+
+                columns: [
+                    {
+                        field: "key",
+                        title: "Key",
+                        width: 150,
+                        hidden: true
+                    },
+                    {
+                        title: "Sel",
+                        width: "30px",
+                        field: "select",
+                        template: '#=sel_user_checkbox()#'
+
+                    },
+                    {
+                        field: "cus_name",
+                        title: "Customer Name",
+                        width: 150,
+                    },
+                ],
+                editable: false,
+            });
+            var gridDoc = $("#grid").data("kendoGrid");
+            gridDoc.table.on("change", ".checkbox", selectRow);
+
+        }
+
+
+
+        function selectRow() {
+            selected_Grid_Row("grid", this);
+        }
+
+
+        function btn_click()
+        {
+            var grid = $("#grid").data("kendoGrid");
+            var items = [];
+            $.each(grid.dataSource._data, function (key, value) {
+                $.each(grid_selected_rows, function (skey, svalue) {
+                    if ((grid_selected_rows[skey] == true) && (skey == value.randNum)) {
+                        items.push(grid.dataSource._data[key]);
+                    }
+                });
+            });
+
+            stage_arr = [];
+            var gstgae1_data = []; var gstgae2_data = [];
+            var gstgae3_data = []; var gcust_name = []; var gstgae1_color = []; var gstgae2_color = []; var gstgae3_color = [];
+            for (var i = 0; i < items.length; i++)
+            {
+                stage_arr.push({ stage1: stgae1_data[i], stage2: stgae2_data[i], stage3: stgae3_data[i], total: stgae1_data[i] + stgae2_data[i] + stgae3_data[i] });
+              
+                gstgae1_data.push(stgae1_data[i]);
+                gstgae2_data.push(stgae2_data[i]);
+                gstgae3_data.push(stgae3_data[i]);
+
+                gstgae1_color.push(stage1_color[i]);
+                gstgae2_color.push(stage2_color[i]);
+                gstgae3_color.push(stage3_color[i]);
+                gcust_name.push(cust_name[i]);
+
+            }
+            createChart(gstgae1_data, gstgae2_data, gstgae3_data, gcust_name, gstgae1_color, gstgae2_color, gstgae3_color);
+        }
+
+
+        function chart_grid1(user_data) {
+            $("#grid1").kendoGrid({
+                dataSource: {
+                    data: user_data,
+                    schema: {
+                        model: {
+                            fields: {
+
+                                cust_name: {
+                                    type: "string",
+                                },
+                            }
+                        }
+                    },
+                },
+                navigatable: true,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                height: 70,
+
+                columns: [
+                    {
+                        field: "stage1",
+                        title: "Stage 1(weeks)",
+                        width: 100,
+                    },
+                    {
+                        field: "stage2",
+                        title: "Stage 2(weeks)",
+                        width: 100,
+                    },
+                    {
+                        field: "stage3",
+                        title: "Stage 3(weeks)",
+                        width: 100,
+                    },
+                    {
+                        field: "total",
+                        title: "Total(weeks)",
+                        width: 100,
+                    },
+                ],
+                editable: false,
+            });
+        }
+
+        var stage_arr = [];
+        function selectRow1() {
+            stage_arr = [];
+            var gstgae1_data = []; var gstgae2_data = [];
+            var gstgae3_data = []; var gcust_name = []; var gstgae1_color = []; var gstgae2_color = []; var gstgae3_color = [];
+
+            var grid = $("#grid").data("kendoGrid");
+            var selectedItem = grid.dataItem(grid.select());
+
+
+
+
+            stage_arr.push({ stage1: stgae1_data[selectedItem.key], stage2: stgae2_data[selectedItem.key], stage3: stgae3_data[selectedItem.key], total: stgae1_data[selectedItem.key] + stgae2_data[selectedItem.key] + stgae3_data[selectedItem.key] });
+            chart_grid1(stage_arr);
+
+            gstgae1_data.push(stgae1_data[selectedItem.key]);
+            gstgae2_data.push(stgae2_data[selectedItem.key]);
+            gstgae3_data.push(stgae3_data[selectedItem.key]);
+
+            gstgae1_color.push(stage1_color[selectedItem.key]);
+            gstgae2_color.push(stage2_color[selectedItem.key]);
+            gstgae3_color.push(stage3_color[selectedItem.key]);
+            gcust_name = [cust_name[selectedItem.key]];
+            
+
+            createChart(gstgae1_data, gstgae2_data, gstgae3_data, gcust_name, gstgae1_color, gstgae2_color, gstgae3_color);
+        }
+    </script>
+</body>
+</html>

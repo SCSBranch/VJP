@@ -1,0 +1,89 @@
+﻿
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ExportExcel</title>
+    <style>
+        .modal-footer {
+            padding: 10px;
+            text-align: right;
+            border-top: 1px solid #d5d5d5;
+        }
+
+        .bt {
+            background-color: #3c8dbc;
+            border-color: #3c8dbc;
+        }
+    </style>
+
+    <script src="~/CommonScripts/ExportExcel.js"></script>
+</head>
+<body>
+    <div class="modal-header k-header" style="padding: 5px; color: black; background-color: #367FA9; border-radius: 4px">
+        <button type="button" class="close" data-dismiss="modal" style="padding: 0px 8px;font-size: 25px;" onclick="closeView()">
+            &times;
+        </button>
+        <h4 class="modal-title" id="exporthdr">Export Excel</h4>
+    </div>
+    <div class="modal-body">
+        <form id="frmExportExcel" class="form-horizontal" data-role="validator" novalidate="novalidate" style="margin-right:-62px">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="chkall" class="col-sm-4 control-label" style="  font-weight: 400;">Grid Data:</label>
+                        <div class="col-sm-4">
+                            <input type="checkbox" id="chkall" />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="display:none">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="chkfilter" id="lbl_code" class="col-sm-4 control-label" style="  font-weight: 400;">Filtered Data:</label>
+                        <div class="col-sm-4">
+                            <input type="checkbox" id="chkfilter" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="cmbtemp" id="lbl_name" class="col-sm-4 control-label required" style="  font-weight: 400;">Template:</label>
+                        <div class="col-sm-2">
+                            <input type="checkbox" id="chktemp" />
+                        </div>
+                        <div class="col-sm-6">
+                            @*<select class="form-control" id="cmbtemp" name="Temp" style="width :100%; pointer-events :none">
+                                </select>*@
+                            <input id="cmbtemp" name="Temp" data-role="filtercombo" style="width: 100%;" />@*"*@
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div style=" float:right">
+            <button class="k-dialog-update k-button k-primary" id="btnExcTemp" onclick="export_temp_fuc()" style="display:none">Export</button>
+            <button class="k-dialog-update k-button k-primary" id="btnExc" onclick="export_fuc()">Export</button>
+            <button class="k-dialog-update k-button k-primary" id="Close-refresh" onclick="closeView()">Cancel</button>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+    function closeView() {
+        $("#exportexcelModal").modal("hide");
+    }
+</script>
+

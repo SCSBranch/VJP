@@ -1,0 +1,281 @@
+﻿
+@{
+    ViewBag.Title = "CustomerMaster";
+    Layout = "~/Views/Shared/Form_Layout.cshtml";
+}
+
+<form id="form_customer_master" class="form-horizontal" data-role="validator" novalidate="novalidate">
+    <div class="row">
+        <div class="col-md-8">
+            <div id="grid_customer_data">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="txtCustomerID" class="col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Customer ID</label>
+                        <div class=" col-sm-7">
+                            <input type="text" class="form-control" name="user_id" data-toggle="tooltip" data-placement="bottom" id="txtCustomerID">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="txtCustomerName" class="col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Customer Name</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="cust_name" id="txtCustomerName" data-toggle="tooltip" data-placement="bottom">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="txtCustomerCity" class="col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Customer City</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="cust_city" id="txtCustomerCity" data-toggle="tooltip" data-placement="bottom">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="cmbCustCountry" class=" col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Customer Country</label>
+                        <div class=" col-sm-7">
+                            <input id="cmbCustCountry" name="user_of_code" data-role="filtercombo" data-toggle="tooltip" data-placement="bottom" style="width:100%" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="cmbSelector" class=" col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Sector</label>
+                        <div class=" col-sm-7">
+                            <input id="cmbSelector" name="user_of_code" data-role="filtercombo" data-toggle="tooltip" data-placement="bottom" style="width:100%" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="cmbDomestic" class=" col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Domestic / Export</label>
+                        <div class=" col-sm-7">
+                            <input id="cmbDomestic" name="domestic_export" data-role="filtercombo" data-toggle="tooltip" data-placement="bottom" style="width:100%" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="display:none">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="txtCustStatus" class="col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Status</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="status" id="txtCustStatus" data-toggle="tooltip" data-placement="bottom" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+
+    $(document).ready(function () {
+
+        var sData = load_dropdown_list('CUST_MAS', 'SELECTOR');
+        filter_combobox("cmbSelector", []);
+        filter_combobox("cmbCustCountry", []);
+        filter_combobox("cmbDomestic", sData);
+        var sData = load_dropdown_list('CUST_MAS', 'COUNTRY');
+        filter_combobox("cmbCustCountry", sData);
+
+        var sData = load_dropdown_list('CUST_MAS', 'SECTOR');
+        filter_combobox("cmbSelector", sData);
+
+        var sData = load_dropdown_list('CUST_MAS', 'DOM_EXP');
+        filter_combobox("cmbDomestic", sData);
+        customer_grid([]);
+        $("#lblFormTitle").text("Customer Master");
+
+        var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+        grid_height = parseInt(full_height) - 235;
+        $('#grid_customer_data .k-grid-content').height(grid_height);
+    });
+
+
+    function customer_grid(data) {
+        try {
+            $("#grid_customer_data").kendoGrid({
+                dataSource: {
+                    data: data,
+                    pageSize: 20,
+                    schema: {
+                        model: {
+                            fields: {
+                                role_id: {
+                                    type: "string"
+                                },
+                                role_description: {
+                                    type: "string"
+                                },
+                                screen_id: {
+                                    type: "string"
+                                },
+                                //screen_name: {
+                                //    type: "string"
+                                //},
+                            }
+                        }
+                    },
+                    change: function (e) {
+                        setTimeout(function () {
+                            var gd = $("#grid_customer_data").data("kendoGrid");
+                            filter_row(gd);
+                            $('.k-i-close').css('display', 'none');
+                            $('button.k-button-icon').css('display', 'none');
+                            $('#grid_customer_data .k-input').prop('disabled', false);
+                            $('#grid_customer_data .k-input').prop('readonly', true);
+
+                        }, 1);
+                    },
+                },
+                dataBound: function (o) {
+                    reset_Selected_GridRows("grid_customer_data", o);
+                },
+                toolbar: "<button type= 'button' id = 'Exportclick' class = 'k-grid-excel' style = 'display:none' href=''><span class='fa fa-file-excel-o' style='color: Black;'> &nbsp Export To Excel</span></button>",
+
+                excel: {
+                    allPages: true
+                },
+                excelExport: function (e) {
+                    export_data(e);
+                },
+
+                filterable: {
+                    enabled: true,
+                    delay: 1500,
+                    mode: "menu, row",
+                    height: 200,
+                    click: function (e) {
+                        var gd = $("#grid_customer_data").data("kendoGrid");
+                        filter_row(gd);
+                    }
+                },
+                filterMenuInit: function (e) {
+                    var gd = $("#grid_customer_data").data("kendoGrid");
+                    filter_row(gd);
+                },
+                scrollable: true,
+                // height: 523,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                pageable: {
+                    refresh: false,
+                    pageSizes: true,
+                    buttonCount: 5
+                },
+                selectable: true,
+                //  change: selectRow,
+                columns: [{
+                    field: "cust_id",
+                    title: "Customer ID",
+                    width: "200px",
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            inputWidth: 1500
+                        }
+                    },
+                    locked: true
+                },
+                {
+                    field: "cust_names",
+                    title: "Name",
+                    width: "200px",
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            inputWidth: 1500
+                        }
+                    },
+                },
+                {
+                    field: "cust_city",
+                    title: "City",
+                    width: "200px",
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            inputWidth: 1500
+                        }
+                    },
+                },
+                {
+                    field: "cust_country",
+                    title: "Country",
+                    width: "200px",
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            inputWidth: 1500
+                        }
+                    },
+                },
+                {
+                    field: "sector",
+                    title: "Sector",
+                    width: "200px",
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            inputWidth: 1500
+                        }
+                    },
+                },
+                {
+                    field: "domestic",
+                    title: "Domestic/Export",
+                    width: "200px",
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            inputWidth: 1500
+                        }
+                    },
+                },
+                ]
+            });
+
+            $(".k-dropdown-operator").css('display', 'none');
+            $("#grid_customer_data .k-input").attr('disabled', 'false');
+        } catch (err) {
+            kendoAlert(err);
+        }
+    }
+
+
+
+
+</script>
+<style>
+    #grid_customer_data table {
+        min-width: 100%;
+    }
+
+    #grid_customer_data .k-grid-toolbar {
+        display: none;
+    }
+
+    .k-pager-sizes {
+        display: none;
+    }
+</style>

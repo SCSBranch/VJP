@@ -1,0 +1,506 @@
+﻿
+@{
+    ViewBag.Title = "CustomerMaster";
+    Layout = "~/Views/Shared/Form_Layout.cshtml";
+}
+
+<form id="form_customer_master" class="form-horizontal" data-role="validator" novalidate="novalidate">
+    <div class="row">
+        <div class="col-md-8">
+            <div id="master_grid" >
+                <div id="grid_customer_data" class="grid"></div>
+            </div>
+          
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="txtCustomerID" class="col-sm-5 control-label required" data-toggle="tooltip" data-placement="bottom">Customer ID</label>
+                        <div class=" col-sm-7">
+                            <input type="text" class="form-control" name="cust_id" data-toggle="tooltip" data-placement="bottom" id="txtCustomerID" maxlength="20">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="txtCustomerName" class="col-sm-5 control-label required" data-toggle="tooltip" data-placement="bottom">Customer Name</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="cust_name" id="txtCustomerName" data-toggle="tooltip" data-placement="bottom" maxlength="4096">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="txtCustomerCity" class="col-sm-5 control-label required" data-toggle="tooltip" data-placement="bottom">Customer City</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="cust_city" id="txtCustomerCity" data-toggle="tooltip" data-placement="bottom" maxlength="512">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="cmbCustCountry" class=" col-sm-5 control-label required" data-toggle="tooltip" data-placement="bottom">Customer Country</label>
+                        <div class=" col-sm-7">
+                            <input id="cmbCustCountry" name="cust_country_code" data-role="filtercombo" data-toggle="tooltip" data-placement="bottom" style="width:100%" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="cmbSelector" class=" col-sm-5 control-label required" data-toggle="tooltip" data-placement="bottom">Sector</label>
+                        <div class=" col-sm-7">
+                            <input id="cmbSelector" name="cust_sector_code" data-role="filtercombo" data-toggle="tooltip" data-placement="bottom" style="width:100%" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="cmbDomestic" class=" col-sm-5 control-label required" data-toggle="tooltip" data-placement="bottom">Type</label>
+                        <div class=" col-sm-7">
+                            <input id="cmbDomestic" name="cust_type_code" data-role="filtercombo" data-toggle="tooltip" data-placement="bottom" style="width:100%" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="cmbLeadType" class=" col-sm-5 control-label required" data-toggle="tooltip" data-placement="bottom">Lead Type</label>
+                        <div class=" col-sm-7">
+                            <input id="cmbLeadType" name="cust_lead_type_code" data-role="filtercombo" data-toggle="tooltip" data-placement="bottom" style="width:100%" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="display:none">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="txtCustStatus" class="col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Status</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="cust_status_code" id="txtCustStatus" data-toggle="tooltip" data-placement="bottom" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="form-group">
+                        <label for="txtMode" id="lbl_txtMode" class="col-sm-4 control-label" data-toggle="tooltip" data-placement="bottom">Mode:</label>
+                        <div class="col-sm-8">
+                            <input id="txtMode" name="mode_flag" type="text" class="form-control" data-toggle="tooltip" data-placement="bottom" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="form-group">
+                        <label for="txtRowID" id="lbl_txtMode" class="col-sm-4 control-label" data-toggle="tooltip" data-placement="bottom">RowID:</label>
+                        <div class="col-sm-8">
+                            <input id="txtRowID" name="cust_rowid" type="text" class="form-control" data-toggle="tooltip" data-placement="bottom" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="txt_timestamp" name="timestamp" />
+</form>
+<script>
+    var ScreenId = "";
+    var role_id = "";
+    Screen_Id = "CUST_MAS";
+
+    $(document).ready(function () {
+        var screen_id = 'CUST_MAS';
+        Form_validate_Name = $('form.form-horizontal').attr('id');
+        kendodate_format_validator('form_customer_master');
+        filter_combobox("cmbSelector", []);
+        filter_combobox("cmbCustCountry", []);
+        filter_combobox("cmbDomestic", []);
+        filter_combobox("cmbLeadType", []);
+        var sData = load_dropdown_list('CUST_MAS', 'COUNTRY');
+        filter_combobox("cmbCustCountry", sData);
+
+        var sData = load_dropdown_list('CUST_MAS', 'SECTOR');
+        filter_combobox("cmbSelector", sData);
+
+        var sData = load_dropdown_list('CUST_MAS', 'DOM_EXP');
+        filter_combobox("cmbDomestic", sData);
+
+        var sData = load_dropdown_list('CUST_MAS', 'LEAD_TYPE');
+        filter_combobox("cmbLeadType", sData);
+        //customer_grid([]);
+        $("#lblFormTitle").text("Customer Master");
+
+        var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+        grid_height = parseInt(full_height) - 235;
+        $('#grid_customer_data .k-grid-content').height(grid_height);
+
+        form_create();
+        listpageloadfetch();
+    });
+
+    var status_Priority = [];
+
+
+    function listgrid(data) {
+        try {
+            $.each(data, function (index, value) {
+                var flag = false;
+                $.each(status_Priority, function (sindex, svalue) {
+                    if (svalue == value.cust_status) {
+                        flag = true;
+                    }
+                });
+                if (flag == false) {
+                    status_Priority.push(value.cust_status);
+                }
+            });
+
+            $("#grid_customer_data").kendoGrid({
+                dataSource: {
+                    data: data,
+                    pageSize: 20,
+                    schema: {
+                        model: {
+                            fields: {
+
+                            }
+                        }
+                    },
+                    change: function (e) {
+                        setTimeout(function () {
+                            var gd = $("#grid_customer_data").data("kendoGrid");
+                            filter_row(gd);
+                            $('.k-i-close').css('display', 'none');
+                            $('button.k-button-icon').css('display', 'none');
+                            $('#grid_customer_data .k-input').prop('disabled', false);
+                            $('#grid_customer_data .k-input').prop('readonly', true);
+
+                        }, 1);
+                    },
+                },
+                dataBound: function (o) {
+                    reset_Selected_GridRows("grid_customer_data", o);
+                },
+                toolbar: "<button type= 'button' id = 'Exportclick' class = 'k-grid-excel' style = 'display:none' href=''><span class='fa fa-file-excel-o' style='color: Black;'> &nbsp Export To Excel</span></button>",
+
+                excel: {
+                    allPages: true
+                },
+                excelExport: function (e) {
+                    export_data(e);
+                },
+
+                filterable: {
+                    enabled: true,
+                    delay: 1500,
+                    mode: "menu, row",
+                    height: 200,
+                    click: function (e) {
+                        var gd = $("#grid_customer_data").data("kendoGrid");
+                        filter_row(gd);
+                    }
+                },
+                filterMenuInit: function (e) {
+                    var gd = $("#grid_customer_data").data("kendoGrid");
+                    filter_row(gd);
+                },
+                scrollable: true,
+                // height: 523,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                pageable: {
+                    refresh: false,
+                    pageSizes: true,
+                    buttonCount: 5
+                },
+                selectable: true,
+                 change: selectRow,
+                columns: [
+
+                    {
+                        field: "cust_rowid",
+                        title: "Customer ID",
+                        width: "200px",
+                        filterable: {
+                            cell: {
+                                operator: "contains",
+                                inputWidth: 1500
+                            }
+                        },
+                        hidden:true
+                    },
+
+                    {
+                    field: "cust_id",
+                    title: "Customer ID",
+                    width: "200px",
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            inputWidth: 1500
+                        }
+                    },
+                    locked: true
+                },
+                {
+                    field: "cust_name",
+                    title: "Name",
+                    width: "200px",
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            inputWidth: 1500
+                        }
+                    },
+                },
+                {
+                    field: "cust_city",
+                    title: "City",
+                    width: "200px",
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            inputWidth: 1500
+                        }
+                    },
+                },
+                {
+                    field: "cust_country",
+                    title: "Country",
+                    width: "200px",
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            inputWidth: 1500
+                        }
+                    },
+                },
+                {
+                    field: "cust_sector",
+                    title: "Sector",
+                    width: "200px",
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            inputWidth: 1500
+                        }
+                    },
+                },
+                {
+                    field: "cust_type",
+                    title: "Type",
+                    width: "200px",
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            inputWidth: 1500
+                        }
+                    },
+                    },
+                    {
+                        field: "cust_lead_type",
+                        title: "Lead Type",
+                        width: "200px",
+                        filterable: {
+                            cell: {
+                                operator: "contains",
+                                inputWidth: 1500
+                            }
+                        },
+                    },
+                    {
+                        field: "cust_status",
+                        title: "Status",
+                        width: "200px",
+                        filterable: {
+                            ui: statusFilter,
+                            cell: {
+                                operator: "contains",
+                                inputWidth: 1500
+                            }
+                        },
+                    },
+                ]
+            });
+
+            $(".k-dropdown-operator").css('display', 'none');
+            $("#grid_customer_data .k-input").attr('disabled', 'false');
+        } catch (err) {
+            kendoAlert(err);
+        }
+    }
+    function statusFilter(element) { // Dropdown list functionality
+        element.kendoDropDownList({
+            dataSource: status_Priority,
+            optionLabel: "--Select Value--"
+        });
+    }
+    /*--------------------------------------------------------------------   Role Save  & Delete Details  -----------------------------------------------------------------------------------------------*/
+
+    function form_create() {
+        $('#txtStatus').val('New');
+        $('#txtMode').val('I');
+        $('#txtCustomerID').removeAttr('readonly');
+    }
+    function form_save() {
+        if ($('#txtStatus').val() != "New" && $('#txtStatus').val() != "") {
+            $('#txtMode').val('U');
+        } else if ($('#txtStatus').val() == "") {
+            kendoalert('Status Field cannot be blank');
+            return false;
+        }
+        SaveCustomer();
+        return false;
+    }
+
+    function SaveCustomer() {
+        var formval = form_Serialize("form_customer_master");
+        var obj_val = JSON.parse(formval);
+        if (obj_val.cust_rowid == "")
+        {
+            obj_val.cust_rowid = '0';
+        }
+        var data = {};
+        data.context = context();
+        data.context.Header = obj_val;
+        var sRequest = weburl + '/server/Customer/save_customer_details.ashx';
+        var sData = executeService(sRequest, data);
+        var responseJSON = JSON.parse(sData);
+        if (responseJSON.update == "successful") {
+                kendoAlert('Customer Details Saved Successfully');
+                form_clear();
+        }
+    }
+
+    function form_delete() {
+        $('#txtMode').val('D');
+        SaveCustomer();
+    }
+
+    /*---------------------------------------------------------------------  Single Fetch Method  ----------------------------------------------------------------------------------*/
+    function selectRow() {
+        var grid = $("#grid_customer_data").data("kendoGrid");
+        var selectedItem = grid.dataItem(grid.select());
+        //setlocalStorage("ls_pageList", selectedItem);
+
+        var cust_rowid = selectedItem.cust_rowid;
+        $("#txtRowID").val(cust_rowid);
+        single_fetch(cust_rowid);
+        $("#txtCustomerID").attr('readonly', 'readonly');
+    }
+
+
+
+    function single_fetch(cust_rowid) {
+        if (cust_rowid != "") {
+            var sRequest = weburl + '/server/Customer/fetch_customer_details.ashx?org=' + OrgId + '&locn=' + LocnId + '&user=' + User + '&lang=en_us&cust_rowid=' + cust_rowid + '';
+            var s = executeService(sRequest);
+            var responseJSON = JSON.parse(s);
+            if (responseJSON.update == "successful") {
+                generate_customer_detail(responseJSON);
+            }
+        }
+    }
+
+
+
+    function generate_customer_detail(res) {
+        if (res.data.context.Header != undefined) {
+            var res_data = res.data.context.Header;
+            $('.form-group .k-invalid-msg').remove();
+            $('#txtCustomerID').val(res_data.cust_id);
+            $('#txtCustomerName').val(res_data.cust_name);
+            $('#txtCustomerCity').val(res_data.cust_city);
+            $('#txtStatus').val(res_data.cust_status_code);
+            $('#txt_timestamp').val(res_data.timestamp);
+            $('#txtRowID').val(res_data.cust_rowid);
+            $('#cmbCustCountry').data("kendoComboBox").value(res_data.cust_country_code);
+            $('#cmbSelector').data("kendoComboBox").value(res_data.cust_sector_code);
+            $('#cmbDomestic').data("kendoComboBox").value(res_data.cust_type_code);
+            $('#cmbLeadType').data("kendoComboBox").value(res_data.cust_lead_type_code);
+
+        }
+
+    }
+
+    /*---------------------------------------------------------------------  Form Clear  ----------------------------------------------------------------------------------*/
+    function form_clear() {
+        $('.form-group .k-invalid-msg').remove();
+        $('#txtCustomerID').removeAttr('readonly');
+        $("#txtStatus").val('New');
+        $("#txtCustomerID").val('');
+        $("#txtCustomerName").val('');
+        $("#txtCustomerCity").val('');
+        $('#cmbCustCountry').data("kendoComboBox").value('');
+        $('#cmbSelector').data("kendoComboBox").value('');
+        $('#cmbDomestic').data("kendoComboBox").value(''); 
+        $('#cmbLeadType').data("kendoComboBox").value('');
+        listpageloadfetch();
+    }
+
+
+    /*-------------------------------------------------------------------- Listpageloadfetch - Grid Binding  -----------------------------------------------------------------------------------------------*/
+    function listpageloadfetch() {
+        try {
+            var sRequest = weburl + '/server/Customer/fetch_customer_list.ashx?org=' + OrgId + '&locn=' + LocnId + '&user=' + User + '&lang=en_us';
+            var s = executeService(sRequest);
+            var responseJSON = JSON.parse(s);
+            if (responseJSON.update == "successful") {
+                generateGrid_Customer(responseJSON);
+            } else {
+                listgrid([]);
+            }
+        } catch (err) {
+            kendoAlert(err);
+        }
+    }
+
+    function generateGrid_Customer(res) {
+        try {
+            if (res.data.context.Detail != null) {
+                var data = changedataType(res.data.context.Detail);
+                $("#master_grid").empty();
+                $("#master_grid").append("<div id='grid_customer_data' class='grid'></div>");
+                listgrid(data);
+            } else {
+                listgrid([]);
+            }
+            //LoadView_screen();
+            var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+            grid_height = parseInt(full_height) - 235;
+            $('#grid_customer_data .k-grid-content').height(grid_height);
+
+        } catch (err) {
+            kendoAlert(err);
+        }
+
+    }
+
+
+</script>
+<style>
+    #grid_customer_data table {
+        min-width: 100%;
+    }
+
+    #grid_customer_data .k-grid-toolbar {
+        display: none;
+    }
+
+    .k-pager-sizes {
+        display: none;
+    }
+</style>

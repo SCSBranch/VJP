@@ -1,0 +1,898 @@
+﻿
+@{
+    ViewBag.Title = "CustomerApproval";
+    Layout = "~/Views/Shared/Form_Layout.cshtml";
+}
+
+<form class="form-horizontal" id="form_customer_approval">
+    <div class="row">
+        <div class="col-sm-12 simscrollDiv">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="accordion-toggle" data-toggle="collapse" id="apanel1" data-parent="#accordion" href="#panel1"><i class="glyphicon glyphicon-minus" style="font-weight:900"></i>Customer Approval List</a>
+                        </h4>
+
+                    </div>
+                    <div id="panel1" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-2"></div>
+                                <div class="col-md-8">
+                                    <div class="form-group" style="margin-top:-10px; margin-bottom:10px">
+                                        <div class="col-sm-8">
+                                            <label for="rbtn_word_document" class="radio-inline">
+                                                <input type="radio" id="rbtn_apprl_rfq" name="RbtnType" value="1" data-role="radio" onchange="radio_check()" checked>
+                                                Pending Approval (ENQ No)
+                                            </label>
+                                            <label for="rbtn_word_document" class="radio-inline">
+                                                <input type="radio" id="rbtn_apprl_dev" name="RbtnType" value="2" data-role="radio" onchange="radio_check()">
+                                                Pending Approval (DEV PO No)
+                                            </label>
+                                            @*<label for="rbtn_pdf_file" class="radio-inline">
+                                                    <input type="radio" id="rbtn_reject_rfq" name="RbtnType" value="1" data-role="radio" onchange="radio_check()">
+                                                    Rejected (ENQ No)
+                                                </label>
+                                                <label for="rbtn_pdf_file" class="radio-inline">
+                                                    <input type="radio" id="rbtn_reject_dev" name="RbtnType" value="2" data-role="radio" onchange="radio_check()">
+                                                    Rejected (DEV PO No)
+                                                </label>*@
+                                        </div>
+                                    </div>
+                                    <span data-for='RbtnType' class='k-invalid-msg'></span>
+                                </div>
+                            </div>
+
+                            <div id="master_grid" style="padding-bottom:15px; display:none">
+                                <div id="grid_customer_app_list" class="grid"></div>
+                            </div>
+
+                            <div id="master_grid_dev" style="padding-bottom:15px; display:none">
+                                <div id="grid_customer_dev_list" class="grid"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="accordion-toggle" data-toggle="collapse" id="apanel2" data-parent="#accordion" href="#panel2"><i class="glyphicon glyphicon-plus" style="font-weight:900"></i>Customer Approval Detail</a>
+                        </h4>
+
+                    </div>
+                    <div id="panel2" class="panel-collapse collapse">
+                        <div class="panel-body" style="height:450px">
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-12">
+                                    <div class="modal-footer" style="border-top:0;padding:0">
+                                        <button type="button" class="btn  btn-primary" id="RFQBtnSave">Save</button>
+                                        <button type="button" class="btn  btn-primary" id="RFQBtnClear">Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="cmbType" class="col-sm-5 control-label">Type</label>
+                                        <div class="col-sm-7">
+                                            <input id="cmbType" name="type" data-role="filtercombo" style="width:100%" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4" id="rfq_number" style="display:none">
+                                    <div class="form-group">
+                                        <label for="txtRFQNO" class="col-sm-5 control-label" style="text-decoration-line:underline" onclick="RFQ_onChange()">RFQ No/ Enquiry No</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" class="form-control" id="txtRFQNO" name="rfq_no">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4" id="dev_number" style="display:none">
+                                    <div class="form-group">
+                                        <label for="txtDevPoNumber" class="col-sm-5 control-label">Dev. PO number</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" class="form-control" id="txtDevPoNumber" name="po_no" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="cmbCustomer" class="col-sm-5 control-label" style="text-decoration-line:underline" onclick="Customer_onChange(this)">Customer Name</label>
+                                        <div class="col-sm-7">
+                                            <input id="cmbCustomer" name="poc" data-role="filtercombo" style="width:100%" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="cmbTypeOrder" class="col-sm-5 control-label">Type of Order</label>
+                                        <div class="col-sm-7">
+                                            <input id="cmbTypeOrder" name="type_order" data-role="filtercombo" style="width:100%" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="txtOrderId" class="col-sm-5 control-label">Order ID</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" class="form-control" id="txtOrderId" name="order_id">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="cmbActionTaken" class="col-sm-5 control-label required">Action Taken</label>
+                                        <div class="col-sm-7">
+                                            <input id="cmbActionTaken" name="poc" data-role="filtercombo" style="width:100%" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="form-group">
+                                        <label for="txtRemarks_fai" id="lbl_txtNotes" class="col-sm-2 control-label required">Customer Remarks</label>
+                                        <div class="col-sm-10" style="padding-left:50px">
+                                            <textarea id="txtRemarks_fai" name="notes" rows="2" style="width:90%" class="form-control" maxlength="4096"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="master_grid" style="padding-bottom:15px;display:none">
+                                <div id="grid_approval_detail" class="grid"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="row" style="display:none">
+        <a id="Customer_popup" class="file_attach" data-toggle="modal" href="~/FileAttachment/CustomerPopup" hdrtitle="" doctype="" scrnid="" data-target="#frm_Customer">
+        </a>
+        <a id="rfq_entry_popup" class="file_attach" data-toggle="modal" href="~/FileAttachment/RFQEntryPopup" hdrtitle="" doctype="" scrnid="" data-target="#frm_RFQEntry">
+        </a>
+    </div>
+
+    <div id="File__Attachment__Details"></div>
+    <input id="txtDocno" type="hidden" name="Doc_no">
+    <input id="txtseqno" type="hidden" name="SeqNo">
+    <input id="txtmodeflag" type="hidden" name="modeflag">
+    <input id="txtfilepath" type="hidden" name="file_path">
+    <input id="txtDocName" type="hidden" name="doc_type">
+</form>
+<script src="~/CommonScripts/Grid_FileAttachment.js"></script>
+
+<style>
+    .k-input[readonly] {
+        background-color: #eee;
+    }
+
+    .panel-title {
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 16px;
+        color: inherit;
+    }
+</style>
+<script>
+    // list part
+
+    var selectIds = $('#panel1,#panel2');
+    $(function ($) {
+        selectIds.on('show.bs.collapse hidden.bs.collapse', function () {
+            $(this).prev().find('.glyphicon').toggleClass('glyphicon-plus glyphicon-minus');
+        })
+    });
+
+    var ScreenId = "";
+    var menuId = "";
+    var screen_id = "";
+    Screen_Id = "PROCESSED";
+    var grid_height = '';
+    var default_screen_size = 631;
+    var default_grid_size = 361;
+    var customer_rowid = '';
+    var rfq_number = '';
+    var cust_name = "";
+
+    $(document).ready(function () {
+        $("#multy").hide();
+        $("#div_status").hide();
+        $("#master_grid").show();
+        status_list = [{ code: "1", desc: "New" }, { code: "2", desc: "Open" }, { code: "3", desc: "Completed" }]
+        var data = [{ cust_rowid: "1", rfq_no: "RFQENTRY01", cust_name: "Kannappan", status_code: "2", status: "Open" },
+        { cust_rowid: "2", rfq_no: "RFQENTRY02", cust_name: "Muthukumar", status_code: "2", status: "Open" },
+        { cust_rowid: "3", rfq_no: "RFQENTRY03", cust_name: "Suga1", status_code: "2", status: "Open" },
+        { cust_rowid: "4", rfq_no: "RFQENTRY04", cust_name: "Shyamala", status_code: "2", status: "Open" }];
+        Customer_list_Grid(data);
+        customer_detail_grid([]);
+        // form part
+        Form_validate_Name = $('form.form-horizontal').attr('id');
+        kendodate_format_validator('form_customer_approval');
+        $("#lblFormTitle").text('Customer Approval');
+
+        // var cmb_data = [{ code: "ACTION_1", desc: "Approved" }, { code: "ACTION_2", desc: "Rejected" }]
+        filter_combobox("cmbActionTaken", []);
+
+        var sData = load_dropdown_list('CUST_APPROVAL', 'CUST_ACTION');
+        filter_combobox("cmbActionTaken", sData);
+        filter_combobox("cmbCustomer", []);
+        filter_combobox("cmbType", []);
+        var type = load_dropdown_list('CUST_APPROVAL', 'TYPE');
+        filter_combobox("cmbType", type);
+
+        filter_combobox("cmbTypeOrder", []);
+        var sData = load_dropdown_list('CUST_APPROVAL', 'CUST_ORD_TYPE');
+        filter_combobox("cmbTypeOrder", sData);
+
+        $(".file_attach").attr("hdrtitle", "Customer Approval");
+
+        $("#form1").hide();
+        $("#btnDelete").hide();
+        $("#frm_save_lay").hide();
+        $("#form22").hide();
+        var cmb_data = [{ code: "1", desc: "Ravi" }, { code: "2", desc: "Arun" }, { code: "3", desc: "Vinoth" }, { code: "4", desc: "Sairam" }];
+
+        var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+        grid_height = parseInt(full_height) - 303;
+        $('#grid_customer_app_list .k-grid-content').height(grid_height);
+        var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+        grid_height = parseInt(full_height) - 418;
+        $('#grid_approval_detail .k-grid-content').height(grid_height);
+
+
+    });
+
+</script>
+
+<script>
+    function Customer_onChange(arg) {
+        $('#Customer_popup').click();
+        Load_Customer_popup(customer_rowid);
+    }
+
+    function RFQ_onChange() {
+        $('#rfq_entry_popup').click();
+        rfq_number = $("#txtRFQNO").val();
+        var grid = $("#grid_rfg_entry_list").data("kendoGrid");
+        var selectedItem = grid.dataItem(grid.select());
+        cust_name = selectedItem.cust_name;
+        Load_RFQ_popup(rfq_number);
+    }
+
+
+    function radio_check() {
+
+        var exist_val = $("input[name='RbtnType']:checked").val();
+        if (exist_val == "1") {
+            $("#master_grid").show();
+            $("#master_grid_dev").hide();
+            var data = [{ cust_rowid: "1", rfq_no: "RFQENTRY01", cust_name: "Kannappan", status_code: "2", status: "Open" },
+            { cust_rowid: "2", rfq_no: "RFQENTRY02", cust_name: "Muthukumar", status_code: "2", status: "Open" },
+            { cust_rowid: "3", rfq_no: "RFQENTRY03", cust_name: "Suga1", status_code: "2", status: "Open" },
+            { cust_rowid: "4", rfq_no: "RFQENTRY04", cust_name: "Shyamala", status_code: "2", status: "Open" }];
+            Customer_list_Grid(data);
+        }
+        else if (exist_val == "2") {
+            $("#master_grid").hide();
+            $("#master_grid_dev").show();
+            var data = [{ cust_rowid: "1", dev_po_no: "DEV01", cust_name: "Kannappan", status_code: "2", status: "Open" },
+            { cust_rowid: "2", dev_po_no: "DEV02", cust_name: "Muthukumar", status_code: "2", status: "Open" },
+            { cust_rowid: "3", dev_po_no: "DEV03", cust_name: "Suga1", status_code: "2", status: "Open" },
+            { cust_rowid: "4", dev_po_no: "DEV04", cust_name: "Shyamala", status_code: "2", status: "Open" }];
+            Customer_list_Dev(data);
+
+            var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+            grid_height = parseInt(full_height) - 303;
+            $('#grid_customer_dev_list .k-grid-content').height(grid_height);
+        }
+    }
+
+    var customer_name_list = '';
+    var status_list = '';
+    var action_taken_list = '';
+    function Customer_list_Grid(data) {
+        try {
+            gridRowID = -1;
+            data = addRandomNum(data);
+            $("#grid_customer_app_list").kendoGrid({
+                dataSource: {
+                    data: data,
+                    pageSize: 20,
+                    schema: {
+                        model: {
+                            fields: {
+                                rfq_no: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                action_taken: {
+                                    type: "string",
+                                    editable: true,
+                                },
+
+                                part_name: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                cust_name: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                status_code: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                status: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                            }
+                        }
+                    },
+                },
+                dataBound: function (o) {
+                    reset_Selected_GridRows("grid_customer_app_list", o);
+                },
+                // height: 250,
+                filterable: true,
+                scrollable: true,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                pageable: false,
+                selectable: true,
+                //change: selectRow,
+                columns: [
+                    {
+                        field: "cust_rowid",
+                        title: "Cust Rowid",
+                        width: "150px",
+                        hidden: true
+                    },
+                    {
+                        field: "rfq_no",
+                        title: "RFQ No/ Enquiry No",
+                        width: "150px",
+                    },
+                    {
+                        field: "cust_name",
+                        title: "Customer Name",
+                        width: "150px",
+                    },
+                    {
+                        field: "action_taken",
+                        title: "Action Taken",
+                        width: "150px",
+                    },
+                    {
+                        field: "remarks",
+                        title: "Remarks",
+                        width: "150px",
+                    },
+                    {
+                        field: "status_code",
+                        title: "Status",
+                        hidden: true,
+                        width: "150px",
+                    },
+                    {
+                        field: "status",
+                        title: "Status",
+                        editor: function (container, options) {
+                            combo_editor_man(container, "cmb_" + options.field, eval(options.field + "_list"), options.field, "status_code", "grid_customer_app_list")
+                        },
+                        width: 100,
+                    },
+                    {
+                        command: [
+                            {
+                                name: "Save",
+                                text: "",
+                                id: "Save",
+                                template: '<input type="button" class="info  k-button k-button-icontext" id="save"   name="info" value="Complete"  style="height: 26px; margin: 0px 2px; min-width: 64px;" />',
+                            },
+                            {
+                                name: "Attach",
+                                text: "",
+                                template: "<i class='fa fa-paperclip Attachment' style='padding: 0px; font-size: 20px; margin: 0px 10px'></i>",
+                            },
+                        ], title: "Actions", width: "120px",
+                    },
+                ],
+                editable: false,
+            });
+
+            $("#grid_customer_app_list").on("dblclick", "tr.k-state-selected", function () {
+                var grid = $("#grid_customer_app_list").data("kendoGrid");
+                var selectedItem = grid.dataItem(grid.select());
+                $("#txtRFQNO").val(selectedItem.rfq_no);
+                Load_Customer_Name();
+                customer_rowid = selectedItem.cust_rowid;
+
+                $('#cmbCustomer').data("kendoComboBox").value(selectedItem.cust_rowid);
+                filter_combobox("cmbActionTaken", []);
+
+                var sData = load_dropdown_list('CUST_APPROVAL', 'CUST_ACTION');
+                filter_combobox("cmbActionTaken", sData);
+
+                var rbtn_val = $("input[name='RbtnType']:checked").val();
+                if (rbtn_val == "1") {
+                    $('#cmbType').data("kendoComboBox").value('RFQ_NO');
+                    $("#rfq_number").show();
+                    $("#dev_number").hide();
+                    $('#cmbTypeOrder').data("kendoComboBox").enable(true);
+                    $("#txtOrderId").removeAttr('readonly');
+                }
+                //var data = [{ part_name: "Part 1", selling_customer: "1200", quoted_qty: "2", mode_flag: "S" }];
+                //customer_detail_grid(data);
+
+                $('#cmbActionTaken').data("kendoComboBox").value('');
+                $('#cmbTypeOrder').data("kendoComboBox").value('');
+                $("#txtRemarks_fai").val('');
+                $("#txtOrderId").val('');
+
+                $("#txtRFQNO").attr('readonly', 'readonly');
+                $("#txtCusName").attr('readonly', 'readonly');
+                $('#cmbCustomer').data("kendoComboBox").enable(false);
+                $("#apanel2").click();
+            });
+
+            $('#grid_customer_app_list').data('kendoGrid').tbody.find('.Attachment').click(function (e) {
+                var dataitem = $('#grid_customer_app_list').data('kendoGrid').dataItem($(e.currentTarget).closest("tr"));
+                save__attachment.content($("#DevFile_Attach_Template").html()).center().open();
+                DocType = "RFQ_DTL_CUST";
+
+                $('.form-group .k-invalid-msg').remove();
+                $("#txtRFQNumber").val(dataitem.rfq_no);
+                var grp_data1 = load_dropdown_list('ATTACHMENT', 'ATTCH_GRP');
+                var grp_data2 = load_dropdown_list('ATTACHMENT', 'ATTCH_SGRP');
+                filter_combobox("cmb_grid_group", grp_data1);
+                filter_combobox("cmb_grid_subgroup", grp_data2);
+
+                $("#txtDocno").val($("#txtRFQNumber").val());
+                $("#txtDocName").val("RFQ_DTL_CUST");
+                $("#txtmodeflag").val("I");
+                $("#txtseqno").val("0");
+                $("#txtVersion").val("1");
+                fetch_DocAttach_details($("#txtDocName").val(), $("#txtDocno").val())
+                $('.k-window').css('top', '30px');
+
+            });
+
+        } catch (err) {
+            kendoAlert(err);
+        }
+    }
+
+    function Customer_list_Dev(data) {
+        try {
+            gridRowID = -1;
+            data = addRandomNum(data);
+            $("#grid_customer_dev_list").kendoGrid({
+                dataSource: {
+                    data: data,
+                    pageSize: 20,
+                    schema: {
+                        model: {
+                            fields: {
+                                dev_po_no: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                action_taken: {
+                                    type: "string",
+                                    editable: true,
+                                },
+
+                                part_name: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                cust_name: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                status_code: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                status: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                            }
+                        }
+                    },
+                },
+                dataBound: function (o) {
+                    reset_Selected_GridRows("grid_customer_dev_list", o);
+                },
+                // height: 250,
+                filterable: true,
+                scrollable: true,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                pageable: false,
+                selectable: true,
+                //change: selectRow,
+                columns: [
+                    {
+                        field: "cust_rowid",
+                        title: "Cust Rowid",
+                        width: "150px",
+                        hidden: true
+                    },
+                    {
+                        field: "dev_po_no",
+                        title: "DEV PO No",
+                        width: "150px",
+                    },
+                    {
+                        field: "cust_name",
+                        title: "Customer Name",
+                        width: "150px",
+                    },
+                    {
+                        field: "action_taken",
+                        title: "Action Taken",
+                        width: "150px",
+                    },
+                    {
+                        field: "remarks",
+                        title: "Remarks",
+                        width: "150px",
+                    },
+                    {
+                        field: "status_code",
+                        title: "Status",
+                        hidden: true,
+                        width: "150px",
+                    },
+                    {
+                        field: "status",
+                        title: "Status",
+                        editor: function (container, options) {
+                            combo_editor_man(container, "cmb_" + options.field, eval(options.field + "_list"), options.field, "status_code", "grid_customer_dev_list")
+                        },
+                        width: 100,
+                    },
+                    {
+                        command: [
+                            {
+                                name: "Save",
+                                text: "",
+                                id: "Save",
+                                template: '<input type="button" class="info  k-button k-button-icontext" id="save"   name="info" value="Complete"  style="height: 26px; margin: 0px 2px; min-width: 64px;" />',
+                            },
+                            {
+                                name: "Attach",
+                                text: "",
+                                template: "<i class='fa fa-paperclip Attachment' style='padding: 0px; font-size: 20px; margin: 0px 10px'></i>",
+                            },
+                        ], title: "Actions", width: "120px",
+                    },
+                ],
+                editable: false,
+            });
+
+            $("#grid_customer_dev_list").on("dblclick", "tr.k-state-selected", function () {
+                var grid = $("#grid_customer_dev_list").data("kendoGrid");
+                var selectedItem = grid.dataItem(grid.select());
+                $("#txtRFQNO").val(selectedItem.rfq_no);
+                Load_Customer_Name();
+                customer_rowid = selectedItem.cust_rowid;
+
+                $('#cmbCustomer').data("kendoComboBox").value(selectedItem.cust_rowid);
+                filter_combobox("cmbActionTaken", []);
+
+                var sData = load_dropdown_list('CUST_APPROVAL', 'CUST_ACTION');
+                filter_combobox("cmbActionTaken", sData);
+
+                var rbtn_val = $("input[name='RbtnType']:checked").val();
+                if (rbtn_val == "2") {
+                    $('#cmbType').data("kendoComboBox").value('DEV_PO_NO');
+                    $("#rfq_number").hide();
+                    $("#dev_number").show();
+                    $('#cmbTypeOrder').data("kendoComboBox").enable(false);
+                    $("#txtOrderId").attr('readonly', 'readonly');
+                }
+                $("#txtDevPoNumber").val(selectedItem.dev_po_no);
+
+                $('#cmbActionTaken').data("kendoComboBox").value('');
+                $('#cmbTypeOrder').data("kendoComboBox").value('');
+                $("#txtRemarks_fai").val('');
+                $("#txtOrderId").val('');
+                //var data = [{ part_name: "Part 1", selling_customer: "1200", quoted_qty: "2", mode_flag: "S" }];
+                //customer_detail_grid(data);
+
+                $("#txtRFQNO").attr('readonly', 'readonly');
+                $("#txtCusName").attr('readonly', 'readonly');
+                $('#cmbCustomer').data("kendoComboBox").enable(false);
+                $("#apanel2").click();
+            });
+
+            $('#grid_customer_dev_list').data('kendoGrid').tbody.find('.Attachment').click(function (e) {
+                var dataitem = $('#grid_customer_dev_list').data('kendoGrid').dataItem($(e.currentTarget).closest("tr"));
+                save__attachment.content($("#DevFile_Attach_Template").html()).center().open();
+                DocType = "RFQ_DTL_CUST";
+
+                $('.form-group .k-invalid-msg').remove();
+                $("#txtRFQNumber").val(dataitem.rfq_no);
+                var grp_data1 = load_dropdown_list('ATTACHMENT', 'ATTCH_GRP');
+                var grp_data2 = load_dropdown_list('ATTACHMENT', 'ATTCH_SGRP');
+                filter_combobox("cmb_grid_group", grp_data1);
+                filter_combobox("cmb_grid_subgroup", grp_data2);
+
+                $("#txtDocno").val($("#txtRFQNumber").val());
+                $("#txtDocName").val("RFQ_DTL_CUST");
+                $("#txtmodeflag").val("I");
+                $("#txtseqno").val("0");
+                $("#txtVersion").val("1");
+                fetch_DocAttach_details($("#txtDocName").val(), $("#txtDocno").val())
+                $('.k-window').css('top', '30px');
+
+            });
+
+        } catch (err) {
+            kendoAlert(err);
+        }
+    }
+
+
+    status_list = [{ code: "1", desc: "New" }, { code: "2", desc: "Open" }, { code: "3", desc: "Completed" }];
+    action_taken_list = [{ code: "ACTION_1", desc: "Action 1" }, { code: "ACTION_2", desc: "Action 2" }, { code: "ACTION_3", desc: "Action 3" }, { code: "ACTION_4", desc: "Action 4" }];
+
+    function customer_detail_grid(user_data) {
+        try {
+            $("#grid_approval_detail").kendoGrid({
+                dataSource: {
+                    data: user_data,
+                    schema: {
+                        model: {
+                            fields: {
+                                part_name: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                mode_flag: {
+                                    type: "string",
+                                    defaultValue: "I"
+                                }
+                            }
+                        }
+                    },
+                },
+                navigatable: true,
+                scrollable: true,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                // height: 285,
+                selectable: true,
+                selectable: "double", //  Grid Row Selection
+                dataBinding: setDefaultValues,
+                dataBound: function (e) {
+                    resultData = e.sender._data;
+                    var rows = $('#grid_approval_detail').data('kendoGrid').tbody.children();
+                    setColor(rows, resultData);
+                },
+                //toolbar: "<a class='k-grid-add'  id = 'btnSave' href=''><span class='fa fa-plus' style='color:Black'></span></a>",
+                columns: [
+                    {
+                        field: "part_name",
+                        title: "Part Name",
+                        width: 150,
+                    },
+                    {
+                        field: "selling_customer",
+                        title: "Selling price quoted to customer",
+                        width: 150,
+                        editor: function (container, options) {
+                            numeric_editor_dot(container, options.field, '5');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "quoted_qty",
+                        title: "Quoted Qty",
+                        width: 200,
+                        editor: function (container, options) {
+                            numeric_editor(container, options.field, '5');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "mode_flag",
+                        title: "Mode",
+                        width: 30,
+                        hidden: true
+                    }
+                ],
+                editable: true,
+            });
+
+
+        }
+        catch (err) {
+            alert(err);
+        }
+    }
+
+    function form_clear() {
+        customer_detail_grid([]);
+
+        Customer_list_Grid([]);
+        var data = [{ rfq_no: "RFQENQ1", cust_name: "Customer1", part_name: "Part 1", status: "Open" },
+        { rfq_no: "RFQENQ2", cust_name: "Customer2", part_name: "Part 2", status: "Open" },
+        { rfq_no: "RFQENQ3", cust_name: "Customer3", part_name: "Part 3", status: "Open" },
+        { rfq_no: "RFQENQ4", cust_name: "Customer4", part_name: "Part 4", status: "Open" }]
+        Customer_list_Grid(data);
+    }
+    function sub_group_change() {
+
+    }
+
+    function attachment_close() {
+        save__attachment.close();
+    }
+    function GridBrowseTemplateFile() {
+        try {
+            $("#file").attr("accept", ".pdf,.xlsx,.jpg");
+            $("#file").click();
+        }
+        catch (err) {
+            javascript_log4j_root(arguments.callee.name, err);
+        }
+    }
+    function Load_Customer_Name() {
+        try {
+            var sRequest = weburl + '/server/Customer/fetch_customer_list.ashx?org=' + OrgId + '&locn=' + LocnId + '&user=' + User + '&lang=en_us';
+            var s = executeService(sRequest);
+            var responseJSON = JSON.parse(s);
+            if (responseJSON.update == "successful") {
+                //generateGrid_Customer(responseJSON);
+                var cust_data = responseJSON.data.context.Detail;
+                var code = {};
+                var desc = {};
+
+                var combo_data1 = [];
+                $.each(cust_data, function (key, val) {
+                    combo_data1.push({ code: cust_data[key].cust_rowid, desc: cust_data[key].cust_name });
+                });
+                filter_combobox("cmbCustomer", combo_data1);
+
+            }
+            else {
+                filter_combobox("cmbCustomer", []);
+            }
+        } catch (err) {
+            kendoAlert(err);
+        }
+    }
+
+
+</script>
+<script type="text/x-kendo-template" id="DevFile_Attach_Template" style="color:Black">
+    <div class="modal-body" style="padding:5px">
+        <form id="form2" class="form-horizontal" data-role="validator" novalidate="novalidate">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="txtRFQNumber" class="col-sm-4 control-label">RFQ No</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control input-sm" id="txtRFQNumber" readonly name="rfq_no" style="height:20px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-11">
+                    <div id="Grid_Attach"></div>
+                </div>
+            </div>
+            <div class="row" style="margin-top:5px">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="cmb_grid_group" class="col-sm-3 control-label required">Group</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="cmb_grid_group" name="Group" style="width:100%" onchange="sub_group_change()">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="cmb_grid_subgroup" class="col-sm-3 control-label required">Sub Group</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="cmb_grid_subgroup" name="SubGroup" style="width:100%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="filename" class="col-sm-3 control-label">File Name</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control input-sm" id="txtfilename" readonly name="filename" style="height:20px">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="col-sm-2">
+                        <input type="file" id="file" style="display:none;" onchange="save_file();" />
+                        <button type="button" id="btn_down1" class="btn btn-sm btn-primary" onclick="GridBrowseTemplateFile();" data-toggle="tooltip" data-placement="bottom">Browse</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="Version" class="col-sm-3 control-label">Version</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control input-sm" id="txtVersion" readonly name="Version" style="height:20px">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="Size" class="col-sm-3 control-label">Size</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control input-sm" id="txtSize" readonly name="Size" style="height:20px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <label for="Notes" class="col-sm-2 control-label">Notes</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control input-sm" rows="2" id="txtnotes" style="width:90%" name="Notes"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <input id="txtDocno" type="hidden" name="SeqNo">
+                <input id="txtseqno" type="hidden" name="SeqNo">
+                <input id="txtmodeflag" type="hidden" name="modeflag">
+                <input id="txtfilepath" type="hidden" name="file_path">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer" style="padding: 10px; border-top: none">
+        <div style=" width: 70%;margin-top: -15px;">
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnGNew" onclick="Grid_btn_new()">New</button>
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnGUpload" onclick="Grid_btn_upload();">Upload</button>
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnGDwnload" onclick="Grid_btn_download();">Download</button>
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnHView" onclick="Grid_btn_view();">View</button>
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnGRemove" onclick="Grid_btn_remove();">Remove</button>
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnFClose" onclick="attachment_close();">Close</button>
+        </div>
+    </div>
+</script>
+<script>
+    save__attachment = $("#File__Attachment__Details").kendoWindow({
+        title: "Customer Approval - Document Upload",
+        modal: true,
+        draggable: false,
+        visible: false,
+        resizable: false,
+        width: 1000,
+    }).data("kendoWindow");
+
+</script>

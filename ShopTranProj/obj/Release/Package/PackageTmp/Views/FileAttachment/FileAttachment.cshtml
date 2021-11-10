@@ -1,0 +1,170 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Document Upload</title>
+ 
+    <script src="~/Scripts/FileAttachment/FileAttachment.js"></script>
+    <script type="text/x-kendo-template" id="Head-fileAttach-confirmation">
+        <div class="row" style="padding-bottom:20px">
+            <strong>File Name already exists. Do you want to upgrade version for this file?</strong>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+            </div>
+            <div class="col-sm-2">
+                <button class="fileAttach-confirm k-button">Yes</button>
+            </div>
+            <div class="col-sm-2">
+                <button class="fileAttach-cancel k-button"> No</button>
+            </div>
+            <div class="col-sm-2">
+            </div>
+        </div>
+    </script>
+
+    <script type="text/x-kendo-template" id="Head-selectfile-confirmation">
+        <div class="row" style="padding-bottom: 20px; padding-left: 17px;">
+            <strong>Sure you want to remove the file?</strong>
+        </div>
+        <div class="row">
+            <div class="col-sm-2">
+            </div>
+            <div class="col-sm-2">
+                <button class="selectfile-confirm k-button">Yes</button>
+            </div>
+            <div class="col-sm-2">
+                <button class="selectfile-cancel k-button"> No</button>
+            </div>
+            <div class="col-sm-2">
+            </div>
+        </div>
+    </script>
+</head>
+<body>
+    <form id="file_attachment" class="form-horizontal" data-role="validator" novalidate="novalidate">
+        <div class="modal-header k-header" style="padding: 5px; color: black; background-color: #367FA9; border-radius: 4px">
+            <button type="button" class="close" data-dismiss="modal" style="padding: 0px 8px;font-size: 25px;" onclick="file_attach_close()">
+                &times;
+            </button>
+            <h4 class="modal-title" id="file_attach_title">File Attachment</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row" style="padding-bottom:10px">
+                <div class="col-sm-5" id="div_docname" style="display:none">
+                    <div class="form-group">
+                        <label for="cmbDocumentName" id="lbl_txtDocumentName" class="col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Document Name</label>
+                        <div class=" col-sm-7">
+                            <input type="text" name="DocumentName" id="cmbDocumentName" readonly data-toggle="tooltip" data-placement="bottom">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5" id="div_docno">
+                    <div class="form-group">
+                        <label for="txtDocumentNo" id="lbl_txtDocumentNo" class="col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Document No</label>
+                        <div class=" col-sm-7">
+                            <input type="text" class="form-control" name="doc_number" id="txtDocumentNo" maxlength="10" readonly data-toggle="tooltip" data-placement="bottom">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="padding-bottom:10px">
+                <div class="col-sm-12">
+                    <div id="gridAttach" class="grid"></div>
+                </div>
+            </div>
+
+            <div class="row" style="padding-bottom:10px">
+                <div class="col-sm-12">
+                    <label for="cmbHeadgroup" id="lbl_cmbHeadgroup" class="col-sm-2 control-label required" data-toggle="tooltip" data-placement="bottom">Group</label>
+                    <div class="col-sm-4">
+                        <input type="text" id="cmbHeadgroup" name="attach_group" style="width:100%" data-toggle="tooltip" data-placement="bottom">
+                    </div>
+                    <label for="cmbHeadsubgroup" id="lbl_cmbHeadsubgroup" class="col-sm-2 control-label required" data-toggle="tooltip" data-placement="bottom">Sub Group</label>
+                    <div class="col-sm-4">
+                        <input type="text" id="cmbHeadsubgroup" name="attach_subgroup" style="width:100%" data-toggle="tooltip" data-placement="bottom">
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="padding-bottom:10px">
+                <div class="col-sm-12">
+                    <label for="filename" id="lbl_txtheadfilename" class="col-sm-2 control-label" data-toggle="tooltip" data-placement="bottom">File Name</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control input-sm" id="txtheadfilename" readonly name="filename" data-toggle="tooltip" data-placement="bottom">
+                    </div>
+                    <div class="col-sm-6">
+                        <input type="file" id="head_file" style="display:none;" onchange="Head_save_file();" />
+                        <button type="button" id="btn_down1" class="btn btn-sm btn-primary" onclick="BrowseTemplateFile1();" data-toggle="tooltip" data-placement="bottom">Browse</button>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row" style="padding-bottom:10px">
+                <div class="col-sm-12">
+                    <label for="Version" id="lbl_txtheadVersion" class="col-sm-2 control-label" data-toggle="tooltip" data-placement="bottom">Version</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control input-sm" id="txtheadVersion" readonly name="file_version" data-toggle="tooltip" data-placement="bottom">
+                    </div>
+                    <label for="Size" id="lbl_txtheadSize" class="col-sm-2 control-label" data-toggle="tooltip" data-placement="bottom">Size</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control input-sm" id="txtheadSize" readonly name="file_size" data-toggle="tooltip" data-placement="bottom">
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="padding-bottom:10px">
+                <div class="col-sm-12">
+                    <label for="Notes" id="lbl_txtheadnotes" class="col-sm-2 control-label" data-toggle="tooltip" data-placement="bottom">Notes</label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control input-sm" rows="2" id="txtheadnotes" style="width:90%" name="attach_note" data-toggle="tooltip" data-placement="bottom"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <input class="form-control input-sm" id="txtheadseqno" type="hidden" name="seq_No">
+                <input class="form-control input-sm" id="txtheadMode" type="hidden" name="mode_flag">
+                <input class="form-control input-sm" id="txtheadfilepath" type="hidden" name="file_path">
+                @*<input class="form-control input-sm" id="txtheadDocno" type="hidden" name="Number">
+                    <input class="form-control input-sm" id="txtUploadType" type="hidden" name="Upload_Type">*@
+            </div>
+        </div>
+
+        <div class="modal-footer" style="padding: 10px; border-top: none">
+            <div style="margin-left: auto; margin-right: auto; width: 60%;margin-top: -15px;">
+                <button type="button" class="btn-head btn btn-primary btn-sm" id="btnHNew" onclick="Head_btn_new()" data-toggle="tooltip" data-placement="bottom">New</button>
+                <button type="button" class="btn-head btn btn-primary btn-sm" id="btnHUpload" onclick="Head_btn_upload();" data-toggle="tooltip" data-placement="bottom">Upload</button>
+                <button type="button" class="btn-head btn btn-primary btn-sm" id="btnHDwnload" onclick="Head_btn_download();" data-toggle="tooltip" data-placement="bottom">Download</button>
+                <button type="button" class="btn-head btn btn-primary btn-sm" id="btnHView" onclick="Head_btn_view();" data-toggle="tooltip" data-placement="bottom">View</button>
+                <button type="button" class="btn-head btn btn-primary btn-sm" id="btnHRemove" onclick="Head_btn_remove();" data-toggle="tooltip" data-placement="bottom">Remove</button>
+                <button type="button" class="btn-head btn btn-primary btn-sm" id="btnHClose" onclick="file_attach_close();" data-toggle="tooltip" data-placement="bottom">Cancel</button>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
+
+<style>
+    .ytp-chrome-top-buttons {
+        display: none;
+    }
+
+    .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+        border: 1px solid #ddd;
+    }
+
+    .table-bordered {
+        border: 1px solid #ddd;
+    }
+
+    .radio-inline {
+        font-weight: 700;
+    }
+</style>
+
+

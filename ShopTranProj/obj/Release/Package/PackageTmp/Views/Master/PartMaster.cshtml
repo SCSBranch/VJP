@@ -1,0 +1,536 @@
+﻿
+@{
+    ViewBag.Title = "PartMaster";
+    Layout = "~/Views/Shared/Form_Layout.cshtml";
+}
+
+<form id="form_part_master" class="form-horizontal" data-role="validator" novalidate="novalidate">
+    <div class="row">
+        <div class="col-md-4">
+            <div id="grid_partmaster_data">
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="txtPartId" class="col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Part ID</label>
+                        <div class=" col-sm-7">
+                            <input type="text" class="form-control" name="user_id" data-toggle="tooltip" data-placement="bottom" id="txtPartId">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="txtPartName" class="col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Part Name</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="cust_name" id="txtPartName" data-toggle="tooltip" data-placement="bottom">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="cmbType" class=" col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Type</label>
+                        <div class=" col-sm-7">
+                            <input id="cmbType" name="user_of_code" data-role="filtercombo" data-toggle="tooltip" data-placement="bottom" style="width:100%" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="cmbPartType" class=" col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Part Type</label>
+                        <div class=" col-sm-7">
+                            <input id="cmbPartType" name="user_of_code" data-role="filtercombo" data-toggle="tooltip" data-placement="bottom" style="width:100%" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="txtParentPartName" class="col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Parent Part Name</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="cust_name" id="txtParentPartName" data-toggle="tooltip" data-placement="bottom">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="txtMeltingLoss" class="col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Melting loss</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="status" id="txtMeltingLoss" data-toggle="tooltip" data-placement="bottom">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="txtCastWeight" class="col-sm-5 control-label" style="padding-right:0px" data-toggle="tooltip" data-placement="bottom">As cast weight</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="cust_name" id="txtCastWeight" data-toggle="tooltip" data-placement="bottom">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="txtShotWeight" class="col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Shot weight</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="status" id="txtShotWeight" data-toggle="tooltip" data-placement="bottom">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="txtPartWeight" class="col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Part finished weight</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" name="cust_name" id="txtPartWeight" data-toggle="tooltip" data-placement="bottom">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="cmbGrade" class=" col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Grade of RM</label>
+                        <div class=" col-sm-7">
+                            <input id="cmbGrade" name="user_of_code" data-role="filtercombo" data-toggle="tooltip" data-placement="bottom" style="width:100%" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div id="grid_master_data"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</form>
+
+<script>
+
+    form_list_url = "/Master/PartMasterList";
+    var ScreenId = "";
+    var role_id = "";
+    Screen_Id = "PART_MAS";
+    //var grid_height = '';
+    //var default_screen_size = 631;
+    //var default_grid_size = 328;
+    /*--------------------------------------------------------------------   Page Load Function  -----------------------------------------------------------------------------------------------*/
+    $(document).ready(function () {
+        Form_validate_Name = $('form.form-horizontal').attr('id');
+        kendodate_format_validator('form_part_master');
+
+
+        $("#lblFormTitle").text("Part Master");
+        //var sData = load_dropdown_list('PART_MAS', 'SELECTOR');
+        //filter_combobox("cmbSelector", sData);
+
+        // $("#multy").hide();
+        //$("#div_status").hide();
+        // $("#btnCreate").show();
+
+        filter_combobox("cmbType", []);
+        filter_combobox("cmbPartType", []);
+        filter_combobox("cmbGrade", []);
+
+        var sData = load_dropdown_list('PART_MAS', 'PART_TYPE');
+        filter_combobox("cmbPartType", sData);
+
+        var sData = load_dropdown_list('PART_MAS', 'CAST_MACHINED');
+        filter_combobox("cmbType", sData);
+
+        var sData = load_dropdown_list('PART_MAS', 'RM_GRADE');
+        filter_combobox("cmbGrade", sData);
+
+        Part_master_grid([]);
+        //var mas_data = [{ chk_val: "", description: "Melting" }, { chk_val: "", description: "Degassing" }, { chk_val: "", description: "Spectro test" },
+        //{ chk_val: "", description: "vaccum test" }, { chk_val: "", description: "Die preheating" }, { chk_val: "", description: "Core dressing & oven process" }, { chk_val: "", description: "Pouring" },
+        //{ chk_val: "", description: "Cast inspection" }, { chk_val: "", description: "Decoring" }, { chk_val: "", description: "Cutting" }, { chk_val: "", description: "Fettling" },
+        //{ chk_val: "", description: "Heat treatment" }, { chk_val: "", description: "Oven treatment" }, { chk_val: "", description: "Hardness test" }, { chk_val: "", description: "Shot Blasting" },
+        //{ chk_val: "", description: "Quality inspection" }, { chk_val: "", description: "FPI/Die/Helium" }, { chk_val: "", description: "RT" }, { chk_val: "", description: "Machining - Deburring" }];
+
+        var mas_data = load_dropdown_list('PART_MAS', 'PROCESS_STEP');
+        Master_data_grid(mas_data);
+
+
+        var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+        grid_height = parseInt(full_height) - 235;
+        $('#grid_partmaster_data .k-grid-content').height(grid_height);
+
+        var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+        grid_height = parseInt(full_height) - 403;
+        $('#grid_master_data .k-grid-content').height(grid_height);
+        //$(".file_attach").attr("hdrtitle", "Part Master Form");
+        //var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+        //var diff_size = parseInt(full_height) - default_screen_size;
+        //var grid_height = default_grid_size + diff_size;
+        ////screen_lang_data("ROLE_FORM", "tn_in");
+
+        //var formval = form_Serialize(Form_validate_Name);
+        //oldform_value.form = JSON.parse(formval);
+
+        //var screen_id = 'PART_MAS';
+        //var permission = sec_Permission(screen_id);
+    });
+
+
+
+    /*--------------------------------------------------------------------   Role Save  & Delete Details  -----------------------------------------------------------------------------------------------*/
+    function form_save() {
+        if ($('#txtStatus').val() != "New" && $('#txtStatus').val() != "") {
+            $('#txtMode').val('U');
+        } else if ($('#txtStatus').val() == "") {
+            kendoalert('Status Field cannot be blank');
+            return false;
+        }
+        //SaveRole();
+        return false;
+    }
+
+
+    function form_delete() {
+        $('#txtMode').val('D');
+        // SaveRole();
+    }
+    /*---------------------------------------------------------------------  Form Clear  ----------------------------------------------------------------------------------*/
+    function form_clear() {
+        $('.form-group .k-invalid-msg').remove();
+        $("#txtStatus").val('New');
+        $("#txtPartID").val('');
+        $('#cmbProductName').data("kendoComboBox").value('');
+        $("#txtCustId").val('');
+        $("#txtCustName").val('');
+        $("#txtOrderId").val('');
+        $("#txtCastWeight").val('');
+        $("#txtMeltingLoss").val('');
+        $("#txtShotWeight").val('');
+        $("#txtPartWeight").val('');
+        $("#txtPartQty").val('');
+        $("#txtPartCost").val('');
+        $("#txtPartLength").val('');
+        $("#txtPartWidth").val('');
+        $("#txtPartHeight").val('');
+        $('#cmbGradeRM').data("kendoComboBox").value('');
+        $('#cmbType').data("kendoComboBox").value('');
+        $('#cmbCurrency').data("kendoComboBox").value('');
+        $('#cmbProcesses').data("kendoComboBox").value('');
+    }
+
+    var type_desc_list = "";
+    var part_type_desc_list = "";
+
+    function Part_master_grid(data) {
+        try {
+            $("#grid_partmaster_data").kendoGrid({
+                dataSource: {
+                    data: data,
+                    pageSize: 20,
+                    schema: {
+                        model: {
+                            fields: {
+                                role_id: {
+                                    type: "string"
+                                },
+                                role_description: {
+                                    type: "string"
+                                },
+                                screen_id: {
+                                    type: "string"
+                                },
+                                //screen_name: {
+                                //    type: "string"
+                                //},
+                            }
+                        }
+                    },
+                    change: function (e) {
+                        setTimeout(function () {
+                            var gd = $("#grid_partmaster_data").data("kendoGrid");
+                            filter_row(gd);
+                            $('.k-i-close').css('display', 'none');
+                            $('button.k-button-icon').css('display', 'none');
+                            $('#grid_partmaster_data .k-input').prop('disabled', false);
+                            $('#grid_partmaster_data .k-input').prop('readonly', true);
+
+                        }, 1);
+                    },
+                },
+                dataBound: function (o) {
+                    reset_Selected_GridRows("grid_partmaster_data", o);
+                },
+                toolbar: "<button type= 'button' id = 'Exportclick' class = 'k-grid-excel' style = 'display:none' href=''><span class='fa fa-file-excel-o' style='color: Black;'> &nbsp Export To Excel</span></button>",
+
+                excel: {
+                    allPages: true
+                },
+                excelExport: function (e) {
+                    export_data(e);
+                },
+
+                filterable: {
+                    enabled: true,
+                    delay: 1500,
+                    mode: "menu, row",
+                    height: 200,
+                    click: function (e) {
+                        var gd = $("#grid_partmaster_data").data("kendoGrid");
+                        filter_row(gd);
+                    }
+                },
+                filterMenuInit: function (e) {
+                    var gd = $("#grid_partmaster_data").data("kendoGrid");
+                    filter_row(gd);
+                },
+                scrollable: true,
+                // height: 523,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                pageable: {
+                    refresh: false,
+                    pageSizes: true,
+                    buttonCount: 5
+                },
+                selectable: true,
+                //  change: selectRow,
+                columns: [{
+                    field: "part_id",
+                    title: "Part ID",
+                    width: "100px",
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            inputWidth: 1500
+                        }
+                    },
+                },
+                {
+                    field: "part_names",
+                    title: "Part Name",
+                    width: "100px",
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            inputWidth: 1500
+                        }
+                    },
+                },
+                {
+                    field: "type",
+                    title: "Type",
+                    width: "100px",
+                    filterable: {
+                        cell: {
+                            operator: "contains",
+                            inputWidth: 1500
+                        }
+                    },
+                },
+                    //{
+                    //    field: "part_type",
+                    //    title: "Part Type",
+                    //    width: "200px",
+                    //    filterable: {
+                    //        cell: {
+                    //            operator: "contains",
+                    //            inputWidth: 1500
+                    //        }
+                    //    },
+                    //},
+                    //{
+                    //    field: "parent_part_name",
+                    //    title: "Parent part name",
+                    //    width: "200px",
+                    //    filterable: {
+                    //        cell: {
+                    //            operator: "contains",
+                    //            inputWidth: 1500
+                    //        }
+                    //    },
+                    //},
+                    //{
+                    //    field: "melting_loss",
+                    //    title: "Melting loss",
+                    //    width: "200px",
+                    //    filterable: {
+                    //        cell: {
+                    //            operator: "contains",
+                    //            inputWidth: 1500
+                    //        }
+                    //    },
+                    //    },
+                    //    {
+                    //        field: "cast_weight",
+                    //        title: "As cast weight",
+                    //        width: "200px",
+                    //        filterable: {
+                    //            cell: {
+                    //                operator: "contains",
+                    //                inputWidth: 1500
+                    //            }
+                    //        },
+                    //    },
+                    //    {
+                    //        field: "shot_weight",
+                    //        title: "Shot weight",
+                    //        width: "200px",
+                    //        filterable: {
+                    //            cell: {
+                    //                operator: "contains",
+                    //                inputWidth: 1500
+                    //            }
+                    //        },
+                    //    },
+                    //    {
+                    //        field: "finish_weight",
+                    //        title: "Part finished weight",
+                    //        width: "200px",
+                    //        filterable: {
+                    //            cell: {
+                    //                operator: "contains",
+                    //                inputWidth: 1500
+                    //            }
+                    //        },
+                    //    },
+                    //    {
+                    //        field: "grade_rm",
+                    //        title: "Grade of RM",
+                    //        width: "200px",
+                    //        filterable: {
+                    //            cell: {
+                    //                operator: "contains",
+                    //                inputWidth: 1500
+                    //            }
+                    //        },
+                    //    },
+                ]
+            });
+
+            $(".k-dropdown-operator").css('display', 'none');
+            $("#grid_partmaster_data .k-input").attr('disabled', 'false');
+        } catch (err) {
+            kendoAlert(err);
+        }
+    }
+
+
+
+
+
+
+    function Master_data_grid(data) {
+        try {
+            gridRowID = -1;
+            data = addRandomNum(data);
+            $("#grid_master_data").kendoGrid({
+                dataSource: {
+                    data: data,
+                    //  pageSize: 10,
+                    schema: {
+                        model: {
+                            fields: {
+                                chk_val: { editable: false },
+                                paramvalue: { editable: false },
+                            }
+                        }
+                    },
+                },
+                //height: 130,
+                columns: [{
+                    field: "chk_val",
+                    title: "Select",
+                    template: '<input type="checkbox" #= chk_val == "1" ? "checked=checked" : "" # class="chkbx2"></input>',
+                    update: true,
+                    width: 30
+                },
+                {
+                    field: "code",
+                    title: "Code",
+                    width: 150,
+                    hidden: true
+                },
+                {
+                    field: "desc",
+                    title: "Processes",
+                    width: 150
+                },
+                ],
+
+            });
+
+            var gridDoc = $("#grid_master_data").data("kendoGrid");
+            gridDoc.table.on("change", ".chkbx2", selectRow);
+            function selectRow() {
+                selected_FloGrid_Row("grid_master_data", this);
+            }
+        }
+        catch (err) {
+            //javascript_log4j_root(arguments.callee.name, err);
+            alert(err)
+        }
+    }
+
+    var fcheck = '';
+    var ucheck = '';
+    function selected_FloGrid_Row(id, e, rSelect, sel_Row) {
+        var checked = e.checked;
+        if (rSelect) {
+            checked = true;
+            row = sel_Row;
+        } else {
+            row = $(e).closest("tr");
+        }
+        grid = $("#" + id).data("kendoGrid");
+        var selection = $(e).closest("tr");
+        if (rSelect) {
+            selection = sel_Row;
+        }
+        if (checked) {
+            //-select the row
+            row.addClass("k-state-selected");
+            grid_selected_rows[grid.dataItem(selection).randNum] = true;
+            var dataItem = grid.dataItem(selection);
+            dataItem._set('chk_val', '1');
+            fcheck += dataItem.ProcessStage + ",";
+            setlocalStorage("ChkFirstClick", fcheck);
+
+        } else {
+            //-remove selection
+            row.removeClass("k-state-selected");
+            grid_selected_rows[grid.dataItem(selection).randNum] = false;
+            var dataItem = grid.dataItem(selection);
+            dataItem._set('chk_val', '0');
+            ucheck += dataItem.ProcessStage + ",";
+            setlocalStorage("UnChkFirstClick", ucheck);
+        }
+        return false;
+    }
+    function form_create() {
+        $("#txtStatus").val('New');
+    }
+
+</script>
+<style>
+    #grid_partmaster_data table {
+        min-width: 100%;
+    }
+
+    #grid_partmaster_data .k-grid-toolbar {
+        display: none;
+    }
+
+    .k-pager-sizes {
+        display: none
+    }
+</style>

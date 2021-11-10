@@ -1,0 +1,164 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Part Master</title>
+    <script>
+
+        $(document).ready(function () {
+           
+            $("#frm_PartName").on('hidden.bs.modal', function () {
+                $(this).data('bs.modal', null);
+                             
+            });
+            $('#frm_PartName').on('loaded.bs.modal', function (e) {
+                $("#grid_part_name").empty();
+                $("#grid_part_name").append("<div id='grid_master_data' class='grid'></div>");
+                Master_data_grid([]);
+                //var mas_data = load_dropdown_list('PART_MAS', 'PROCESS_STEP');               
+                //Master_data_grid(mas_data);
+               
+                Part_popup_load(part_rowid);
+               
+                var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+                var grid_height = parseInt(full_height) - 360;
+                $('#grid_master_data .k-grid-content').height(grid_height);
+            });
+
+
+            Form_validate_Name1 = $('form.form-horizontal').attr('id');
+            var container = $("#partname_Popup_form");
+            kendo.init(container);
+            container.kendoValidator({});
+        });
+
+    </script>
+    
+
+</head>
+<body>
+    <div class="modal-header1" style="padding: 5px; color: #fff; background-color: #367FA9; border-radius: 5px;">
+        <a href="#" class="fa fa-close pull-right" data-dismiss="modal" style="color:darkred;font-size:20px;margin-top:3px;"></a>
+        <h3 class="modal-title" style="margin-left:15px;">Part Master</h3>
+    </div>
+    <div class="modal-body">
+        <form id="partname_Popup_form" class="form-horizontal" data-role="validator" novalidate="novalidate">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtPartId" class="col-sm-5 control-label">Part ID</label>
+                                <div class=" col-sm-7">
+                                    <input type="text" class="form-control" name="user_id" id="txtPartId" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtEnqPartName" class="col-sm-5 control-label">Part Name</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="cust_name" id="txtEnqPartName" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtType" class="col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Type</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="cust_name" id="txtType" data-toggle="tooltip" data-placement="bottom" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="cmbType" class=" col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Type</label>
+                                <div class=" col-sm-7">
+                                    <input id="cmbType" name="cast_machined_code" data-role="filtercombo" data-toggle="tooltip" data-placement="bottom" style="width:100%" />
+                                </div>
+                            </div>
+                        </div>*@
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtPartType" class="col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Part Type</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="cust_name" id="txtPartType" data-toggle="tooltip" data-placement="bottom" readonly>
+                                </div>
+                            </div>
+                        </div>                        
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtMeltingLoss" class="col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Melting loss</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="status" id="txtMeltingLoss" data-toggle="tooltip" data-placement="bottom" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtCastWeight" class="col-sm-5 control-label" style="padding-right:0px" data-toggle="tooltip" data-placement="bottom">As cast weight</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="cust_name" id="txtCastWeight" data-toggle="tooltip" data-placement="bottom" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtShotWeight" class="col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Shot weight</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="status" id="txtShotWeight" data-toggle="tooltip" data-placement="bottom" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtPartWeight" class="col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Part finished weight</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="cust_name" id="txtPartWeight" data-toggle="tooltip" data-placement="bottom" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtGrade" class="col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Grade of RM</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" name="cust_name" id="txtGrade" data-toggle="tooltip" data-placement="bottom" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="grid_part_name">
+                                <div id="grid_master_data"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                </div>
+            <input type="hidden" id="txt_part_rowid" name="part_rowid" />
+            <input type="hidden" id="txt_timestamp" name="timestamp" />
+            <input type="hidden" id="txt_status_code" name="part_status_code" />
+            <input type="hidden" id="txtMode" name="mode_flag" />
+        </form>
+    </div>
+</body>
+
+</html>
+<style>
+
+    .k-input[readonly] {
+        background-color: #eee;
+    }   
+</style>

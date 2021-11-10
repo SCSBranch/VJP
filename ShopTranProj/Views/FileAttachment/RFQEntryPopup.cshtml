@@ -1,0 +1,625 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>RFQ Entry</title>
+    <script>
+
+        $(document).ready(function () {           
+            $("#frm_RFQEntry").on('hidden.bs.modal', function () {
+                $(this).data('bs.modal', null);
+
+            });
+            $('#frm_RFQEntry').on('loaded.bs.modal', function (e) {
+                //BindingScreen();
+                                
+                grid_rfq_details([]);
+                grid_popup_tool_cost_detail([]);
+                product_cost_detail([]);
+                Ceo_Approval_detail([]);
+                // $("#apanel0").click();
+
+                Load_RFQ_popup(rfq_number);
+
+                filter_combobox("cmbActionProduction", []);
+                var sData = load_dropdown_list('CEO_APPROVAL', 'CEO_ACTION');
+                filter_combobox("cmbActionProduction", sData);
+
+                filter_combobox("cmbActionFai", []);
+
+                filter_combobox("cmbCountrySale", []);
+                filter_combobox("cmbRFQActionTaken", []);
+
+                filter_combobox("cmbProductActionTaken", []);
+                filter_combobox("cmbActionProdFai", []);
+
+                var sData = load_dropdown_list('CUST_MAS', 'COUNTRY');
+                filter_combobox("cmbCountrySale", sData);
+                               
+                $('#cmbActionProduction').data("kendoComboBox").enable(false);
+                $('#cmbActionFai').data("kendoComboBox").enable(false);
+                $('#cmbCountrySale').data("kendoComboBox").enable(false);
+
+                
+                $("#txtReceiveDate").attr('readonly', 'readonly');
+            });
+
+
+            Form_validate_Name1 = $('form.form-horizontal').attr('id');
+            var container = $("#rfqEntry_Popup_form");
+            kendo.init(container);
+            container.kendoValidator({});
+
+            //var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+            //grid_height = parseInt(full_height) - 100;
+            //$('#grid_ceo_approval_detail .k-grid-content').height(grid_height);
+            
+        });
+
+    </script>
+    <script>
+
+        var summ_rowid = '0';
+        function BindingScreen() {
+            BindingTabs(summ_rowid, 'RFQ_Entry', 'liCostingSummary', '');
+            dynamicsHTML('RFQ_Entry', 'RFQEntry')
+            dynamicsHTML('RFQ_Entry', 'ToolCostingSummary')
+            dynamicsHTML('RFQ_Entry', 'CostingSummary')
+        }
+
+        function Ceo_Approval_detail(user_data) {
+            try {
+                $("#grid_ceo_approval_detail").kendoGrid({
+                    dataSource: {
+                        data: user_data,
+                        schema: {
+                            model: {
+                                fields: {
+                                    part_name: {
+                                        type: "string",
+                                        editable: true
+                                    },
+                                    total_tool_cost: {
+                                        type: "string",
+                                        editable: false
+                                    },
+                                    comp_variable_cost: {
+                                        type: "string",
+                                        editable: false
+                                    },
+                                    comp_fixed_cost: {
+                                        type: "string",
+                                        editable: false
+                                    },
+                                    comp_total_cost: {
+                                        type: "string",
+                                        editable: false
+                                    },
+                                    selling_price: {
+                                        type: "string",
+                                        editable: false
+                                    },
+                                    selling_price_reco: {
+                                        type: "string",
+                                        editable: false
+                                    },
+                                    actual_margin_customer: {
+                                        type: "string",
+                                        editable: false
+                                    },
+                                    selling_price_fai: {
+                                        type: "string",
+                                        editable: false
+                                    },
+                                    selling_price_fai_2: {
+                                        type: "string",
+                                        editable: false
+                                    },
+                                    selling_price_fai_3: {
+                                        type: "string",
+                                        editable: false
+                                    },
+
+                                    pilot_qty: {
+                                        type: "string",
+                                        editable: true
+                                    },
+                                    cast_draw_no: {
+                                        type: "string",
+                                        editable: true
+                                    },
+                                    mach_draw_no: {
+                                        type: "string",
+                                        editable: true
+                                    },
+                                    //status: {
+                                    //    type: "string",
+                                    //    editable: true
+                                    //},
+                                    mode_flag: {
+                                        type: "string",
+                                        defaultValue: "I"
+                                    }
+                                }
+                            }
+                        },
+                    },
+                    navigatable: true,
+                    scrollable: true,
+                    sortable: {
+                        mode: "multiple",
+                        dir: "asc"
+                    },
+                    height: 190,
+                    filterable: true,
+                    selectable: true,
+                    selectable: "double", //  Grid Row Selection
+                    dataBinding: setDefaultValues,
+                    dataBound: function (e) {
+                        resultData = e.sender._data;
+                        var rows = $('#grid_ceo_approval_detail').data('kendoGrid').tbody.children();
+                        setColor(rows, resultData);
+                    },
+                    //toolbar: "<a class='k-grid-add'  id = 'btnSave' href=''><span class='fa fa-plus' style='color:Black'></span></a>",
+                    columns: [
+                        {
+                            field: "part_name",
+                            title: "Part Name",
+                            width: 150,
+                        },
+                        {
+                            field: "criticality_of_comp",
+                            title: "Criticality of component",
+                            width: 200,
+                        },
+                     {
+                         field: "expected_volumn",
+                         title: "Expected volume of business",
+                         width: 200,
+                     },
+                        {
+                            field: "total_tool_cost",
+                            title: "Total tooling cost",
+                            width: 150,
+                            editor: function (container, options) {
+                                numeric_editor_dot(container, options.field, '9');
+                            },
+                            attributes: { class: "text-right" },
+                        },
+                        {
+                            field: "comp_variable_cost",
+                            title: "Component variable cost",
+                            width: 200,
+                            editor: function (container, options) {
+                                numeric_editor_dot(container, options.field, '9');
+                            },
+                            attributes: { class: "text-right" },
+                        },
+                        {
+                            field: "comp_fixed_cost",
+                            title: "Component fixed cost",
+                            width: 180,
+                            editor: function (container, options) {
+                                numeric_editor_dot(container, options.field, '9');
+                            },
+                            attributes: { class: "text-right" },
+                        },
+                        {
+                            field: "comp_total_cost",
+                            title: "Component total cost",
+                            width: 180,
+                            editor: function (container, options) {
+                                numeric_editor_dot(container, options.field, '9');
+                            },
+                            attributes: { class: "text-right" },
+                        },
+                        {
+                            field: "selling_price",
+                            title: "Target selling price",
+                            width: 180,
+                            editor: function (container, options) {
+                                numeric_editor_dot(container, options.field, '9');
+                            },
+                            attributes: { class: "text-right" },
+                        },
+                        {
+                            field: "margin_sp",
+                            title: "Margin % recommended by CEO",
+                            width: 150,
+                            editor: function (container, options) {
+                                numeric_editor(container, options.field, '5');
+                            },
+                            attributes: { class: "text-right" },
+                        },
+                        {
+                            field: "selling_price_reco",
+                            title: "Selling price recommended by CEO",
+                            width: 200,
+                            editor: function (container, options) {
+                                numeric_editor_dot(container, options.field, '9');
+                            },
+                            attributes: { class: "text-right" },
+                        },
+                                                                                            
+                       {
+                           field: "fai_no_pieces_1",
+                           title: "FAI no.of pieces - 1",
+                           width: 180,
+                           attributes: { class: "text-right" },
+                       },
+                    {
+                        field: "margin_fai_2",
+                        title: "Margin loading % for FAI - 1",
+                        width: 250,
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "fai_quoted_sp_1",
+                        title: "Selling price quoted for FAI - 1",
+                        width: 250,
+                    },
+                    {
+                        field: "fai_no_pieces_2",
+                        title: "FAI no.of pieces - 2",
+                        width: 180,
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "margin_fai_2",
+                        title: "Margin loading % for FAI - 2",
+                        width: 250,
+                        editor: function (container, options) {
+                            numeric_editor(container, options.field, '5');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "fai_quoted_sp_2",
+                        title: "Selling price quoted for FAI - 2",
+                        width: 250,
+                    },
+                    //{
+                    //    field: "fai_no_pieces_3",
+                    //    title: "FAI no.of pieces - 3",
+                    //    width: 180,
+                    //    attributes: { class: "text-right" },
+                    //},
+                    //{
+                    //    field: "margin_fai_3",
+                    //    title: "Margin loading % for FAI - 3",
+                    //    width: 250,
+                    //    attributes: { class: "text-right" },
+                    //},
+                    //{
+                    //    field: "fai_quoted_sp_3",
+                    //    title: "Selling price quoted for FAI - 3",
+                    //    width: 250,
+                    //},
+
+                        {
+                            field: "mode_flag",
+                            title: "Mode",
+                            width: 30,
+                            hidden: true
+                        }
+                    ],
+                    editable: false,
+                });
+
+
+            }
+            catch (err) {
+                alert(err);
+            }
+        }
+
+    </script>
+
+</head>
+<body>
+    <div class="modal-header1" style="padding: 5px; color: #fff; background-color: #367FA9; border-radius: 5px;">
+        <a href="#" class="fa fa-close pull-right" data-dismiss="modal" style="color:darkred;font-size:20px;margin-top:3px;"></a>
+        <h3 class="modal-title" style="margin-left:15px;">RFQ Entry</h3>
+    </div>
+    <div class="modal-body">
+        <form id="rfqEntry_Popup_form" class="form-horizontal" data-role="validator" novalidate="novalidate">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtRFQEnNO" style="padding-right:0px" class="col-sm-5 control-label">RFQ No/ Enquiry No</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" id="txtRFQEnNO" name="rfq_no" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtRfqReceiveDate" class="col-sm-5 control-label">Received Date</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" id="txtRfqReceiveDate" name="rfq_no" readonly>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtCusName" class="col-sm-5 control-label">Customer  Name</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" id="txtCusName" name="cus_name" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtPoc" class="col-sm-5 control-label">POC</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" id="txtPoc" name="cus_name" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtQuoteDueDate" class="col-sm-5 control-label" style="padding-right:0px">Due date for quoting</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" id="txtQuoteDueDate" readonly>
+                                </div>
+                            </div>
+                        </div> 
+                        @*<div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtDevApproved" class="col-sm-5 control-label" style="padding-right:0px">Approved for development internally?</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" id="txtDevApproved" readonly>
+                                </div>
+                            </div>
+                        </div>*@                        
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="cmbCountrySale" class="col-sm-5 control-label">Country of sale</label>
+                                <div class="col-sm-7">
+                                    <input id="cmbCountrySale" name="poc" data-role="filtercombo" style="width:100%" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ul class="nav nav-tabs">
+                                @*<li class="active">
+                                        <a href="#frmRFQEntry" id="TabCostingSummary" class="TabBar" data-toggle="tab" style="color: black; padding: 3px 10px;">RFQ Entry</a>
+                                    </li>*@
+                                @*<li>
+                                        <a href="#frmToolSummary" id="TabCostingSummary" class="TabBar" data-toggle="tab" style="color: black; padding: 3px 10px;">Tool Costing Summary</a>
+                                    </li>
+                                    <li>
+                                        <a href="#frmCostingSummary" id="TabCostingSummary" class="TabBar" data-toggle="tab" style="color: black; padding: 3px 10px;">Costing Summary</a>
+                                    </li>*@
+                                <li><a class="accordion-design-start" id="apanel0" href="#frmRFQEntry" data-toggle="tab" style="--my-color:firebrick;background-color:firebrick;border-color:white"><p class="accordion-name">RFQ Detail</p><br /></a></li>
+                                <li><a class="accordion-design" id="apanel1" href="#frmToolSummary" data-toggle="tab" style="--my-color:gray;background-color:gray;border-color:white"><p class="accordion-name">Tool Costing Summary</p><br /></a></li>
+                                <li><a class="accordion-design" id="apanel2" href="#frmCostingSummary" data-toggle="tab" style="--my-color:blue;background-color:blue;border-color:white"><p class="accordion-name">Product Costing Summary</p><br /></a></li>
+                                <li><a class="accordion-design-end" id="apanel3" href="#frmCEO_Approval" data-toggle="tab" style="--my-color:blue;background-color:green;border-color:white"><p class="accordion-name">CEO Approval</p><br /></a></li>
+
+
+                            </ul>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @*<div class="row">
+                                    <ul id="liCostingSummary" class="nav navbar-nav tabs"></ul>
+                                </div>*@
+                            @*<div id="tabCostingSummary" class="tab-content"></div>*@
+                            <div class="tab-content">
+                                <div class="tab-pane fade active in" id="frmRFQEntry">
+                                    <div class="panel panel-default" style="overflow-y:scroll">
+                                        <div class="panel-body" id="RFQEntry">
+                                            <div class="row">
+                                                <div class="col-sm-8">
+                                                    <div class="form-group">
+                                                        <label for="txtRFQRemarks" id="lbl_txtRFQRemarks" class="col-sm-2 control-label" style="width:21%">CEO Remarks</label>
+                                                        <div class="col-sm-9">
+                                                            <textarea id="txtRFQRemarks" name="notes" rows="1" style="width:100%" class="form-control" maxlength="4096" readonly></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div id="rfq_popup_grid">
+                                                        <div id="grid_entry_data" class="grid"></div>
+                                                    </div>
+                                                 </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="frmToolSummary">
+                                    <div class="panel panel-default" style="overflow-y:scroll">
+                                        <div class="panel-body" id="ToolCostingSummary">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label for="cmbRFQActionTaken" class="col-sm-5 control-label">Action Taken <br />(Serial Production)</label>
+                                                        <div class="col-sm-7">
+                                                            <input id="cmbRFQActionTaken" name="poc" data-role="filtercombo" style="width:100%" readonly />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div class="form-group">
+                                                        <label for="txtToolRemarks" id="lbl_txtNotes" class="col-sm-3 control-label" style="padding-right:0px">CEO Remarks <br />(Serial Production)</label>
+                                                        <div class="col-sm-9" style="padding-left:50px">
+                                                            <textarea id="txtToolRemarks" name="notes" rows="1" style="width:90%" class="form-control" maxlength="4096" readonly></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div id="tool_cost_grid">
+                                                        <div id="grid_popup_tool_cost_det" class="grid"></div>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="frmCostingSummary">
+                                    <div class="panel panel-default" style="overflow-y:scroll">
+                                        <div class="panel-body" id="CostingSummary">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label for="cmbProductActionTaken" class="col-sm-5 control-label">Action Taken<br />(Serial Production)</label>
+                                                        <div class="col-sm-7">
+                                                            <input id="cmbProductActionTaken" name="poc" data-role="filtercombo" style="width:100%" readonly />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div class="form-group">
+                                                        <label for="txtProdRemarks" id="lbl_ProdRemarks" class="col-sm-3 control-label" style="padding-right:0px">CEO Remarks<br />(Serial Production)</label>
+                                                        <div class="col-sm-9" style="padding-left:50px">
+                                                            <textarea id="txtProdRemarks" name="notes" rows="1" style="width:90%" class="form-control" maxlength="4096" readonly></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label for="cmbActionProdFai" class="col-sm-5 control-label">Action Taken<br />(FAI)</label>
+                                                        <div class="col-sm-7">
+                                                            <input id="cmbActionProdFai" name="poc" data-role="filtercombo" style="width:100%" readonly />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div class="form-group">
+                                                        <label for="txtRemarksProdCost" id="lbl_RemarksProdCost" class="col-sm-3 control-label">CEO Remarks <br /> (FAI)</label>
+                                                        <div class="col-sm-9" style="padding-left:50px">
+                                                            <textarea id="txtRemarksProdCost" name="notes" rows="1" style="width:90%" class="form-control" maxlength="4096" readonly></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div id="product_cost_grid">
+                                                        <div id="grid_product_popup_det" class="grid"></div>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="frmCEO_Approval">
+                                    <div class="panel panel-default" style="overflow-y:scroll">
+                                        <div class="panel-body" id="CEOApproval">
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label for="cmbActionProduction" class="col-sm-5 control-label">Action Taken (Production)</label>
+                                                        <div class="col-sm-7">
+                                                            <input id="cmbActionProduction" name="poc" data-role="filtercombo" style="width:100%" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div class="form-group">
+                                                        <label for="txtRemarks" id="lbl_txtNotes" class="col-sm-2 control-label">CEO Remarks (Production)</label>
+                                                        <div class="col-sm-10" style="padding-left:50px">
+                                                            <textarea id="txtRemarks" name="notes" rows="1" style="width:90%" class="form-control" maxlength="4096" readonly></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-4">
+                                                    <div class="form-group">
+                                                        <label for="cmbActionFai" class="col-sm-5 control-label">Action Taken (FAI)</label>
+                                                        <div class="col-sm-7">
+                                                            <input id="cmbActionFai" name="poc" data-role="filtercombo" style="width:100%" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <div class="form-group">
+                                                        <label for="txtRemarks_fai" id="lbl_txtNotes" class="col-sm-2 control-label">CEO Remarks (FAI)</label>
+                                                        <div class="col-sm-10" style="padding-left:50px">
+                                                            <textarea id="txtRemarks_fai" name="notes" rows="1" style="width:90%" class="form-control" maxlength="4096" readonly></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="master_grid">
+                                                <div id="grid_ceo_approval_detail" class="grid"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <input id="txt_rfq_rowid" type="hidden" name="rfq_rowid">
+            <input id="txt_rfq_status_code" type="hidden" name="rfq_status_code">
+        </form>
+    </div>
+</body>
+
+</html>
+<style>
+    example input[type=text] {
+        padding: 10px;
+        font-size: 17px;
+        border: 1px solid grey;
+        float: left;
+        width: 80%;
+        background: #f1f1f1;
+    }
+
+    .k-input[readonly] {
+        background-color: #eee;
+    }
+
+    example button {
+        float: left;
+        width: 20%;
+        padding: 10px;
+        background: #2196F3;
+        color: white;
+        font-size: 17px;
+        border: 1px solid grey;
+        border-left: none;
+        cursor: pointer;
+    }
+
+    buttn:hover {
+        background: #0b7dda;
+    }
+
+    example::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+
+    .nav-tabs > li > a {
+        margin-right: 12px;
+        line-height: 1.42857143;
+        border: 1px solid transparent;
+        border-radius: 4px 4px 0 0;
+    }
+</style>

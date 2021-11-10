@@ -1,0 +1,639 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Task</title>
+    <script>
+
+        $(document).ready(function () {
+            $(".cusDate").kendoDatePicker({
+                format: "dd/MM/yyyy",
+            });
+            var cmb_data = [{ code: "1", desc: "Ravi" }, { code: "2", desc: "Arun" }, { code: "3", desc: "Vinoth" }, { code: "4", desc: "Sairam" }]
+            filter_combobox("cmbPOC", cmb_data);
+
+
+            $("#frm_RFQEntry").on('hidden.bs.modal', function () {
+                $(this).data('bs.modal', null);
+
+            });
+            $('#frm_RFQEntry').on('loaded.bs.modal', function (e) {
+                //BindingScreen();
+                grid_entry_details([]);
+                grid_tool_cost_detail([]);
+                grid_product_cost_detail([]);
+                // $("#apanel0").click();
+                $('#cmbPOC').data("kendoComboBox").enable(false);
+
+                $("#txtReceivedDate").css("pointer-events", "none");
+                $("#txtReceivedDate").css("opacity", "0.3");
+
+            });
+
+
+            Form_validate_Name1 = $('form.form-horizontal').attr('id');
+            var container = $("#rfqEntry_Popup_form");
+            kendo.init(container);
+            container.kendoValidator({});
+        });
+
+    </script>
+    <script>
+
+        function grid_entry_details(user_data) {
+            $("#grid_entry_data").kendoGrid({
+                dataSource: {
+                    data: user_data,
+                    schema: {
+                        model: {
+                            fields: {
+                                part_name: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                pilot_qty: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                cast_draw_no: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                mach_draw_no: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                mode_flag: {
+                                    type: "string",
+                                    defaultValue: "I"
+                                }
+                            }
+                        }
+                    },
+                },
+                navigatable: true,
+                scrollable: true,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                height: 285,
+                selectable: true,
+                selectable: "singl", //  Grid Row Selection
+                dataBinding: setDefaultValues,
+                dataBound: function (e) {
+                    resultData = e.sender._data;
+                    var rows = $('#grid_entry_data').data('kendoGrid').tbody.children();
+                    setColor(rows, resultData);
+                },
+                //toolbar: "<a class=' k-grid-add'  id = 'btnSave' href=''><span class='fa fa-plus' style='color:Black'></span></a>",
+                columns: [{
+                    command: [{
+                        name: "Delete",
+                        id: "Delete",
+                        imageClass: "fa fa-close",
+                        click: function (e) {
+                            var grid = $("#grid_entry_data").data("kendoGrid");
+                            var dataItem = $("#grid_entry_data").data("kendoGrid").dataItem($(e.target).closest("tr"));
+                            DeleteWindowEvent(e, dataItem, grid);
+                            e.stopImmediatePropagation()
+                        }
+                    },],
+                    title: "&nbsp;",
+                    width: "40px",
+                },
+                {
+                    field: "part_name",
+                    title: "Part Name",
+                    width: 150,
+                },
+                {
+                    field: "pilot_qty",
+                    title: "Pilot lot Qty",
+                    width: 150,
+                },
+                {
+                    field: "cast_draw_no",
+                    title: "Casting Drawing No",
+                    width: 150,
+                },
+                {
+                    field: "mach_draw_no",
+                    title: "Machine Drawing No",
+                    width: 150,
+                },
+                {
+                    field: "mode_flag",
+                    title: "Mode",
+                    width: 30,
+                    hidden: true
+                }
+                ],
+                editable: true,
+            });
+        }
+
+        function grid_tool_cost_detail(user_data) {
+            $("#grid_tool_cost_det").kendoGrid({
+                dataSource: {
+                    data: user_data,
+                    schema: {
+                        model: {
+                            fields: {
+                                part_name: {
+                                    type: "string",
+                                    editable: true,
+                                },
+                                tool_name: {
+                                    type: "string",
+                                    editable: true,
+                                },
+                                die_ptrn_cost: {
+                                    type: "string",
+                                    editable: true,
+                                },
+                                other_cost: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                tool_costing_cost: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                dev_lead_time: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                ceo_remarks: {
+                                    type: "string",
+                                    editable: true
+                                },
+
+                            }
+                        }
+                    },
+                },
+                navigatable: true,
+                scrollable: true,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                height: 285,
+                selectable: true,
+                selectable: "singl", //  Grid Row Selection
+                dataBinding: setDefaultValues,
+                dataBound: function (e) {
+                    resultData = e.sender._data;
+                    var rows = $('#grid_tool_cost_det').data('kendoGrid').tbody.children();
+                    setColor(rows, resultData);
+                },
+                //toolbar: "<a class=' k-grid-add'  id = 'btnSave' href=''><span class='fa fa-plus' style='color:Black'></span></a>",
+                columns: [{
+                    command: [{
+                        name: "Delete",
+                        id: "Delete",
+                        imageClass: "fa fa-close",
+                        click: function (e) {
+                            var grid = $("#grid_tool_cost_det").data("kendoGrid");
+                            var dataItem = $("#grid_tool_cost_det").data("kendoGrid").dataItem($(e.target).closest("tr"));
+                            DeleteWindowEvent(e, dataItem, grid);
+                            e.stopImmediatePropagation()
+                        }
+                    },],
+                    title: "&nbsp;",
+                    width: "40px",
+                },
+                {
+                    field: "part_name_code",
+                    hidden: true,
+                    width: 100
+                },
+                {
+                    field: "part_name",
+                    title: "Part Name",
+                    editor: function (container, options) {
+                        combo_editor_man_check(container, "cmb_" + options.field, eval(options.field + "_list"), options.field, "Part Name", "part_name_code", "grid_tool_cost_det")
+                    },
+                    width: 150,
+                },
+                {
+                    field: "tool_name",
+                    title: "Tool Name",
+                    width: 100,
+                },
+                {
+                    field: "die_ptrn_cost",
+                    title: "Die/Pattern Costs",
+                    width: 130,
+                },
+                {
+                    field: "other_cost",
+                    title: "Other Costs",
+                    width: 100,
+                },
+                {
+                    field: "tool_costing_cost",
+                    title: "Tool Costing Cost",
+                    width: 130,
+                },
+                {
+                    field: "dev_lead_time",
+                    title: "Development Lead Time(in months)",
+                    width: 250,
+                },
+                //{
+                //    field: "ceo_remarks",
+                //    title: "CEO Remarks",
+                //    width: 250,
+                //},
+                {
+                    field: "ceo_remarks",
+                    title: "CEO Remarks",
+                    width: 250,
+                    editor: function (container, options) {
+                        textarea_editor(container, options.field);
+                    },
+
+                },
+                {
+                    field: "mode_flag",
+                    title: "Mode",
+                    width: 30,
+                    hidden: true
+                }
+                ],
+                editable: true,
+            });
+        }
+
+        function grid_product_cost_detail(user_data) {
+            $("#grid_product_cost_det").kendoGrid({
+                dataSource: {
+                    data: user_data,
+                    schema: {
+                        model: {
+                            fields: {
+                                part_name: {
+                                    type: "string",
+                                    editable: true,
+                                },
+                                qty: {
+                                    type: "string",
+                                    editable: true,
+                                },
+                                as_cast_wt: {
+                                    type: "string",
+                                    editable: true,
+                                },
+                                shot_wt: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                part_wt: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                net_rm_cost: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                variable_cost: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                fixed_cost: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                total_cost: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                target_selling: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                expect_annual: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                alloy_rate: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                yield: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                remarks: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                ceo_remarks: {
+                                    type: "string",
+                                    editable: true
+                                },
+
+                            }
+                        }
+                    },
+                },
+                navigatable: true,
+                scrollable: true,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                height: 285,
+                selectable: true,
+                selectable: "singl", //  Grid Row Selection
+                dataBinding: setDefaultValues,
+                dataBound: function (e) {
+                    resultData = e.sender._data;
+                    var rows = $('#grid_product_cost_det').data('kendoGrid').tbody.children();
+                    setColor(rows, resultData);
+                },
+                //toolbar: "<a class=' k-grid-add'  id = 'btnSave' href=''><span class='fa fa-plus' style='color:Black'></span></a>",
+                columns: [{
+                    command: [{
+                        name: "Delete",
+                        id: "Delete",
+                        imageClass: "fa fa-close",
+                        click: function (e) {
+                            var grid = $("#grid_product_cost_det").data("kendoGrid");
+                            var dataItem = $("#grid_product_cost_det").data("kendoGrid").dataItem($(e.target).closest("tr"));
+                            DeleteWindowEvent(e, dataItem, grid);
+                            e.stopImmediatePropagation()
+                        }
+                    },],
+                    title: "&nbsp;",
+                    width: "40px",
+                },
+                {
+                    field: "part_name_code",
+                    hidden: true,
+                    width: 100
+                },
+                {
+                    field: "part_name",
+                    title: "Part Name",
+                    editor: function (container, options) {
+                        combo_editor_man_check(container, "cmb_" + options.field, eval(options.field + "_list"), options.field, "Part Name", "part_name_code", "grid_product_cost_det")
+                    },
+                    width: "150px",
+                },
+                {
+                    field: "qty",
+                    title: "Quantity",
+                    width: "100px",
+                },
+                {
+                    field: "as_cast_wt",
+                    title: "As Cast Weight",
+                    width: 130,
+                },
+                {
+                    field: "shot_wt",
+                    title: "Shot Weight",
+                    width: 100,
+                },
+                {
+                    field: "part_wt",
+                    title: "Part weight",
+                    width: 100,
+                },
+                {
+                    field: "net_rm_cost",
+                    title: "Net RM cost",
+                    width: 100,
+                },
+                {
+                    field: "variable_cost",
+                    title: "Variable costs per unit",
+                    width: 160,
+                },
+                {
+                    field: "fixed_cost",
+                    title: "Fixed costs per unit",
+                    width: 130,
+                },
+                {
+                    field: "total_cost",
+                    title: "Total costs per unit",
+                    width: 160,
+                },
+                {
+                    field: "target_selling",
+                    title: "Target Selling price if any",
+                    width: 170,
+                },
+                {
+                    field: "expect_annual",
+                    title: "Expected annual volume",
+                    width: 150,
+
+                },
+                {
+                    field: "alloy_rate",
+                    title: "Alloy rate/kg for the month",
+                    width: 200,
+                },
+                {
+                    field: "yield",
+                    title: "Yield %",
+                    width: 100,
+                },
+                {
+                    field: "remarks",
+                    title: "Remarks if any",
+                    width: 250,
+                    editor: function (container, options) {
+                        textarea_editor(container, options.field);
+                    },
+
+                },
+                {
+                    field: "ceo_remarks",
+                    title: "CEO Remarks",
+                    width: 250,
+                    editor: function (container, options) {
+                        textarea_editor(container, options.field);
+                    },
+
+                },
+                {
+                    field: "mode_flag",
+                    title: "Mode",
+                    width: 30,
+                    hidden: true
+                }
+                ],
+                editable: true,
+            });
+
+        }
+        var summ_rowid = '0';
+        function BindingScreen() {
+            BindingTabs(summ_rowid, 'RFQ_Entry', 'liCostingSummary', '');
+            dynamicsHTML('RFQ_Entry', 'RFQEntry')
+            dynamicsHTML('RFQ_Entry', 'ToolCostingSummary')
+            dynamicsHTML('RFQ_Entry', 'CostingSummary')
+        }
+
+    </script>
+
+</head>
+<body>
+    <div class="modal-header1" style="padding: 5px; color: #fff; background-color: #367FA9; border-radius: 5px;">
+        <a href="#" class="fa fa-close pull-right" data-dismiss="modal" style="color:darkred;font-size:20px;margin-top:3px;"></a>
+        <h3 class="modal-title" style="margin-left:15px;">RFQ Entry</h3>
+    </div>
+    <div class="modal-body">
+        <form id="rfqEntry_Popup_form" class="form-horizontal" data-role="validator" novalidate="novalidate">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtRFQNO" class="col-sm-5 control-label">RFQ No/ Enquiry No</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" id="txtRFQNO" name="rfq_no" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtReceivedDate" id="lbl_txtReceivedDate" class="col-sm-5 control-label">Received Date</label>
+                                <div class=" col-sm-7">
+                                    <input class="cusDate" id="txtReceivedDate" data-role='datepicker' name="srv_req_date" onkeypress="return date_validate(event)" style="width:100%" />
+                                    <span data-for='valid' class='k-invalid-msg'></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtCusName" class="col-sm-5 control-label">Customer  Name</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" id="txtCusName" name="cus_name" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="cmbPOC" class="col-sm-5 control-label">POC</label>
+                                <div class="col-sm-7">
+                                    <input id="cmbPOC" name="poc" data-role="filtercombo" style="width:100%" readonly />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ul class="nav nav-tabs">
+                                @*<li class="active">
+                                        <a href="#frmRFQEntry" id="TabCostingSummary" class="TabBar" data-toggle="tab" style="color: black; padding: 3px 10px;">RFQ Entry</a>
+                                    </li>*@
+                                @*<li>
+                                        <a href="#frmToolSummary" id="TabCostingSummary" class="TabBar" data-toggle="tab" style="color: black; padding: 3px 10px;">Tool Costing Summary</a>
+                                    </li>
+                                    <li>
+                                        <a href="#frmCostingSummary" id="TabCostingSummary" class="TabBar" data-toggle="tab" style="color: black; padding: 3px 10px;">Costing Summary</a>
+                                    </li>*@
+                                <li><a class="accordion-design-start" id="apanel0" href="#frmRFQEntry" data-toggle="tab" style="--my-color:firebrick;background-color:firebrick"><p class="accordion-name">RFQ Entry</p><br /></a></li>
+                                <li><a class="accordion-design" id="apanel1" href="#frmToolSummary" data-toggle="tab" style="--my-color:gray;background-color:gray"><p class="accordion-name">Tool Costing Summary</p><br /></a></li>
+                                <li><a class="accordion-design-end" id="apanel2" href="#frmCostingSummary" data-toggle="tab" style="--my-color:blue;background-color:blue"><p class="accordion-name">Costing Summary</p><br /></a></li>
+
+                            </ul>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @*<div class="row">
+                                    <ul id="liCostingSummary" class="nav navbar-nav tabs"></ul>
+                                </div>*@
+                            @*<div id="tabCostingSummary" class="tab-content"></div>*@
+                            <div class="tab-content">
+                                <div class="tab-pane fade active in" id="frmRFQEntry">
+                                    <div class="panel panel-default" style="overflow-y:scroll">
+                                        <div class="panel-body" id="RFQEntry">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div id="grid_entry_data" class="grid"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="frmToolSummary">
+                                    <div class="panel panel-default" style="overflow-y:scroll">
+                                        <div class="panel-body" id="ToolCostingSummary">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div id="grid_tool_cost_det" class="grid"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="frmCostingSummary">
+                                    <div class="panel panel-default" style="overflow-y:scroll">
+                                        <div class="panel-body" id="CostingSummary">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div id="grid_product_cost_det" class="grid"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
+<style>
+    example input[type=text] {
+        padding: 10px;
+        font-size: 17px;
+        border: 1px solid grey;
+        float: left;
+        width: 80%;
+        background: #f1f1f1;
+    }
+
+    example button {
+        float: left;
+        width: 20%;
+        padding: 10px;
+        background: #2196F3;
+        color: white;
+        font-size: 17px;
+        border: 1px solid grey;
+        border-left: none;
+        cursor: pointer;
+    }
+
+    buttn:hover {
+        background: #0b7dda;
+    }
+
+    example::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+</style>

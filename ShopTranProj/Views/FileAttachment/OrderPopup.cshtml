@@ -1,0 +1,222 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Task</title>
+    <script>
+
+        $(document).ready(function () {
+            $(".cusDate").kendoDatePicker({
+                format: "dd/MM/yyyy",
+            });
+            $("#TaskModal").on('hidden.bs.modal', function () {
+                $(this).data('bs.modal', null);
+                
+            });
+            $('#TaskModal').on('shown.bs.modal', function (e) {
+               
+            });
+            $('#TaskModal').on('loaded.bs.modal', function (e) {
+               
+               
+            });
+           
+            
+            Form_validate_Name1 = $('form.form-horizontal').attr('id');
+            var container = $("#order_Popup_form");
+            kendo.init(container);
+            container.kendoValidator({});
+          
+        });
+        function form_control(searchid) {
+            if (searchid == 'P02') {
+                var control_Name = [
+                    { "dataCol": "user_id", "controlId": "txtCustId", "type": "Text" },
+                    { "dataCol": "user_name", "controlId": "txtCustName", "type": "Text" },
+                ];
+            }
+            return control_Name;
+        }
+        function trans_input_data(searchid) {
+            var trans_coll;
+            if (searchid == 'P02') {
+                trans_coll = [
+                    { "trasfer": "Yes", "dataCol": "user_id", "controlId": "", "grid_id": "", "grid_row_col": "" },
+                    { "trasfer": "Yes", "dataCol": "user_name", "controlId": "", "grid_id": "", "grid_row_col": "" },
+                ];
+            }
+            return trans_coll;
+        }
+
+
+        
+    </script>
+
+</head>
+<body>
+    <div class="modal-header1" style="padding: 5px; color: #fff; background-color: #367FA9; border-radius: 5px;">
+        <a href="#" class="fa fa-close pull-right" data-dismiss="modal" style="color:darkred;font-size:20px;margin-top:3px;"></a>
+        <h3 class="modal-title" style="margin-left:15px;">Order Entry</h3>
+    </div>
+    <div class="modal-body">
+        <form id="order_Popup_form" class="form-horizontal" data-role="validator" novalidate="novalidate">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtOrderID" id="lbl_txtOrderID" class="col-sm-5 control-label required" data-toggle="tooltip" data-placement="bottom">Order ID</label>
+                                <div class="col-sm-7">
+                                    <input type="text" id="txtOrderID" name="order_id" class="form-control" data-toggle="tooltip" data-placement="bottom" maxlength="20">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtOrderDate" id="lbl_txtOrderDate" class=" col-sm-5 control-label" data-toggle="tooltip" data-placement="bottom">Order Date</label>
+                                <div class=" col-sm-7">
+                                    <input class="cusDate" id="txtOrderDate" data-role='datepicker' name="valid_until" onkeypress="return date_validate(event)" style="width:100%" data-checkdate-msg='Enter valid date' data-toggle="tooltip" data-placement="bottom" />
+                                    <span data-for='valid' class='k-invalid-msg'></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtOrderStatus" id="lbl_OrderStatus" class="col-sm-5 control-label required" data-toggle="tooltip" data-placement="bottom">Status</label>
+                                <div class="col-sm-7">
+                                    <input type="text" id="txtOrderStatus" name="po_no" readonly class="form-control" data-toggle="tooltip" data-placement="bottom" maxlength="20">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtPoNo" id="lbl_txtPoNo" class="col-sm-5 control-label required" data-toggle="tooltip" data-placement="bottom">PO No</label>
+                                <div class="col-sm-7">
+                                    <input type="text" id="txtPoNo" name="po_no" class="form-control" data-toggle="tooltip" data-placement="bottom" maxlength="20">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtCustId" id="lbl_txtCustId" class="col-sm-5 control-label">Customer ID</label>
+                                <div class="col-sm-6">
+                                    <input type="text" id="txtCustId" class="form-control" name="posp_id" maxlength="20" readonly>
+                                   
+                                </div>
+                                <div class="col-sm-1">
+                <a class="HelpWindow fa fa-search fa-lg" role="button" data-toggle="modal" href="/HelpFilter/HelpFilter" hdrtitle="User Details" searchid="P02" data-target="#HelpModal" onclick=transfer(this,"form","","form_control"); title="Search" style="font-size: 19px; margin-left: -17px; margin-top: 10px;"></a>
+            </div>
+                            </div>
+
+                            @*<div class="form-group has-feedback">
+                                <label class="col-sm-5 control-label" for="inputSuccess2">Name</label>
+                               
+                                <div class="example col-sm-7">
+                                    <input type="text" class="form-control" id="inputSuccess2" />
+                                    <button class="fa fa-search" type="submit" ></button>
+                                    @*<a class="HelpWindow form-control-feedback" role="button" data-toggle="modal" href="/HelpFilter/HelpFilter" hdrtitle="User Details" searchid="P02" data-target="#HelpModal" onclick=transfer(this,"form","","form_control"); title="Search"></a>*@
+                                    @*<span class="glyphicon glyphicon-search form-control-feedback"></span>
+                                </div>
+                            </div>*@
+                            </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtCustName" id="lbl_txtCustName" class="col-sm-5 control-label required" data-toggle="tooltip" data-placement="bottom">Customer Name</label>
+                                <div class="col-sm-7">
+                                    <input type="text" id="txtCustName" class="form-control" name="customer_name" data-toggle="tooltip" data-placement="bottom" maxlength="512">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtPartId" id="lbl_txtPartId" class="col-sm-5 control-label">Part ID</label>
+                                <div class="col-sm-6">
+                                    <input type="text" id="txtPartId" class="form-control" name="posp_id" maxlength="20" readonly>
+                                </div>
+                                <div class="col-sm-1">
+                                    <a class="HelpWindow fa fa-search fa-lg" role="button" data-toggle="modal" href="/HelpFilter/HelpFilter" hdrtitle="User Details" searchid="P02" data-target="#HelpModal" onclick=transfer(this,"form","","form_control"); title="Search" style="font-size: 19px; margin-left: -17px; margin-top: 10px;"></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtPartName" id="lbl_txtPartName" class="col-sm-5 control-label required" data-toggle="tooltip" data-placement="bottom">Part Name</label>
+                                <div class="col-sm-7">
+                                    <input type="text" id="txtPartName" class="form-control" name="part_name" data-toggle="tooltip" data-placement="bottom" maxlength="512">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtPartQty" id="lbl_txtPartQty" class="col-sm-5 control-label required" data-toggle="tooltip" data-placement="bottom">Part Qty</label>
+                                <div class="col-sm-7">
+                                    <input type="text" id="txtPartQty" class="form-control" name="part_qty" data-toggle="tooltip" data-placement="bottom" maxlength="512">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class=" modal-footer" style="border-top:0;padding:0">
+                                        @*<a data-toggle="modal" class="file_attach" href="~/FileAttachment/FileAttachment" hdrtitle="" docno="" doctype="" scrnid="" data-target="#fileattachModal" style="font-size: 16px; color: blue; font-weight: 600; text-decoration: underline;">Attachment</a>*@
+                                        <button type="button" class="btn  btn-primary" id="BtnSave" >Save</button>
+                                        <button type="button" class="btn  btn-primary" id="BtnClear" >Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
+<style>
+
+    example input[type=text] {
+        padding: 10px;
+        font-size: 17px;
+        border: 1px solid grey;
+        float: left;
+        width: 80%;
+        background: #f1f1f1;
+    }
+
+    example button {
+        float: left;
+        width: 20%;
+        padding: 10px;
+        background: #2196F3;
+        color: white;
+        font-size: 17px;
+        border: 1px solid grey;
+        border-left: none;
+        cursor: pointer;
+    }
+
+        buttn:hover {
+            background: #0b7dda;
+        }
+
+    example::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+</style>

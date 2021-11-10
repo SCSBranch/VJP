@@ -1,0 +1,430 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Customer Master</title>
+    <script>
+
+        $(document).ready(function () {
+
+            $("#frm_OrderNo").on('hidden.bs.modal', function () {
+                $(this).data('bs.modal', null);
+
+            });
+            $('#frm_OrderNo').on('loaded.bs.modal', function (e) {
+
+                var cust_data = [{ code: "CUST_1", desc: "Customer 1" }, { code: "CUST_2", desc: "Customer 2" }, { code: "CUST_3", desc: "Customer 3" }, { code: "CUST_3", desc: "Customer 4" }];
+                filter_combobox("cmbCustomerOP", cust_data);
+                Order_details_grid([]);
+                grid_order_qty_pdetail([]);
+                var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+                grid_height = parseInt(full_height) - 310;
+                $('#grid_order_data .k-grid-content').height(grid_height);
+
+                var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+                grid_height = parseInt(full_height) - 400;
+                $('#grid_order_qty_P .k-grid-content').height(grid_height);
+            });
+
+
+            Form_validate_Name1 = $('form.form-horizontal').attr('id');
+            var container = $("#form_customer_master");
+            kendo.init(container);
+            container.kendoValidator({});
+            var cust_data = [{ code: "CUST_1", desc: "Customer 1" }, { code: "CUST_2", desc: "Customer 2" }, { code: "CUST_3", desc: "Customer 3" }, { code: "CUST_3", desc: "Customer 4" }];
+            filter_combobox("cmbCustomerOP", cust_data);
+        });
+
+    </script>
+
+    <script>
+        function Order_details_grid(data) {
+            $("#grid_order_data").kendoGrid({
+                dataSource: {
+                    data: data,
+                    schema: {
+                        model: {
+                            fields: {                                
+                                ord_part_id: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                part_name: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                part_wt: {
+                                    type: "string",
+                                    editable: false
+                                },
+                                as_cast_wt: {
+                                    type: "string",
+                                    editable: false
+                                },
+                                shot_weight: {
+                                    type: "string",
+                                    editable: false
+                                },
+                                order_qty: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                order_price: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                order_value: {
+                                    type: "string",
+                                    editable: false
+                                },
+                                quoted_qty: {
+                                    type: "string",
+                                    editable: false
+                                },
+                                quoted_price: {
+                                    type: "string",
+                                    editable: false
+                                },
+                                quote_contribution: {
+                                    type: "string",
+                                    editable: false
+                                },
+                                quoted_margin: {
+                                    type: "string",
+                                    editable: false
+                                },
+                                quoted_rm_cost: {
+                                    type: "string",
+                                    editable: false
+                                },
+                                dev_po_date: {
+                                    type: "date",
+                                    editable: true
+                                },
+                                dev_po_no: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                sales_order_no: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                order_lead_time: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                mode_flag: {
+                                    type: "string",
+                                    defaultValue: "I"
+                                }
+                            }
+                        }
+                    },
+                },
+                navigatable: true,
+                scrollable: true,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                 //  height: 265,
+                selectable: true,
+                filterable:true,
+                change: selectRow,
+                selectable: "singl", //  Grid Row Selection
+                dataBinding: setDefaultValues,
+                dataBound: function (e) {
+                    resultData = e.sender._data;
+                    var rows = $('#grid_order_data').data('kendoGrid').tbody.children();
+                    setColor(rows, resultData);
+                },
+               // toolbar: "<a class=' k-grid-add'  id = 'btnSave' href=''><span class='fa fa-plus' style='color:Black'></span></a>",
+                columns: [                                       
+                    {
+                        field: "ord_part_id",
+                        title: "Part ID",
+                        width: 130,
+                    },
+                    {
+                        field: "part_name",
+                        title: "Part Name",
+                        width: 130,
+                    },                    
+                    {
+                        field: "part_wt",
+                        title: "Part weight",
+                        width: 120,
+                        editor: function (container, options) {
+                            numeric_editor_dot(container, options.field, '5');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "as_cast_wt",
+                        title: "As cast weight.",
+                        width: 130,
+                        editor: function (container, options) {
+                            numeric_editor_dot(container, options.field, '5');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "shot_weight",
+                        title: "Shot Weight",
+                        width: 130,
+                        editor: function (container, options) {
+                            numeric_editor_dot(container, options.field, '5');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "order_qty",
+                        title: "Order Quantity",
+                        width: 160,
+                        editor: function (container, options) {
+                            numeric_editor(container, options.field, '5');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "order_price",
+                        title: "Order Price",
+                        width: 130,
+                        editor: function (container, options) {
+                            numeric_editor_dot(container, options.field, '9');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "order_value",
+                        title: "Order Value",
+                        width: 130,
+                    },
+                    {
+                        field: "quoted_qty",
+                        title: "Quoted Quantity",
+                        width: 170,
+                        editor: function (container, options) {
+                            numeric_editor(container, options.field, '5');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "quoted_price",
+                        title: "Quoted Price",
+                        width: 150,
+                        editor: function (container, options) {
+                            numeric_editor_dot(container, options.field, '9');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "quote_contribution",
+                        title: "Quoted contribution",
+                        width: 200,
+                    },
+                    {
+                        field: "quoted_margin",
+                        title: "Quoted Margin",
+                        width: 130,
+                    },
+                    {
+                        field: "quoted_rm_cost",
+                        title: "Quoted RM Costs",
+                        width: 250,
+                        editor: function (container, options) {
+                            numeric_editor_dot(container, options.field, '9');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+                    //{
+                    //    field: "dev_po_date",
+                    //    title: "Dev. PO date",
+                    //    width: 250,
+                    //},
+                    {
+                        field: "dev_po_date",
+                        title: "Dev. PO date",
+                        format: "{0: dd/MM/yyyy}",
+                        width: "150px",
+                    },
+                    {
+                        field: "dev_po_no",
+                        title: "Development PO number",
+                        width: 250,
+                    },
+                    {
+                        field: "sales_order_no",
+                        title: "Sales Order Number",
+                        width: 250,
+                    },
+                    {
+                        field: "order_lead_time",
+                        title: "Order to Delivery Lead Time(No.of days)",
+                        width: 280,
+                        editor: function (container, options) {
+                            numeric_editor(container, options.field, '5');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+
+                    {
+                        field: "mode_flag",
+                        title: "Mode",
+                        width: 30,
+                        hidden: true
+                    },                    
+                ],
+                editable: true,
+            });
+        }
+
+        function grid_order_qty_pdetail(user_data) {
+            $("#grid_order_qty_P").kendoGrid({
+                dataSource: {
+                    data: user_data,
+                    schema: {
+                        model: {
+                            fields: {
+                                order_no: {
+                                    type: "string",
+                                    editable: true,
+                                },
+                                year: {
+                                    type: "string",
+                                    editable: true,
+                                },
+                                month: {
+                                    type: "string",
+                                    editable: true,
+                                },
+                                qty: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                mode_flag: {
+                                    type: "string",
+                                    defaultValue: "I"
+                                }
+                                //status: {
+                                //    type: "string",
+                                //    editable: true
+                                //},
+                            }
+                        }
+                    },
+                },
+                navigatable: true,
+                scrollable: true,
+                //sortable: {
+                //    mode: "multiple",
+                //    dir: "asc"
+                //},
+                 //height: 165,
+                //toolbar: "<a class=' k-grid-add'  id = 'btnSave' href=''><span class='fa fa-plus' style='color:Black'></span></a>",
+                selectable: true,
+                selectable: "singl", //  Grid Row Selection
+                dataBinding: setDefaultValues,
+                dataBound: function (e) {
+                    resultData = e.sender._data;
+                    var rows = $('#grid_order_qty_P').data('kendoGrid').tbody.children();
+                    setColor(rows, resultData);
+                },
+                //toolbar: "<a class=' k-grid-add'  id = 'btnSave' href=''><span class='fa fa-plus' style='color:Black'></span></a>",
+                columns: [             
+                {
+                    field: "year",
+                    title: "Year",
+                    // width: 80,
+                },
+                {
+                    field: "month",
+                    title: "Month",
+                    // width: 80,
+                },
+                {
+                    field: "qty",
+                    title: "Quantity",
+                    width: 90,                   
+                },               
+                ],
+                editable: false,
+            });
+        }
+    </script>
+
+</head>
+<body>
+    <div class="modal-header1" style="padding: 5px; color: #fff; background-color: #367FA9; border-radius: 5px;">
+        <a href="#" class="fa fa-close pull-right" data-dismiss="modal" style="color:darkred;font-size:20px;margin-top:3px;"></a>
+        <h3 class="modal-title" style="margin-left:15px;">Order</h3>
+    </div>
+    <div class="modal-body">
+        <form id="form_customer_master" class="form-horizontal" data-role="validator" novalidate="novalidate">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtOrderNOP" class="col-sm-5 control-label">Order No</label>
+                                <div class="col-sm-7">
+                                    <input type="text" class="form-control" id="txtOrderNOP" name="ord_no" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="col-sm-4">
+                <div class="form-group">
+                    <label for="txtCusName" class="col-sm-5 control-label">Customer Name</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" id="txtCusName" name="cus_name" readonly>
+                    </div>
+                </div>
+            </div>*@
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="cmbCustomerOP" class="col-sm-5 control-label" >Customer  Name</label>
+                                <div class="col-sm-7">
+                                    <input id="cmbCustomerOP" name="poc" data-role="filtercombo" style="width:100%" readonly />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-bottom:15px">
+                        <div class="col-sm-9">
+                            <div class="grid_order_entry22">
+                                <div id="grid_order_data" class="grid"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="txtPPartName" class="col-sm-5 control-label">Part Name</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtPPartName" name="part_name" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group">
+                                    <label for="txtPOrderqty" class="col-sm-5 control-label">Order Quantity</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control" id="txtPOrderqty" name="ord_qty" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="grid_order_qty_P" class="grid"></div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

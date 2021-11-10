@@ -1,0 +1,1206 @@
+﻿
+@{
+    ViewBag.Title = "OrderEntry";
+    Layout = "~/Views/Shared/Form_Layout.cshtml";
+}
+
+<form class="form-horizontal" id="form_order_master">
+    <div class="row">
+        <div class="col-sm-12 simscrollDiv">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" id="apanel1" data-parent="#accordion" href="#panel1" style="color:black"><i class="glyphicon glyphicon-minus"></i>Order Entry List</a>
+                    </div>
+                    <div id="panel1" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div id="master_grid" style="padding-bottom:15px">
+                                <div id="grid_order_list" class="grid"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" id="apanel2" data-parent="#accordion" href="#panel2" style="color:black"><i class="glyphicon glyphicon-plus"></i>Order Entry Detail</a>
+                    </div>
+                    <div id="panel2" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-12">
+                                    <div class="modal-footer" style="border-top:0;padding:0">
+                                        @*<button type="button" class="btn  btn-primary" id="RFQBtnCreate" onclick="RFQ_Create()">Create</button>*@
+                                        <button type="button" class="btn  btn-primary" id="RFQBtnSave">Save</button>
+                                        <button type="button" class="btn  btn-primary" id="RFQBtnClear">Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="txtOrderNO" class="col-sm-5 control-label">Order No</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" class="form-control" id="txtOrderNO" name="ord_no" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="cmbCustomer" class="col-sm-5 control-label" style="text-decoration-line:underline" onclick="Customer_onChange(this)">Customer Name</label>
+                                        <div class="col-sm-7">
+                                            <input id="cmbCustomer" name="poc" data-role="filtercombo" style="width:100%" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-bottom:15px">
+                                <div class="col-sm-9">
+                                    <div id="grid_order_entry">
+                                        <div id="grid_order_det" class="grid"></div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label for="txtPartName" class="col-sm-5 control-label" style="text-decoration-line:underline" onclick="Part_onChange(this)">Part Name</label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="txtPartName" name="part_name" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label for="txtOrderqty" class="col-sm-5 control-label">Order Quantity</label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" id="txtOrderqty" name="ord_qty" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="grid_order_qty" class="grid"></div>
+                                </div>
+                            </div>                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="display:none">
+        <a id="part_name_popup" class="file_attach" data-toggle="modal" href="~/FileAttachment/PartNamePopup" hdrtitle="" doctype="" scrnid="" data-target="#frm_PartName">
+        </a>
+        <a id="Customer_popup" class="file_attach" data-toggle="modal" href="~/FileAttachment/CustomerPopup" hdrtitle="" doctype="" scrnid="" data-target="#frm_Customer">
+        </a>
+        <a id="OrderNumber_popup" class="file_attach" data-toggle="modal" href="~/FileAttachment/OrderNoPopup" hdrtitle="" doctype="" scrnid="" data-target="#frm_OrderNo">
+        </a>
+    </div>
+
+    <div id="File__Attachment__Details"></div>
+    <input id="txtDocno" type="hidden" name="Doc_no">
+    <input id="txtseqno" type="hidden" name="SeqNo">
+    <input id="txtmodeflag" type="hidden" name="modeflag">
+    <input id="txtfilepath" type="hidden" name="file_path">
+    <input id="txtDocName" type="hidden" name="doc_type">
+</form>
+<script src="~/CommonScripts/Grid_FileAttachment.js"></script>
+
+<style>
+    .k-input[readonly] {
+        background-color: #eee;
+    }
+</style>
+
+<script>
+    // list part
+    var selectIds = $('#panel1,#panel2');
+    $(function ($) {
+        selectIds.on('show.bs.collapse hidden.bs.collapse', function () {
+            $(this).prev().find('.glyphicon').toggleClass('glyphicon-plus glyphicon-minus');
+        })
+    });
+    var ScreenId = "ORDER_ENTRY";
+    var menuId = "";
+    var screen_id = "";
+    Screen_Id = "ORDER_ENTRY";
+    var grid_height = '';
+    var default_screen_size = 631;
+    var default_grid_size = 361;
+    var customer_rowid = '';
+    var part_combo = [];
+    var part_rowid = '0';
+
+    $(document).ready(function () {
+        $("#multy").hide();
+        $("#div_status").hide();
+        filter_combobox("cmbCustomer", []);
+
+        var data = [{ cust_rowid: "1", order_no: "ORDER1", cus_name: "Kannappan", order_type: "Type1", status_code: "2", status: "Open" },
+            { cust_rowid: "2", order_no: "ORDER2", cus_name: "Muthukumar", order_type: "Type2", status_code: "2", status: "Open" },
+            { cust_rowid: "3", order_no: "ORDER3", cus_name: "Suga1", order_type: "Type2", status_code: "2", status: "Open" },
+            { cust_rowid: "4", order_no: "ORDER4", cus_name: "Shyamala", order_type: "Type3", status_code: "2", status: "Open" }];
+        toolcostlistgrid(data);
+        //  grid_order_detail([]);
+        grid_order_qty_detail([]);
+        grid_mandatory("grid_order_qty", ["Year", "Month", "Quantity"]);
+
+        // form part
+        Form_validate_Name = $('form.form-horizontal').attr('id');
+        kendodate_format_validator('form_order_master');
+        $("#lblFormTitle").text('Order Entry');
+
+        $(".file_attach").attr("hdrtitle", "Order Entry");
+
+        //var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+        //grid_height = parseInt(full_height) - 430;   // 415
+        //$('#grid_order_list .k-grid-content').height(grid_height);
+
+        $("#form_head").hide();
+        var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+        grid_height = parseInt(full_height) - 285;
+        $('#grid_order_list .k-grid-content').height(grid_height);
+    });
+
+</script>
+
+<script>
+    function Part_onChange(arg) {       
+        $('#part_name_popup').click();       
+    }
+    function Customer_onChange(arg) {
+        $('#Customer_popup').click();
+        Load_Customer_popup(customer_rowid);
+    }
+    function Order_onChange(arg) {
+        $('#OrderNumber_popup').click();
+
+    }
+
+    var part_name_list = '';
+    var status_list = '';
+    function toolcostlistgrid(data) {
+        try {
+            gridRowID = -1;
+            data = addRandomNum(data);
+            $("#grid_order_list").kendoGrid({
+                dataSource: {
+                    data: data,
+                    pageSize: 20,
+                    schema: {
+                        model: {
+                            fields: {
+                                order_no: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                cus_name: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                order_type: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                status_code: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                status: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                            }
+                        }
+                    },
+                },
+                dataBound: function (o) {
+                    reset_Selected_GridRows("grid_order_list", o);
+                },
+                // height: 220,
+
+                filterable: true,
+                scrollable: true,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                pageable: false,
+                selectable: true,
+                //change: selectRow,
+                columns: [
+                    {
+                        field: "cust_rowid",
+                        title: "Cust Rowid",
+                        width: "150px",
+                        hidden: true
+                    },
+                    {
+                        field: "order_no",
+                        title: "Order No",
+                        width: "150px",
+                        template: "<a href='javascript:void(0)' class='release' data-ID='#=order_no#' style='text-decoration: underline; color:black' onclick='Order_onChange(this)'>#=order_no#</a>",
+
+                    },                   
+                    {
+                        field: "cus_name",
+                        title: "Customer Name",
+                        width: "150px",
+                        template: "<a href='javascript:void(0)' class='customer_name' data-ID='#=cus_name#' style='text-decoration: underline; color:black'>#=cus_name#</a>",
+                    },                    
+                    {
+                        field: "order_type",
+                        title: "Order Type",
+                        width: "150px",
+                    },
+                    {
+                        field: "status_code",
+                        title: "Status",
+                        hidden: true,
+                        width: "150px",
+                    },                   
+                    {
+                        field: "status",
+                        title: "Status",
+                        editor: function (container, options) {
+                            combo_editor_man(container, "cmb_" + options.field, eval(options.field + "_list"), options.field, "status_code", "grid_order_list")
+                        },
+                        width: 150,
+                    },
+                    {
+                        command: [
+                            {
+                                name: "Save",
+                                text: "",
+                                id: "Save",
+                                template: '<input type="button" class="info  k-button k-button-icontext" id="save"   name="info" value="Complete"  style="height: 26px; margin: 0px 2px; min-width: 64px;" />',
+                            },
+                            //{
+                            //    name: "Delete",
+                            //    text: "",
+                            //    template: '<input type="button" class="release  k-button k-button-icontext" id="delete"  name="release" value="Delete"  style="height: 26px; margin: 0px 2px; min-width: 64px;" />',
+                            //},
+                            {
+                                name: "Attach",
+                                text: "",
+                                template: "<i class='fa fa-paperclip Attachment' style='padding: 0px; font-size: 20px; margin: 0px 10px'></i>",
+                            },
+                        ], title: "Actions", width: "120px",
+                    },
+                ],
+                editable: true,
+            });
+
+            $('#grid_order_list').data('kendoGrid').tbody.find('.customer_name').click(function (e) {
+                var dataitem = $('#grid_order_list').data('kendoGrid').dataItem($(e.currentTarget).closest("tr"));
+                $('#Customer_popup').click();
+                customer_rowid = dataitem.cust_rowid;
+                Load_Customer_popup(customer_rowid);               
+            });
+
+            $("#grid_order_list").on("dblclick", "tr.k-state-selected", function () {
+                var grid = $("#grid_order_list").data("kendoGrid");
+                var selectedItem = grid.dataItem(grid.select());
+                $("#txtOrderNO").val(selectedItem.order_no);
+                customer_rowid = selectedItem.cust_rowid;
+                Load_Customer_Name();
+                $('#cmbCustomer').data("kendoComboBox").value(selectedItem.cust_rowid);
+                $('#cmbCustomer').data("kendoComboBox").enable(false);              
+
+                $("#apanel2").click();
+                var data = [{ part_rowid: "1", part_id: "TestPart1", part_name: "Test Part1", part_wt: "", as_cast_wt: "", part_wt: "", as_cast_wt: "", shot_weight: "", order_qty: "20", order_price: "", order_value: "", quoted_qty: "", quoted_price: "", quote_contribution: "", quoted_margin: "", quoted_rm_cost: "", dev_po_no: "", dev_po_date: "", sales_order_no: "", order_lead_time: "", mode_flag: "S" },
+                { part_rowid: "2", part_id: "TestPart2", part_name: "Test Part2", part_wt: "", as_cast_wt: "", part_wt: "", as_cast_wt: "", shot_weight: "", order_qty: "12", order_price: "", order_value: "", quoted_qty: "", quoted_price: "", quote_contribution: "", quoted_margin: "", quoted_rm_cost: "", dev_po_no: "", dev_po_date: "", sales_order_no: "", order_lead_time: "", mode_flag: "S" }];
+                $("#grid_order_entry").empty();
+                $("#grid_order_entry").append("<div id='grid_order_det' class='grid'></div>");
+
+                grid_order_detail(data);
+                grid_mandatory("grid_order_det", ["Order Quantity", "Order Price", "Dev. PO date", "Development PO number", "Sales Order Number", "Order to Delivery Lead Time(No.of days)"]);
+                part_name_list = load_dropdown_list('ORDER_ENTRY', 'PART_LIST');
+                var part_id = "";
+                var part_weight = 0;
+                var as_cast_wt = 0;
+                var shot_weight = 0;
+
+                var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+                grid_height = parseInt(full_height) - 400;
+                $('#grid_order_det .k-grid-content').height(grid_height);
+                var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+                grid_height = parseInt(full_height) - 500;
+                $('#grid_order_qty .k-grid-content').height(grid_height);
+            });
+
+            $('#grid_order_list').data('kendoGrid').tbody.find('.Attachment').click(function (e) {
+                var dataitem = $('#grid_order_list').data('kendoGrid').dataItem($(e.currentTarget).closest("tr"));
+                save__attachment.content($("#DevFile_Attach_Template").html()).center().open();
+                DocType = "RFQ_HDR_ORDER";
+
+                $('.form-group .k-invalid-msg').remove();
+                $("#txtRFQNumber").val(dataitem.order_no);
+                var grp_data1 = load_dropdown_list('ATTACHMENT', 'ATTCH_GRP');
+                var grp_data2 = load_dropdown_list('ATTACHMENT', 'ATTCH_SGRP');
+                filter_combobox("cmb_grid_group", grp_data1);
+                filter_combobox("cmb_grid_subgroup", grp_data2);
+
+                $("#txtDocno").val($("#txtRFQNumber").val());
+                $("#txtDocName").val("RFQ_HDR_ORDER");
+                $("#txtmodeflag").val("I");
+                $("#txtseqno").val("0");
+                $("#txtVersion").val("1");
+                fetch_DocAttach_details($("#txtDocName").val(), $("#txtDocno").val())
+                $('.k-window').css('top', '30px');
+
+            });
+
+
+        } catch (err) {
+            kendoAlert(err);
+        }
+    }
+    status_list = [{ code: "1", desc: "New" }, { code: "2", desc: "Open" }, { code: "3", desc: "Completed" }]
+
+
+
+    function selectRow() {
+
+        var grid = $("#grid_order_det").data("kendoGrid");
+        var selectedItem = grid.dataItem(grid.select());
+        $("#txtPartName").val(selectedItem.part_name);
+        $("#txtOrderqty").val(selectedItem.order_qty);
+       // alert("hello");
+
+        // $(".k-grid-toolbar").css("pointer-events", "none");
+        // $(".k-grid-toolbar").css("opacity", "0.3");
+    }
+
+    function grid_order_detail(user_data) {
+        try {
+
+            $("#grid_order_det").kendoGrid({
+                dataSource: {
+                    data: user_data,
+                    schema: {
+                        model: {
+                            fields: {
+                                part_rowid: {
+                                    type: "string",
+                                    editable: true,
+                                },
+                                part_id: {
+                                    type: "string",
+                                    editable: true,
+                                },
+                                part_name: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                part_wt: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                as_cast_wt: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                shot_weight: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                order_qty: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                order_price: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                order_value: {
+                                    type: "string",
+                                    editable: false
+                                },
+                                quoted_qty: {
+                                    type: "string",
+                                    editable: false
+                                },
+                                quoted_price: {
+                                    type: "string",
+                                    editable: false
+                                },
+                                quote_contribution: {
+                                    type: "string",
+                                    editable: false
+                                },
+                                quoted_margin: {
+                                    type: "string",
+                                    editable: false
+                                },
+                                quoted_rm_cost: {
+                                    type: "string",
+                                    editable: false
+                                },
+                                dev_po_date: {
+                                    type: "date",
+                                    editable: true
+                                },
+                                dev_po_no: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                sales_order_no: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                order_lead_time: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                mode_flag: {
+                                    type: "string",
+                                    defaultValue: "I"
+                                }
+                            }
+                        }
+                    },
+                },
+                navigatable: true,
+                scrollable: true,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                //height: 285,
+                selectable: true,
+                selectable: "singl", //  Grid Row Selection
+                change: selectRow,
+                dataBinding: setDefaultValues,
+                edit: OnEdit,
+                dataBound: function (e) {
+                    resultData = e.sender._data;
+                    var rows = $('#grid_order_det').data('kendoGrid').tbody.children();
+                    setColor(rows, resultData);
+                },
+                toolbar: "<a class='k-grid-add'  id = 'btnSave' href=''><span class='fa fa-plus' style='color:Black'></span></a>",
+                columns: [
+                    {
+                        field: "part_rowid",
+                        hidden: true,
+                        width: 100
+                    },
+
+                    {
+                        field: "part_name_code",
+                        hidden: true,
+                        width: 100
+                    },
+                    {
+                        field: "part_name",
+                        title: "Part Name",
+                        editor: function (container, options) {
+                            combo_editor_part(container, "cmb_" + options.field, eval(options.field + "_list"), options.field, "part_name_code", "grid_order_det")
+                        },
+                        width: 250,
+                        locked: true
+                    },
+                    {
+                        field: "part_id",
+                        title: "Part ID",
+                        width: 130,
+                        template: "<i href='javascript:void(0)' class='part_details'  onclick='part_popup_onclick()' data-ID='#=part_id#' style='text-decoration: underline; color:black;font-style:initial'>#=part_id#</i>",
+                        //template: "<i class='fa fa-paperclip Attachment' id='no_of_attachment_det' style='padding: 0px; font-size: 20px; margin: 0px 10px' onclick='part_popup_onclick()'></i>",
+                        //locked: true
+                    },
+                    {
+                        field: "part_wt",
+                        title: "Part weight",
+                        width: 100,
+                        editor: function (container, options) {
+                            numeric_editor_dot(container, options.field, '5');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "as_cast_wt",
+                        title: "As cast weight.",
+                        width: 130,
+                        editor: function (container, options) {
+                            numeric_editor_dot(container, options.field, '5');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "shot_weight",
+                        title: "Shot Weight",
+                        width: 100,
+                        editor: function (container, options) {
+                            numeric_editor_dot(container, options.field, '5');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "order_qty",
+                        title: "Order Quantity",
+                        width: 160,
+                        editor: function (container, options) {
+                            numeric_editor(container, options.field, '5');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "order_price",
+                        title: "Order Price",
+                        width: 130,
+                        editor: function (container, options) {
+                            numeric_editor_dot(container, options.field, '9');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "order_value",
+                        title: "Order Value",
+                        width: 130,
+                    },
+                    {
+                        field: "quoted_qty",
+                        title: "Quoted Quantity",
+                        width: 170,
+                        editor: function (container, options) {
+                            numeric_editor(container, options.field, '5');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "quoted_price",
+                        title: "Quoted Price",
+                        width: 150,
+                        editor: function (container, options) {
+                            numeric_editor_dot(container, options.field, '9');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+                    {
+                        field: "quote_contribution",
+                        title: "Quoted contribution",
+                        width: 200,
+                    },
+                    {
+                        field: "quoted_margin",
+                        title: "Quoted Margin",
+                        width: 130,
+                    },
+                    {
+                        field: "quoted_rm_cost",
+                        title: "Quoted RM Costs",
+                        width: 250,
+                        editor: function (container, options) {
+                            numeric_editor_dot(container, options.field, '9');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+                    //{
+                    //    field: "dev_po_date",
+                    //    title: "Dev. PO date",
+                    //    width: 250,
+                    //},
+                    {
+                        field: "dev_po_date",
+                        title: "Dev. PO date",
+                        format: "{0: dd/MM/yyyy}",
+                        width: "150px",
+                    },
+                    {
+                        field: "dev_po_no",
+                        title: "Development PO number",
+                        width: 250,
+                    },
+                    {
+                        field: "sales_order_no",
+                        title: "Sales Order Number",
+                        width: 250,
+                    },
+                    {
+                        field: "order_lead_time",
+                        title: "Order to Delivery Lead Time(No.of days)",
+                        width: 300,
+                        editor: function (container, options) {
+                            numeric_editor(container, options.field, '5');
+                        },
+                        attributes: { class: "text-right" },
+                    },
+
+                    {
+                        field: "mode_flag",
+                        title: "Mode",
+                        width: 30,
+                        hidden: true
+                    },
+                    {
+                        command: [{
+                            name: "Delete",
+                            id: "Delete",
+                            imageClass: "fa fa-close",
+                            //locked: true,
+                            click: function (e) {
+                                var grid = $("#grid_order_det").data("kendoGrid");
+                                var dataItem = $("#grid_order_det").data("kendoGrid").dataItem($(e.target).closest("tr"));
+                                DeleteWindowEvent(e, dataItem, grid);
+                                e.stopImmediatePropagation()
+                            }
+                        }, ],
+                        title: "&nbsp;",
+                        width: "40px",
+                    },
+                ],
+                editable: true,
+            });
+            //$('#grid_order_det').data('kendoGrid').tbody.find('.part_details').click(function (e) {
+            //    var dataitem = $('#grid_order_det').data('kendoGrid').dataItem($(e.currentTarget).closest("tr"));
+            //    $('#part_name_popup').click();
+            //    part_rowid = dataitem.part_rowid;                
+            //    Part_popup_load(part_rowid);
+            //});
+        }
+        catch (err) {
+            // alert(err);
+        }
+    }
+
+    function part_popup_onclick()
+    {
+        var grid = $("#grid_order_det").data("kendoGrid"); 
+        var dataitem = grid.dataItem(grid.select());
+        //var dataitem = $(this).closest(".k-grid").data("kendoGrid");
+        $('#part_name_popup').click();
+        part_rowid = dataitem.part_rowid;
+        Part_popup_load(part_rowid);
+    }
+
+    function OnEdit(e) {
+        setDefaultValues(e);
+        var columnIndex = this.cellIndex(e.container);
+        var fieldName = this.thead.find("th").eq(columnIndex).data("field");
+        if (!isEditable(fieldName, e.model)) {
+            this.closeCell();
+        }
+    }
+    function isEditable(fieldName, model) {
+        if (fieldName === "part_wt") {
+            return ((model.hasOwnProperty("as_cast_wt1")));// part id
+        }
+        else if (fieldName === "as_cast_wt") {
+            return ((model.hasOwnProperty("as_cast_wt1"))); // part_weight
+        }
+        else if (fieldName === "shot_weight") {
+            return ((model.hasOwnProperty("shot_weight1")));// cast weight
+        }
+        else if (fieldName === "order_qty") {
+            return ((model.hasOwnProperty("order_qty1")));// shot weight
+        }
+
+        return true; // default to editable
+    }
+
+
+    function grid_order_qty_detail(user_data) {
+        $("#grid_order_qty").kendoGrid({
+            dataSource: {
+                data: user_data,
+                schema: {
+                    model: {
+                        fields: {
+                            order_no: {
+                                type: "string",
+                                editable: true,
+                            },
+                            year: {
+                                type: "string",
+                                editable: true,
+                            },
+                            month: {
+                                type: "string",
+                                editable: true,
+                            },
+                            qty: {
+                                type: "string",
+                                editable: true
+                            },
+                            mode_flag: {
+                                type: "string",
+                                defaultValue: "I"
+                            }
+                            //status: {
+                            //    type: "string",
+                            //    editable: true
+                            //},
+                        }
+                    }
+                },
+            },
+            navigatable: true,
+            scrollable: true,
+            sortable: {
+                mode: "multiple",
+                dir: "asc"
+            },
+            // height: 165,
+            toolbar: "<a class=' k-grid-add'  id = 'btnSave' href=''><span class='fa fa-plus' style='color:Black'></span></a>",
+            selectable: true,
+            selectable: "singl", //  Grid Row Selection
+            dataBinding: setDefaultValues,
+            dataBound: function (e) {
+                resultData = e.sender._data;
+                var rows = $('#grid_order_qty').data('kendoGrid').tbody.children();
+                setColor(rows, resultData);
+            },
+            //toolbar: "<a class=' k-grid-add'  id = 'btnSave' href=''><span class='fa fa-plus' style='color:Black'></span></a>",
+            columns: [{
+                command: [{
+                    name: "Delete",
+                    id: "Delete",
+                    imageClass: "fa fa-close",
+                    click: function (e) {
+                        var grid = $("#grid_order_qty").data("kendoGrid");
+                        var dataItem = $("#grid_order_qty").data("kendoGrid").dataItem($(e.target).closest("tr"));
+                        DeleteWindowEvent(e, dataItem, grid);
+                        e.stopImmediatePropagation()
+                    }
+                }, ],
+                title: "&nbsp;",
+                width: "30px",
+            },
+            {
+                field: "order_no",
+                title: "Order No",
+                //width: 100,
+                hidden: true
+            },
+            {
+                field: "year",
+                title: "Year",
+                // width: 80,
+            },
+            {
+                field: "month",
+                title: "Month",
+                // width: 80,
+            },
+            {
+                field: "qty",
+                title: "Quantity",
+                width: 90,
+                editor: function (container, options) {
+                    numeric_editor(container, options.field, '5');
+                },
+            },
+
+            //{
+            //    field: "status_code",
+            //    title: "Status",
+            //    hidden: true,
+            //    width: 100
+            //},
+            //{
+            //    field: "status",
+            //    title: "Status",
+            //    editor: function (container, options) {
+            //        combo_editor_man_check(container, "cmb_" + options.field, eval(options.field + "_list"), options.field, "Status", "status_code", "grid_order_det")
+            //    },
+            //    width: 100,
+            //},
+            {
+                field: "mode_flag",
+                title: "Mode",
+                //width: 30,
+                hidden: true
+            }
+            ],
+            editable: true,
+        });
+    }
+    function sub_group_change() {
+
+    }
+
+    function attachment_close() {
+        save__attachment.close();
+    }
+    function GridBrowseTemplateFile() {
+        try {
+            $("#file").attr("accept", ".pdf,.xlsx,.jpg");
+            $("#file").click();
+        }
+        catch (err) {
+            javascript_log4j_root(arguments.callee.name, err);
+        }
+    }
+    function Load_Customer_Name() {
+        try {
+            var sRequest = weburl + '/server/Customer/fetch_customer_list.ashx?org=' + OrgId + '&locn=' + LocnId + '&user=' + User + '&lang=en_us';
+            var s = executeService(sRequest);
+            var responseJSON = JSON.parse(s);
+            if (responseJSON.update == "successful") {
+                //generateGrid_Customer(responseJSON);
+                var cust_data = responseJSON.data.context.Detail;
+                var code = {};
+                var desc = {};
+
+                var combo_data1 = [];
+                $.each(cust_data, function (key, val) {
+                    combo_data1.push({ code: cust_data[key].cust_rowid, desc: cust_data[key].cust_name });
+                });
+                filter_combobox("cmbCustomer", combo_data1);
+
+            }
+            else {
+                filter_combobox("cmbCustomer", []);
+            }
+        } catch (err) {
+            kendoAlert(err);
+        }
+    }
+
+
+    /*---------------------------------------------------------------------  Single Fetch Method  ----------------------------------------------------------------------------------*/
+    function Part_popup_load(part_rowid) {
+        var sRequest = weburl + '/server/part/fetch_part_detail.ashx?org=' + OrgId + '&locn=' + LocnId + '&user=' + User + '&lang=en_us&part_rowid=' + part_rowid + '';
+        var s = executeService(sRequest);
+        var responseJSON = JSON.parse(s);
+        if (responseJSON.update == "successful") {
+            generateGrid_Part_master(responseJSON);
+        } else {
+            Master_data_grid([]);
+        }
+
+    }
+
+    function generateGrid_Part_master(res) {
+        if (res.data.context.Header != undefined) {
+            var res_data = res.data.context.Header;
+            $('.form-group .k-invalid-msg').remove();
+
+            $("#txtPartId").val(res_data.part_id);
+            $("#txtEnqPartName").val(res_data.part_name);
+            $('#txtType').val(res_data.cast_machined);
+            $('#txtPartType').val(res_data.part_type);
+            $('#txtGrade').val(res_data.rm_grade);
+            $('#txt_part_rowid').val(res_data.part_rowid);
+            $('#txtMeltingLoss').val(res_data.melting_loss);
+            $('#txtCastWeight').val(res_data.cast_weight);
+            $('#txtShotWeight').val(res_data.shot_weight);
+            $('#txtPartWeight').val(res_data.part_weight);
+            $('#txt_timestamp').val(res_data.timestamp);
+            $('#txtStatus').val(res_data.part_status_code);
+
+            part_id = res_data.part_id;
+            part_weight = res_data.part_weight
+            as_cast_wt = res_data.cast_weight
+            shot_weight = res_data.shot_weight
+        }
+
+        if (res.data.context.Detail == null) {
+            Master_data_grid([]);
+
+            var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+            grid_height = parseInt(full_height) - 363;
+            $('#grid_master_data .k-grid-content').height(grid_height);
+        } else {
+            var data = changedataType(res.data.context.Detail);
+            $("#process_grid").empty();
+            $("#process_grid").append("<div id='grid_master_data' class='grid'></div>");           
+            Master_data_grid(data);
+
+            var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+            grid_height = parseInt(full_height) - 334;
+            $('#grid_master_data .k-grid-content').height(grid_height);
+        }
+    }
+
+    function Master_data_grid(data) {
+        try {
+            gridRowID = -1;
+            data = addRandomNum(data);
+            $("#grid_master_data").kendoGrid({
+                dataSource: {
+                    data: data,
+                    //  pageSize: 10,
+                    schema: {
+                        model: {
+                            fields: {
+                                part_dtl_rowid: { type: "string", defaultValue: "0" },
+                                part_id: { type: "string" },
+                                applicable_flag: { editable: false },
+                                process_step_code: { type: "string" },
+                                process_step: { type: "string" },
+                            }
+                        }
+                    },
+                },
+                dataBound: function (o) {
+                    reset_Selected_FloGridRows("grid_master_data", o);
+                    var grid = this;
+                    $.each(grid.tbody.find('tr'), function () {
+                        var model = grid.dataItem(this);
+                        if (model.applicable_flag == "Y") {//changed to see if i can select the row with database Id of 2
+                            $('[data-uid=' + model.uid + ']').addClass('k-state-selected');
+                            grid_selected_rows[model.randNum] = true;
+                            $('[data-uid=' + model.uid + ']').find("input[type='checkbox']").prop("checked", true);
+
+                            // var dataItem = grid.dataItem(selection);
+                        }
+                        else {
+                            $('[data-uid=' + model.uid + ']').removeClass("k-state-selected");
+                            grid_selected_rows[model.randNum] = false;
+                        }
+                    });
+                },
+                //height: 130,
+                columns: [
+                    {
+                        field: "part_dtl_rowid",
+                        title: "part_dtl_rowid",
+                        width: 150,
+                        hidden: true
+                    },
+                    {
+                        field: "part_id",
+                        title: "Part ID",
+                        width: 150,
+                        hidden: true
+                    },
+                    {
+                        field: "applicable_flag",
+                        title: "Select",
+                        template: '<input type="checkbox" #= applicable_flag == "1" ? "checked=checked" : "" # class="chkbx2"></input>',
+                        update: true,
+                        width: 30
+                    },
+                {
+                    field: "process_step_code",
+                    title: "Code",
+                    width: 150,
+                    hidden: true
+                },
+                {
+                    field: "process_step",
+                    title: "Processes",
+                    width: 150
+                },
+                ],
+
+            });
+
+            var gridDoc = $("#grid_master_data").data("kendoGrid");
+            gridDoc.table.on("change", ".chkbx2", selectRow);
+            function selectRow() {
+                selected_FloGrid_Row("grid_master_data", this);
+            }
+        }
+        catch (err) {
+            //javascript_log4j_root(arguments.callee.name, err);
+           // alert(err)
+        }
+    }
+    var grid_selected_rows = {};
+    function reset_Selected_FloGridRows(id, o) {
+        var grid = $("#" + id).data("kendoGrid");
+        var newSelection = [];
+        var pageData = o.sender.dataSource._data;
+        if ($.isEmptyObject(grid_selected_rows) == false) {
+            $.each(grid.dataSource._data, function (key, value) {
+                $.each(grid_selected_rows, function (skey, svalue) {
+                    if ((grid_selected_rows[skey] == true) && (skey == value.randNum)) {
+                        newSelection.push(pageData[key].uid);
+                    }
+                });
+            });
+            $.each(newSelection, function (key, uid) {
+                $("tr[data-uid='" + uid + "'] td:first").find("input[type='checkbox']").prop("checked", true);
+                $("tr[data-uid='" + uid + "']").addClass("k-state-selected");
+            });
+        }
+    }
+
+    var fcheck = '';
+    var ucheck = '';
+    function selected_FloGrid_Row(id, e, rSelect, sel_Row) {
+        var checked = e.checked;
+        if (rSelect) {
+            checked = true;
+            row = sel_Row;
+        } else {
+            row = $(e).closest("tr");
+        }
+        grid = $("#" + id).data("kendoGrid");
+        var selection = $(e).closest("tr");
+        if (rSelect) {
+            selection = sel_Row;
+        }
+        if (checked) {
+            //-select the row
+            row.addClass("k-state-selected");
+            grid_selected_rows[grid.dataItem(selection).randNum] = true;
+            var dataItem = grid.dataItem(selection);
+            dataItem._set('applicable_flag', 'Y');
+            fcheck += dataItem.ProcessStage + ",";
+            setlocalStorage("ChkFirstClick", fcheck);
+
+        } else {
+            //-remove selection
+            row.removeClass("k-state-selected");
+            grid_selected_rows[grid.dataItem(selection).randNum] = false;
+            var dataItem = grid.dataItem(selection);
+            dataItem._set('applicable_flag', 'N');
+            ucheck += dataItem.ProcessStage + ",";
+            setlocalStorage("UnChkFirstClick", ucheck);
+        }
+        return false;
+    }
+
+    function combo_editor_part(container, cmbid, datasource, datafield, code_datafield, grid_id) {
+        $('<input  id="' + cmbid + '" data-text-field="desc" data-value-field="desc" data-bind="value:' + datafield + '"/>').appendTo(container).kendoComboBox({
+            autoBind: false,
+            filter: "contains",
+            dataSource: datasource,
+            change: function (e) {
+                var cmb_value = this.value();
+                if (cmb_value && this.selectedIndex == -1) {
+                    this.value("");
+                }
+                //else{
+                var cmb_var = $("#" + grid_id).data("kendoGrid");
+                var selectedItem = cmb_var.dataItem(cmb_var.select());
+                var combobox_data = $("#" + cmbid).data("kendoComboBox");
+                if (combobox_data != undefined && combobox_data.selectedIndex == -1) {
+                    selectedItem[datafield] = "";
+                    selectedItem[code_datafield] = "";
+                }
+                else {
+                    selectedItem[datafield] = combobox_data.dataItem(combobox_data.selectedIndex).desc;
+                    selectedItem[code_datafield] = combobox_data.dataItem(combobox_data.selectedIndex).code;
+                }
+                
+                Part_popup_load(selectedItem.part_name_code);
+                $("#txtPartName").val(selectedItem.part_name);
+
+                selectedItem.set('part_rowid', selectedItem.part_name_code);
+                selectedItem.set('part_id', part_id);
+                selectedItem.set('part_wt', part_weight);
+                selectedItem.set('as_cast_wt', as_cast_wt);
+                selectedItem.set('shot_weight', shot_weight);
+            }
+        });
+
+        $("#" + grid_id).parent().children().find(".k-input").attr("readonly", "readonly");
+    }
+
+
+</script>
+<script type="text/x-kendo-template" id="DevFile_Attach_Template" style="color:Black">
+    <div class="modal-body" style="padding:5px">
+        <form id="form2" class="form-horizontal" data-role="validator" novalidate="novalidate">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="txtRFQNumber" class="col-sm-4 control-label">Order No</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control input-sm" id="txtRFQNumber" readonly name="rfq_no" style="height:20px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-11">
+                    <div id="Grid_Attach"></div>
+                </div>
+            </div>
+            <div class="row" style="margin-top:5px">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="cmb_grid_group" class="col-sm-3 control-label required">Group</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="cmb_grid_group" name="Group" style="width:100%" onchange="sub_group_change()">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="cmb_grid_subgroup" class="col-sm-3 control-label required">Sub Group</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="cmb_grid_subgroup" name="SubGroup" style="width:100%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="filename" class="col-sm-3 control-label">File Name</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control input-sm" id="txtfilename" readonly name="filename" style="height:20px">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="col-sm-2">
+                        <input type="file" id="file" style="display:none;" onchange="save_file();" />
+                        <button type="button" id="btn_down1" class="btn btn-sm btn-primary" onclick="GridBrowseTemplateFile();" data-toggle="tooltip" data-placement="bottom">Browse</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="Version" class="col-sm-3 control-label">Version</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control input-sm" id="txtVersion" readonly name="Version" style="height:20px">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="Size" class="col-sm-3 control-label">Size</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control input-sm" id="txtSize" readonly name="Size" style="height:20px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <label for="Notes" class="col-sm-2 control-label">Notes</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control input-sm" rows="2" id="txtnotes" style="width:90%" name="Notes"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <input id="txtDocno" type="hidden" name="SeqNo">
+                <input id="txtseqno" type="hidden" name="SeqNo">
+                <input id="txtmodeflag" type="hidden" name="modeflag">
+                <input id="txtfilepath" type="hidden" name="file_path">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer" style="padding: 10px; border-top: none">
+        <div style=" width: 70%;margin-top: -15px;">
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnGNew" onclick="Grid_btn_new()">New</button>
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnGUpload" onclick="Grid_btn_upload();">Upload</button>
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnGDwnload" onclick="Grid_btn_download();">Download</button>
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnHView" onclick="Grid_btn_view();">View</button>
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnGRemove" onclick="Grid_btn_remove();">Remove</button>
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnFClose" onclick="attachment_close();">Close</button>
+        </div>
+    </div>
+</script>
+<script>
+    save__attachment = $("#File__Attachment__Details").kendoWindow({
+        title: "Order Entry - Document Upload",
+        modal: true,
+        draggable: false,
+        visible: false,
+        resizable: false,
+        width: 1000,
+    }).data("kendoWindow");
+
+</script>
+
+
+

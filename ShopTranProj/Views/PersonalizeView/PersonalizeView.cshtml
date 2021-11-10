@@ -1,0 +1,78 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>PersonalizeView</title>   
+</head>
+<body>  
+    <div class="modal-header" style="background-color: #367FA9">
+        <button type="button" class="close" data-dismiss="modal" onclick="closeView()">&times;</button>
+        <h4 id="perviewhdr" class="modal-title"></h4>
+    </div>
+    <div class="modal-body" style=" height :500px;">
+        <div class="col-md-12">
+            <div class="col-md-7">
+                <form class="form-horizontal">
+                    <div class="form-group" style="margin-bottom:8px">
+                        <div id="View_name">
+                            <label for="cmb_view" style="font-weight:100">View Name:</label>                          
+                            <select name="view" onchange="View_selectChange()" id="cmb_view" required></select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-3">
+                <form class="form-horizontal">
+                    <div class="form-group" style="margin-bottom:8px">
+                        <input type="checkbox" id="inputview" checked>
+                        <label for="inputview" style="font-weight:100">Make Default</label>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+
+        <div class="col-xs-6">
+            <label for="inputview" style="font-weight:100">
+                Visible fields
+            </label>
+            <div id="example">
+                <div id="grid_Visible"></div>
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <label for="inputview" style="font-weight:100">Hidden fields</label>
+            <div id="example1">
+                <div id="grid_Hidden"></div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="col-xs-3"></div>
+        <div class="col-xs-2">
+            <button type="button" class="btn btn-primary"
+                    onclick="NewView()" id="NewClick">
+                New
+            </button>
+        </div>       
+        <div class="col-xs-2">
+            <button type="button" class="btn btn-primary"
+                    onclick="saveView()" id="SaveClick">
+                Save
+            </button>
+        </div>
+        <div class="col-xs-2">
+            <button type="button" id="Close-refresh" class="btn btn-primary" data-dismiss="modal"
+                    onclick="closeView()">
+                Close
+            </button>
+        </div>
+        <div class="col-xs-3"></div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <Screen id='USR_DFN'>
+    <grid id="grid_userList" keyfield="select" isDrag="false">
+      <mandatory_column dataField="select" headerText ="Sel" />
+      <system_column dataField="user_id" headerText ="User ID" />
+      <system_column dataField="user_name" headerText ="User Name" />
+      <system_column dataField="user_mobile" headerText ="Mobile No" />
+      <system_column dataField="email_id" headerText ="Email Id" />
+      <system_column dataField="valid_until" headerText ="Valid Until" />
+      <system_column dataField="status_desc" headerText ="Status" />
+    </grid>
+  </Screen>
+
+  <Screen id='DOC_SETUP'>
+    <grid id="DocNo_List_Grid" keyfield="type_desc" isDrag="true">
+      <system_column dataField="type_desc" headerText ="Type" />
+      <system_column dataField="doc_type_desc" headerText ="Document Type" />
+      <system_column dataField="fin_year_desc" headerText ="Financial Year" />
+      <system_column dataField="struct_example" headerText ="Document Structure Example" />
+    </grid>
+  </Screen>
+
+  <Screen id='DOWN_TMPL'>
+    <grid id="Template_Grid_list" keyfield="screen_name" isDrag="true">
+      <system_column dataField="screen_name" headerText ="Screen name" />
+      <system_column dataField="screen_id" headerText ="Screen Id" />
+      <system_column dataField="type_desc" headerText ="Type desc" />
+      <system_column dataField="template_name" headerText ="Template File Name" />
+      <system_column dataField="note" headerText ="Note" />
+    </grid>
+  </Screen>
+
+  <Screen id='MAS_DFN'>
+    <grid id="grid_masterList" keyfield="master_code" isDrag="true">
+      <system_column dataField="master_code" headerText ="Master Code" />
+      <system_column dataField="master_description" headerText ="Master Description" />
+      <system_column dataField="status_desc" headerText ="Status" />
+    </grid>
+  </Screen>
+
+  <Screen id='RL_DFN'>
+    <grid id="grid_role_list" keyfield="role_id" isDrag="false">
+      <system_column dataField="role_id" headerText ="Role Id" />
+      <system_column dataField="role_description" headerText ="Role Name" />
+      <!--<system_column dataField="screen_name" headerText ="Screen Name" />
+      <system_column dataField="new_perm" headerText ="New Perm" />
+      <system_column dataField="mod_perm" headerText ="Mod Perm" />
+      <system_column dataField="del_perm" headerText ="Del Perm" />
+      <system_column dataField="prn_perm" headerText ="Print Perm" />
+      <system_column dataField="view_perm" headerText ="View Perm" />
+      <system_column dataField="deny_perm" headerText ="Deny Perm" />-->
+
+    </grid>
+  </Screen>
+
+  <Screen id='SCRN_SETUP'>
+    <grid id="grid_screen_list" keyfield="screen_id" isDrag="true">
+      <system_column dataField="screen_id" headerText ="Screen ID" />
+      <system_column dataField="screen_name" headerText ="Screen Name" />
+      <system_column dataField="locale_id" headerText ="Locale Id" />
+      <system_column dataField="locale_desc" headerText ="Locale Description" />
+
+    </grid>
+  </Screen>
+
+  <Screen id='MAIL_TEMP'>
+    <grid id="dg_template" keyfield="template_name" isDrag="true">
+      <system_column dataField="etmpl_rowid" headerText ="Template Rowid" />
+      <system_column dataField="template_name" headerText ="Template Name" />
+      <system_column dataField="template_based_on_code" headerText ="Based on Code" />
+      <system_column dataField="template_based_on_desc" headerText ="Based on" />
+      <system_column dataField="template_type" headerText ="Template Type" />
+      <system_column dataField="template_eff_from" headerText ="Effective From" />
+      <system_column dataField="template_eff_to" headerText ="Effective To" />
+      <system_column dataField="sms_content" headerText ="SMS Content" />
+      <system_column dataField="status_desc" headerText ="Status" />
+    </grid>
+  </Screen>
+
+  <Screen id='POSP_PROFILE'>
+    <grid id="grid_ProfileList" keyfield="user_id" isDrag="true">
+      <system_column dataField="posp_rowid" headerText ="Rowid" />
+      <system_column dataField="user_id" headerText ="User ID" />
+      <system_column dataField="posp_id" headerText ="POSP ID" />
+      <system_column dataField="reporting_to" headerText ="Reporting To" />
+      <system_column dataField="first_name" headerText ="First Name" />
+      <system_column dataField="last_name" headerText ="Last Name" />
+      <system_column dataField="mobile_number" headerText ="Mobile Number" />
+      <system_column dataField="POSP Status" headerText ="posp_status_code" />
+      <system_column dataField="Email ID" headerText ="email_id" />
+      <system_column dataField="Address" headerText ="cur_address" />
+      <system_column dataField="Pincode" headerText ="cur_pincode" />
+      <system_column dataField="City" headerText ="cur_city" />
+      <system_column dataField="State" headerText ="cur_state" />
+
+    </grid>
+  </Screen>
+
+  <Screen id='EMP_PROFILE'>
+    <grid id="grid_EmpProfileList" keyfield="user_id" isDrag="true">
+      <system_column dataField="emp_rowid" headerText ="Emp Rowid" />
+      <system_column dataField="user_id" headerText ="User ID" />
+      <system_column dataField="title" headerText ="Salutation" />
+      <system_column dataField="reporting_to" headerText ="Reporting To" />
+      <system_column dataField="first_name" headerText ="First Name" />
+      <system_column dataField="last_name" headerText ="Last Name" />
+      <system_column dataField="mobile_number" headerText ="Mobile Number" />
+      <system_column dataField="Employee Status" headerText ="emp_status_code" />
+      <system_column dataField="Email ID" headerText ="email_id" />
+      <system_column dataField="Address" headerText ="cur_address" />
+      <system_column dataField="Pincode" headerText ="cur_pincode" />
+      <system_column dataField="City" headerText ="cur_city" />
+      <system_column dataField="State" headerText ="cur_state" />
+      <system_column dataField="Status" headerText ="status_code" />
+
+
+    </grid>
+  </Screen>
+
+  <Screen id='CUST_PROFILE'>
+    <grid id="grid_CustomerProfileList" keyfield="user_id" isDrag="true">
+      <system_column dataField="user_id" headerText ="User ID" />
+      <system_column dataField="cust_rowid" headerText ="Cust Rowid" />
+      <system_column dataField="cust_id" headerText ="Customer ID" />
+      <system_column dataField="assigned_to" headerText ="POSP ID" />
+      <system_column dataField="title" headerText ="Salutation" />
+      <system_column dataField="reporting_to" headerText ="Reporting To" />
+      <system_column dataField="first_name" headerText ="First Name" />
+      <system_column dataField="last_name" headerText ="Last Name" />
+      <system_column dataField="assigned_to_name" headerText ="Assigned To" />
+      <system_column dataField="mobile_number" headerText ="Mobile Number" />
+      <system_column dataField="Customer Status" headerText ="cust_status_code" />
+      <system_column dataField="Email ID" headerText ="email_id" />
+      <system_column dataField="Address" headerText ="cur_address" />
+      <system_column dataField="Pincode" headerText ="cur_pincode" />
+      <system_column dataField="City" headerText ="cur_city" />
+      <system_column dataField="State" headerText ="cur_state" />
+      <system_column dataField="Status" headerText ="status_code" />
+
+
+    </grid>
+  </Screen>
+
+  <Screen id='H_PRO_FEATURE_MAP'>
+    <grid id="product_feature_list" keyfield="prod_rowid" isDrag="true">
+      <system_column dataField="prod_rowid" headerText ="Product rowid" />
+      <system_column dataField="prod_id" headerText ="Product Id" />
+      <system_column dataField="prod_category" headerText ="Category" />
+      <system_column dataField="prod_subcategory" headerText ="SubCategory" />
+      <system_column dataField="prod_name" headerText ="Product Name" />
+      <system_column dataField="prod_long_name" headerText ="Product Long Name" />
+      <system_column dataField="prod_description" headerText ="Product Description" />
+      <system_column dataField="insurance_company" headerText ="Insurance Company" />
+      <system_column dataField="prod_feature_mapped" headerText ="Product Feature Mapped" />
+      <system_column dataField="prod_feature_condt_filled" headerText ="Product Feature Condition Filled" />
+      <system_column dataField="prod_eff_from_date" headerText ="Product Start Date" />
+      <system_column dataField="prod_eff_to_date" headerText ="Product End Date" />
+      <system_column dataField="prod_status_code" headerText ="Product status" />
+      <system_column dataField="status_desc" headerText ="Status" />
+
+    </grid>
+  </Screen>
+
+  <Screen id='H_INS_PRODUCT_DET'>
+    <grid id="health_insurance_list" keyfield="prod_id" isDrag="true">
+      <system_column dataField="prod_id" headerText ="Product Id" />
+      <system_column dataField="prod_rowid" headerText ="Product rowid" />
+      <system_column dataField="prod_name" headerText ="Product Name" />
+      <system_column dataField="prod_long_name" headerText ="Product Long Name" />
+      <system_column dataField="prod_description" headerText ="Product Description" />
+      <system_column dataField="insurance_company" headerText ="Insurance Company" />
+      <system_column dataField="prod_category" headerText ="Category" />
+      <system_column dataField="prod_subcategory" headerText ="SubCategory" />
+      <system_column dataField="prod_eff_from_date" headerText ="Product Start Date" />
+      <system_column dataField="prod_eff_to_date" headerText ="Product End Date" />
+      <system_column dataField="prod_status_code" headerText ="Product status" />
+      <system_column dataField="status_desc" headerText ="Status" />
+
+    </grid>
+  </Screen>
+</root>

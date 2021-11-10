@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "MasterDefinition";
+    Layout = "~/Views/Shared/Form_Layout.cshtml";
+}
+
+<script src="~/Scripts/Admin/MasterList.js"></script>
+<script src="~/Scripts/Admin/MasterForm.js"></script>
+<script src="~/CommonScripts/HelpFile.js"></script>
+<form id="form_master" class="form-horizontal" data-role="validator" novalidate="novalidate">
+    <div class="row">
+        <div class="col-xs-5">
+            <div id="master_grid">
+                <div id="grid_masterList" class="grid"></div>
+            </div>
+        </div>
+        <div class="col-xs-7">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="txtMastercode" id="lbl_txtMastercode" class="col-sm-5 control-label required" data-toggle="tooltip" data-placement="bottom">Master Code:</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="txtMastercode" name="master_code" class="form-control" data-toggle="tooltip" data-placement="bottom" maxlength="20" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="txtMasterDesc" id="lbl_txtMasterDesc" class="col-sm-5 control-label required" style="padding-right:0px" data-toggle="tooltip" data-placement="bottom">Master Description:</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="txtMasterDesc" class="form-control" name="master_desc" data-toggle="tooltip" data-placement="bottom" maxlength="512" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div style=" display:none">
+                    <div class="form-group" style=" display:none">
+                        <label for="txtMode" id="lbl_txtMode" class="control-label" data-toggle="tooltip" data-placement="bottom">Mode Flag</label>
+                        <div>
+                            <input type="text" name="mode_flag" id="txtMode" class="form-control" data-toggle="tooltip" data-placement="bottom" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="grid_master_detail" class="grid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+       
+        <style>
+            #grid_masterList table {
+                min-width: 100%;
+            }
+            #grid_masterList .k-grid-toolbar {
+                display: none;
+            }
+             .k-pager-sizes {
+        display:none
+    }
+        </style>
+<script>
+    $(document).ready(function () {
+        var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+        grid_height = parseInt(full_height) - 235;
+        $('#grid_masterList .k-grid-content').height(grid_height);
+
+        var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+        grid_height = parseInt(full_height) - 253;
+        $('#grid_master_detail .k-grid-content').height(grid_height);
+
+        $("#lblFormTitle").text("Master Definition");
+    });
+
+
+    function form_create() {
+        $('#txtStatus').val('New');
+        $('#txtMode').val('I');
+        master_code = 'SYS';
+        master_description = 'System Defined';
+        $("#txtMastercode").val('SYS');
+        $("#txtMasterDesc").val('System Defined');
+        grid_master_detail([]);
+
+    }
+</script>
+

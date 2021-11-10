@@ -1,0 +1,147 @@
+﻿
+@{
+    ViewBag.Title = "RoleDefinition";
+    Layout = "~/Views/Shared/Form_Layout.cshtml";
+}
+
+<script src="~/Scripts/Admin/RoleList.js"></script>
+<script src="~/Scripts/Admin/RoleForm.js"></script>
+<form id="form_roles" class="form-horizontal" data-role="validator" novalidate="novalidate">
+    <div class="row">
+        <div class="col-xs-5">
+            <div id="gr_role">
+                <div id="grid_role_list" class="grid"></div>
+            </div>
+        </div>
+        <div class="col-xs-7">
+            <div id="check" class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="txtRoleid" id="lbl_txtRoleid" class="col-sm-5 control-label required" data-toggle="tooltip" data-placement="bottom">Role ID:</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="txtRoleid" name="role_id" class="form-control" maxlength="20" onkeypress="return speical_char(event)" data-toggle="tooltip" data-placement="bottom">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="txtRoleDesc" id="lbl_txtRoleDesc" class="col-sm-5 control-label required" data-toggle="tooltip" data-placement="bottom">RoleName:</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="txtRoleDesc" name="role_description" class="form-control" maxlength="512" onkeypress="return speical_char(event)" data-toggle="tooltip" data-placement="bottom">
+                        </div>
+                    </div>
+                </div>
+                <div style="display :none">
+                    <div class="col-md-7">
+                        <div class="form-group">
+                            <label for="txtMode" id="lbl_txtMode" class="col-sm-4 control-label" data-toggle="tooltip" data-placement="bottom">Mode:</label>
+                            <div class="col-sm-8">
+                                <input id="txtMode" name="mode_flag" type="text" class="form-control" data-toggle="tooltip" data-placement="bottom" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="form-group">
+                            <label for="txtStatus_code" id="lbl_txtStatus_code" class="col-sm-4 control-label" data-toggle="tooltip" data-placement="bottom">Status:</label>
+                            <div class="col-sm-8">
+                                <input id="txtStatus_code" name="status_code" type="text" class="form-control" data-toggle="tooltip" data-placement="bottom" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class=" col-md-12 ">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="active">
+                            <a href="#permission" id="TabPermission" role="tab" class="TabBar" data-toggle="tab" style="color: black; padding: 3px 10px;background: cornflowerblue;">
+                                Permission
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade active in" id="permission">
+                            <div id="permission">
+                                <div id="grid_role_detail" class="grid">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<style>
+    #grid_role_list table {
+        min-width: 100%;
+    }
+
+    #grid_role_list .k-grid-toolbar {
+        display: none;
+    }
+
+    .k-pager-sizes {
+        display: none;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+
+        var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+        grid_height = parseInt(full_height) - 235;
+        $('#grid_role_list .k-grid-content').height(grid_height);
+
+        var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+        grid_height = parseInt(full_height) - 253;
+        $('#grid_role_detail .k-grid-content').height(grid_height);
+
+        $("#lblFormTitle").text("Role Definition");
+    });
+
+
+    function form_create() {
+        $('#txtStatus').val('New');
+        $('#txtMode').val('I');
+        single_fetch('0');
+        $('#txtRoleid').val('');
+        $('#txtRoleid').removeAttr('readonly');
+        $("#btnSave").prop("disabled", false);
+        $("#btnDelete").prop("disabled", false);
+    }
+
+    function SaveRole() {
+        var formval = form_Serialize("form_roles");
+        var obj_val = JSON.parse(formval);
+        var grid_val = JSON.stringify($("#grid_role_detail").data("kendoGrid").dataSource.data());
+        var obj_grid_val = JSON.parse(grid_val);
+        var data = {};
+        data.context = context();
+        data.context.Header = obj_val;
+        data.context.Detail = obj_grid_val;
+        var sRequest = weburl + '/server/RoleScreenMap/save_newrolescreenmap.ashx';
+        var sData = executeService(sRequest, data);
+        var responseJSON = JSON.parse(sData);
+        if (responseJSON.update == "successful") {
+            if ($("#modevalue").text() == "New Mode") {
+                kendoAlertList('Role Details Saved Successfully');
+                listpageloadfetch("");
+                form_clear();
+            } else {
+                kendoAlert('Role Details Saved Successfully');
+                single_fetch($('#txtRoleid').val());
+                listpageloadfetch("");
+                form_clear();
+            }
+        }
+    }
+
+    function form_delete() {
+        $('#txtMode').val('D');
+        SaveRole();
+    }
+</script>
+
+

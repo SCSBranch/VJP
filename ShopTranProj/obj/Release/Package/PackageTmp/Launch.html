@@ -1,0 +1,337 @@
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Login</title>
+    <link rel="shortcut icon" href="images/company_logo.png" type="image/x-icon">
+    <!--Style Sheet-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <!-- Theme style -->
+    <link href="CSS/bootstrap.min.css" rel="stylesheet" />
+    <link href="CSS/AdminLTE.min.css" rel="stylesheet" />
+    <link href="CSS/kendo.common.min.css" rel="stylesheet" />
+    <link href="CSS/kendo.default.min.css" rel="stylesheet" />
+    <link href="CSS/login.css" rel="stylesheet" type="text/css" />
+    <link href="CSS/Common.css" rel="stylesheet" />
+    <script src="Scripts/jquery-1.10.2.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/app.min.js"></script>
+    <script src="Scripts/jquery.slimscroll.min.js"></script>
+    <script src="Scripts/kendo.all.min.js"></script>
+    <script src="CommonScripts/AjaxScript.js"></script>
+    <script src="CommonScripts/Common_func.js"></script>
+    <script src="CommonScripts/shoptran_common.js"></script>
+
+    <script type="text/x-kendo-template" id="ok-confirmation">
+        <div id="div">
+            <div class="col-sm-3">
+            </div>
+            <div class="col-sm-6">
+                <button class="ok k-button" onclick="con_close()">OK</button>
+            </div>
+            <div class="col-sm-3">
+            </div>
+        </div>
+    </script>
+    <script>
+
+        window.kendoAlert = function (msg) {
+            var win = $("<div />").kendoWindow({
+                title: "Message",
+                width: "350px",
+                height: "130px",
+                modal: true,
+                draggable: false,
+                resizable: false
+            }).getKendoWindow();
+            win.center().open();
+            win.content(msg + "<br><br>" + $("#ok-confirmation").html()).center().open();
+        };
+
+
+        function con_close() {
+            $(".k-i-close").click();
+            $('.k-window').css('display', 'none');
+            $('.k-overlay').css('display', 'none');
+        }
+
+
+        function ValidCaptcha() {
+            var str1 = removeSpaces($("#txtCaptcha").val());
+            var str2 = removeSpaces($("#txtCaptchaAnswer").val());
+            if (str2 != "") {
+                if (str1 == str2) {
+                    return true;
+                }
+                else {
+                    kendoAlert("captcha mismatch");
+                    return false;
+                }
+            }
+        }
+
+
+
+        function removeSpaces(string) {
+            return string.split(' ').join('');
+        }
+    </script>
+    <style type="text/css">
+        .login-box-body, .register-box-body {
+            background: rgba(255, 255, 255, 0.5);
+            box-shadow: 0px 12px 25px #535353;
+        }
+
+        div.k-window-content {
+            font-size: 15px;
+        }
+
+        .login-box {
+            margin-top: 0px;
+            width: 360px;
+            margin: 3% auto;
+        }
+
+        .btn-primary {
+            background: #367FA9;
+            border-color: #367FA9;
+        }
+
+            .btn-primary:focus,
+            .btn-primary:hover,
+            .btn-primary.active:hover,
+            .btn-primary:active.focus {
+                background: #367FA9;
+                border-color: #367FA9;
+            }
+    </style>
+</head>
+
+<body class="hold-transition login-page" style="background-image: url('../Images/Light-Blue.jpg'); background-color: transparent; background-repeat: no-repeat; background-attachment: fixed; background-size: cover;">
+    <form id="login_form">
+        <div class="wrapper">
+            <header class="main-footer" style="margin-left: 0px; border-top: 0px; background-color:transparent;">
+                <!--<div class="pull-right">
+                    <img id="Logo" src="Images/Parivaarwlogo.png" />
+                </div>-->
+                <img id="scsLogo" src="images/company_logo.png" style="height:50px" />
+
+            </header>
+            <div>
+                <div class="login-logo">
+                   
+                    <a href="#" style="color: #505050; text-shadow: 2px 3px 7px #fff;"> <b>VEE J PEE </b><b> Aluminium Casting Manufacturers</b></a>
+                </div>
+                <div class="login-box">
+
+                    <!-- /.login-logo -->
+                    <div class="login-box-body">
+                        <p class="login-box-msg" style="font-size:22px">LOGIN</p>
+                        <div class="form-group has-feedback">
+                            <input type="text" id="txtUserId" class="form-control" name="user_id" placeholder="User Id / Email Id" maxlength="60" required data-required-msg="User Id cannot be blank">
+                        </div>
+                        <div class="form-group has-feedback">
+                            <input type="password" id="txtPassword" class="form-control" name="password" placeholder="Password" required data-required-msg="Password cannot be blank">
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6" style="padding-bottom:12px">
+                                <input id="txtCaptcha" type="text" class="form-control" disabled style="background-image: url('/images/1.jpg'); border: none; height: 30px; font-weight: bold; font-family: Modern; font-size: 19px; padding-right: 0px">
+                            </div>
+                            <div class="col-sm-6 pull-right">
+                                <a class="fa fa-refresh fa-2x " href="#" onclick="refresh()" title="Refresh"></a>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <input type="text" id="txtCaptchaAnswer" class="form-control" maxlength="4" name="captcha" placeholder="Re-Enter Captcha" required data-required-msg="Re-Enter Captcha cannot be blank">
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-5">
+                                <!--<a href="#" onclick="window.open('../Register/SelfRegitration', '_blank', 'height=' + screen.height + ',width=' + screen.width + ',resizable=yes,scrollbars=yes,toolbar=yes,menubar=yes,location=yes');return false;" style="font-size: 10px;text-decoration: underline;">POSP Self Registration</a>-->
+                            </div>
+                            <div class="col-xs-3" style="padding-left:0px">
+                                <button type="button" class="btn btn-primary btn-block btn-flat" onclick="login()">Sign In</button>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-xs-4">
+                                <a href="#" style="font-size: 10px;color: #c50000;text-decoration: underline;" onclick="fogetpws()">Forgot Password?</a><br>
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                    </div>
+                    <!-- /.login-box-body -->
+                </div>
+            </div>
+            <footer>
+                <p style="text-align: center; font-size: 12px; background-color: transparent; padding: 70px;">Copyright: Intellectual property and all aspects of the software, content and code belongs to VEE J PEE Aluminium Casting Manufacturers.  Any reproduction of the product in any part or whole is prohibited.<br /> Any usage of the software is  strictly under terms agreed with the company</p>
+            </footer>
+            <div style="margin-bottom:0px;">
+
+            </div>
+        </div>
+    </form>
+    <!-- /.login-box -->
+    <!-- jQuery 2.2.3 -->
+</body>
+</html>
+<script>
+    function open_terms() {
+        var url = "../Terms-Conditions.html";
+        window.open(url, "_blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=100, bottom = 300, left=400, width=850, height=600");
+    }
+
+    //-Regarding for forget password--//
+    $(document).ready(function () {
+        refresh();
+    });
+
+
+    $('#login_form').keydown(function (e) {
+        var key = e.which;
+        if (key == 13) {
+            $('button[type=button]').click();
+            return false;
+        } else {
+            return true;
+        }
+
+        $("#txtCaptchaAnswer").bind("change", function () {
+            ValidCaptcha();
+        });
+    });
+
+    var weburl = 'http://208.109.11.245:810';
+
+    function login() {
+        var validatable = $("#login_form").kendoValidator().data("kendoValidator");
+        if (validatable.validate()) {
+            var valCaptcha = ValidCaptcha();
+            if (valCaptcha == true) {
+                generate_guival();
+                crtloginTime();
+                var formval = form_Serialize("login_form");
+                var obj_val = JSON.parse(formval);
+                var data = {};
+                data.context = context();
+                data.context.Header = obj_val;
+                var sRequest = weburl + '/server/Common/User_validation.ashx?';
+                var sData = executeService(sRequest, data);
+                var responseJSON = JSON.parse(sData);
+                if (responseJSON.update == "successful") {
+                    var login_data = responseJSON.data.context.Detail;
+                    setlocalStorage('role_id', login_data[0].role_id);
+                    setlocalStorage('role', login_data[0].role_description);
+                    setlocalStorage('user_name', login_data[0].user_name);
+                    setlocalStorage('security_ques', login_data[0].security_ques);
+                    setlocalStorage('answer', login_data[0].answer);
+                    setlocalStorage('sec_permission', login_data);
+                    if (login_data[0].security_ques == null || login_data[0].security_ques == "") {
+                        var url = '../ForgotPassword/ForgotPassword';
+                        window.history.replaceState("", "", url);
+                        $(location).attr('href', url);
+                    }
+                    else {
+                        var log = {}
+                        log.orgnId = 'scs';
+                        log.locnId = 'chn';
+                        log.userId = getlocalStorage('user_id')
+                        log.logId = 0;
+                        var log_result = ajaxcall_param_login('/Login/getUserlogDetails', JSON.stringify(log));
+                        var logparse = JSON.parse(log_result);
+                        if (logparse.success == true) {
+                            setlocalStorage('user_log_rowno', logparse.result);
+                            var redirect = '/Home/Home';
+                            var url = "http://" + location.host;
+                            url += redirect;
+                            var Width = screen.availWidth - 20;
+                            var height = screen.availHeight - 65;
+                            window.open(url, '', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=' + Width + ',height=' + height + ',left = 0,top = 0');
+                            window.open("", "_self", "");
+                            $("#txtUserId").val('');
+                            $("#txtPassword").val('');
+                            $("#txtCaptchaAnswer").val('');   
+                            $('.form-group .k-invalid-msg').remove();
+                        }
+                        else {
+                            kendoAlert(logparse.result);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    function generate_guival() {
+        var data = {};
+        data.userId = $("#txtUserId").val().trim();
+        guid_val = ajaxcall_param_login('/Login/generate_guivalue', JSON.stringify(data));
+        gen_data = JSON.parse(guid_val);
+        creatlocalStorage(gen_data.gui_val);
+        setlocalStorage('user_id', $("#txtUserId").val().trim());
+        setlocalStorage('ip_address', gen_data.ip_address);
+    }
+
+
+    function fogetpws() {
+        if ($("#txtUserId").val() != "") {
+            generate_guival();
+            var f_data = {};
+            var f_loginvalue = "";
+            var User_data = "";
+            f_data.userId = $("#txtUserId").val().trim();
+            f_loginvalue = ajaxcall_param_login('/Login/getSecurityQuestion', JSON.stringify(f_data));
+            User_data = JSON.parse(f_loginvalue);
+            if (User_data.success == true) {
+                setlocalStorage('security_ques', User_data.result);
+                var url = '../ForgotPassword/ForgotPassword';
+                window.history.replaceState("", "", url);
+                $(location).attr('href', url);
+            }
+            else {
+                kendoAlert(User_data.result);
+            }
+        }
+        else {
+            kendoAlert("Please Enter your User Id/Email Id");
+        }
+    }
+
+
+    function crtloginTime() {
+        var date = new Date();
+        var day = (date.getDate() + 1) > 9 ? (date.getDate() + 0) : "0" + (date.getDate() + 1);
+        var month = (date.getMonth() + 1) > 9 ? (date.getMonth() + 1) : "0" + (date.getMonth() + 1);
+        var hours = (date.getHours()) > 9 ? (date.getHours()) : "0" + (date.getHours());
+        var minutes = (date.getMinutes()) > 9 ? (date.getMinutes()) : "0" + (date.getMinutes());
+        var seconds = (date.getSeconds()) > 9 ? (date.getSeconds()) : "0" + (date.getSeconds());
+        var dateString =
+            day + "/" +
+            month + "/" +
+            date.getFullYear() + " " +
+            hours + ":" +
+            minutes + ":" +
+            seconds;
+        setlocalStorage('crtloginTime', dateString);
+    }
+
+
+    function refresh() {
+        captcha();
+    }
+
+
+    function captcha() {
+        var a = Math.ceil(Math.random() * 9) + ' ';
+        var b = Math.ceil(Math.random() * 9) + ' ';
+        var c = Math.ceil(Math.random() * 9) + ' ';
+        var d = Math.ceil(Math.random() * 9) + ' ';
+        var code = a + b + c + d;
+        $("#txtCaptcha").val(code);
+    }
+
+
+
+
+</script>

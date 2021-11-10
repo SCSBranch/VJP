@@ -1,0 +1,89 @@
+﻿@{
+
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+}
+<html>
+<head>
+    <script src="~/Scripts/Shared/FormLayout.js"></script>
+</head>
+<body>
+    <div class="box box-info" style=" border-top: #ffffff;margin-bottom:0px">
+        <div id="box_header" class="box-header" style="padding:0px">
+            <div class="row" style="background-color: #f5f5f5">
+                <div class="col-sm-6" id="frm_save_lay">
+                    <div class="breadcrumb" id="form1" style="background-color: #f5f5f5;margin-bottom:0px">
+                        <button id="btnCreate" style="display:none" class="btn-head btn btn-sm btn-primary" data-placement="bottom" title="Clear" onclick="form_create()">Create</button>
+                        <button id="btnSave" class="btn-head btn btn-sm btn-primary" data-placement="bottom" title="Save" onclick="Master_Save()">Save</button>
+
+                        <button id="btnScreenSave" class="btn-head btn btn-sm btn-primary" data-placement="bottom" title="Save" style="display:none" onclick="Screen_Save()">Save</button>
+                        <a data-toggle="modal" id="btnReport" href="~/ReportConfig/Report" data-target="#ReportModal" style="display:none">
+                            <input type="button" class="btn-head btn btn-sm btn-primary" data-toggle="tooltip" data-placement="bottom" title="Print" value="Print" />
+                        </a>
+                        <button id="btnDelete" class="btn-head btn btn-sm btn-primary" data-placement="bottom" title="Delete">Delete</button>
+                        <button id="btnClear" class="btn-head btn btn-sm btn-primary" data-placement="bottom" title="Clear" onclick="form_clear()">Clear</button>
+
+
+                    </div>
+                    <div class="breadcrumb" id="form2" style="background-color: #f5f5f5;margin-bottom:0px;display:none">
+                        <button id="btnPSave" class="btn-head btn btn-sm btn-primary" data-placement="bottom" title="Save" onclick="Master_Save()">Save</button>
+                        <button id="btnSubmit" class="btn-head btn btn-sm btn-primary" data-placement="bottom" title="Submit to Verify" style="width:auto" onclick="Master_Verify_Save()">Submit to Verify</button>
+                        <a id="posp_verify" style="display:none" data-toggle="modal" href="~/POSP/POSPProfileVerify" data-target="#PospVerifytModal">
+                            <i id="btnPVerify" class="btn-head btn btn-sm btn-primary" data-placement="bottom" title="Verify" style="font-style:inherit"> Verify</i>
+                        </a>
+                        <a id="Employee_verify" style="display:none" data-toggle="modal" href="~/Employee/EmpProfileVerify" data-target="#EmpVerifytModal">
+                            <i id="btnEmpVerify" class="btn-head btn btn-sm btn-primary" data-placement="bottom" title="Verify" style="font-style:inherit"> Verify</i>
+                        </a>
+                    </div>
+                </div>
+                <div id="multy" class="col-sm-5">
+                    <ol class="breadcrumb" style="margin-bottom: 0px; background-color: #f5f5f5;padding-top: 15px;padding-bottom: 0px;float: right;">
+                        <li id="frm_back" class="create_item"><a href="#"><i id="btn_goback" class="fa fa-mail-reply fa-lg" onclick="GoBackonClick();" data-placement="bottom" title="Go Back"></i></a></li>
+                        <li class="create_item"><a id="scrn_back" href="#" style="display:none"><i id="btn_goscreen" class="fa fa-mail-reply fa-lg" onclick="back_ScreenData();" data-placement="bottom" title="Go Back"></i></a></li>
+                        <li class="edtviw_item"><a href="#"><i id="btn_first" class="fa fa-backward fa-lg" onclick="next('first');" data-placement="bottom" title="First"></i></a></li>
+                        <li class="edtviw_item"><a href="#"><i id="btn_previous" class="fa fa-chevron-circle-left fa-lg" onclick="next('previous');" data-placement="bottom" title="Previous"></i></a></li>
+                        <li class="edtviw_item"><label title="Pages"><span id="page">0</span>/<span id="pageTotal">0</span></label></li>
+                        <li class="edtviw_item"><a href="#"><i id="btn_next" class="fa fa-chevron-circle-right fa-lg" onclick="next('next');" data-placement="bottom" title="Next"></i></a></li>
+                        <li class="edtviw_item"><a href="#"><i id="btn_last" class="fa fa-forward fa-lg" onclick="next('last');" data-placement="bottom" title="Last"></i></a></li>
+                        @*<li class="edtviw_item"><a href="#"><i class="fa fa-refresh fa-lg"  data-placement="bottom" title="Refresh" onclick="master_form_refresh();"></i></a></li>*@
+                        <li>
+                            <a id="file_attach" class="file_attach" data-toggle="modal" href="~/FileAttachment/FileAttachment" hdrtitle="" doctype="" scrnid="" data-target="#frm_attachment">
+                                <i id="btn_fileattach" class="fa fa-paperclip" title="Attachment" data-placement="bottom" style="padding:0;font-size:20px"></i>
+                            </a>
+                        </li>
+                        <li class="create_item"><a href="#"><label for="modevalue" id="modevalue" style="color: #3c8dbc" /></a></li>
+                    </ol>
+                </div>
+                <div class="col-sm-1"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12" id="form22">
+                    <nav class="navbar navbar-inverse" style="background-color: #e6e6e6;border-color:#e6e6e6;min-height:34px;margin-bottom:0px">
+                        <div class="col-sm-12" style="padding-top:7px">
+                            <div class="col-sm-4" style="padding-left:0px">
+                                <label class="title" id="lblFormTitle"></label>
+                            </div>
+                            <div class="col-sm-5"></div>
+
+                            <div class="col-sm-3" id="div_status">
+                                <label class="col-sm-3 control-label" style="font-weight:400">Status</label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="txtStatus" disabled style="margin-top: -10px;width: 165px;" />
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div  id="formlayer">
+            @RenderBody()
+        </div>
+    </div>   
+    <div class="modal fade" id="ReportModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog" style="width:830px;height:550px;">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,696 @@
+﻿@{
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+    ViewBag.Title = "Home";
+}
+
+<style>
+    .small-box {
+        font-family: "xSegoe UI",Arial,sans-serif;
+        font-weight: 600;
+        /*color: #f9f9f9;*/
+        /*border: 2px solid darkblue;*/
+    }
+
+        .small-box:hover {
+            color: black;
+        }
+
+        .small-box > .small-box-footer:hover {
+            color: black;
+        }
+    /*.ion {
+        color: #ffffff80;
+    }*/
+</style>
+<link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+<link href="~/CSS/jquery-jvectormap-1.2.2.css" rel="stylesheet" />
+
+<section class="content" style="padding-top:15px;">
+    <div class="row">
+        <input id="txtNotify_taskid" type="hidden" name="Notify_taskid" />
+        <input id="txtassigned_to" type="hidden" name="assigned_to" />
+        <input id="txtOwner_code" type="hidden" name="Owner_code" />
+        <div class="col-lg-3 col-xs-6" >
+            <!-- small box -->
+            <div class="small-box" style="background:#FFE5CC">
+                <div class="inner">
+                    <h3><label id="mytask_tot"></label></h3>
+                    <p>Info1</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-bag"></i>
+                </div>
+              
+                <a href="#"  onclick="loadData()" class="small-box-footer" style="color:black">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div><!-- ./col -->
+        <div class="col-lg-3 col-xs-6" >
+            <!-- small box -->
+            <div class="small-box" style="background:#CCE5FF">
+                <div class="inner">
+                    <h3><label id="mytaskcomp_tot"></label></h3>@*<sup style="font-size: 20px">%</sup>*@
+                    <p>Info2</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="#" onclick="loadData()" class="small-box-footer" style="color:black">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div><!-- ./col -->
+        <div class="col-lg-3 col-xs-6" >
+            <!-- small box -->
+            <div class="small-box" style="background:#FFFFCC">
+                <div class="inner">
+                    <h3><label id="teamtask_tot"></label></h3>
+                    <p>Info3</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-person-add"></i>
+                </div>
+                <a href="#" onclick="loadData()" class="small-box-footer" style="color:black">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div><!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box" style="background:#FFCCE5">
+                <div class="inner">
+                    <h3><label id="teamtaskcomp_tot"></label></h3>
+                    <p>Info4</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="#" onclick="loadData()" class="small-box-footer" style="color:black">More info <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+        </div><!-- ./col -->
+    </div><!-- /.row -->
+    <div class="row">
+        <div class="col-sm-12" style="padding-right:4px">
+            <div class="box box-info" style="border-top-color:#605ca8;margin-bottom:0px">
+                <div class="box-header with-border" style="background-color: #605ca8">
+                    <div class="col-sm-2">
+                        <h3 class="box-title" style="color:white">Notification</h3>
+                    </div>
+                    <div class="col-sm-2">
+                        <select class="form-control" id="cmb_notify" onchange="Oncmb_notify();" name="Notify" style="padding-top:0px;padding-right:0px;height:26px"></select>
+                    </div>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div><!-- /.box-header -->
+                <div class="box-body" id="home_Notification">
+                    @*style="height: 353px; overflow-y: auto;padding-top:0px"*@
+                    <div class="table-responsive">
+                        <table class="js-dynamitable table table-fixedheader">
+                            <thead>
+                                <tr>
+                                    <th style="width:18%">
+                                        Notification ID
+                                        <span class="js-sorter-desc     glyphicon glyphicon-chevron-down pull-right"></span>
+                                        <span class="js-sorter-asc     glyphicon glyphicon-chevron-up pull-right"></span>
+                                    </th>
+                                    <th style="width:16%">
+                                        Date
+                                        <span class="js-sorter-desc     glyphicon glyphicon-chevron-down pull-right"></span>
+                                        <span class="js-sorter-asc     glyphicon glyphicon-chevron-up pull-right"></span>
+                                    </th>
+                                    <th style="width:51%">
+                                        Message
+                                        <span class="js-sorter-desc     glyphicon glyphicon-chevron-down pull-right"></span>
+                                        <span class="js-sorter-asc     glyphicon glyphicon-chevron-up pull-right"></span>
+                                    </th>
+                                    <th style="width:15%">
+                                        Status
+                                        <span class="js-sorter-desc     glyphicon glyphicon-chevron-down pull-right"></span>
+                                        <span class="js-sorter-asc     glyphicon glyphicon-chevron-up pull-right"></span>
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th style="width:18%">
+                                        <!-- input filter -->
+                                        <input class="js-filter  form-control" id="tskId" type="text" value="" placeholder="Notification Id">
+                                    </th>
+                                    <th style="width:16%">
+                                        <input type="text" class="cusDate" data-role='datepicker' id="txtDuedate" name="due_date" onkeypress="return isNumberKeySlash(event)" onchange="    date_validate('txtDuedate')" />
+                                        <input type="hidden" class="js-filter" id="hdnFltDate" />
+                                    </th>
+                                    <th style="width:51%"><input class="js-filter  form-control" type="text" value="" placeholder="Message"></th>
+                                    <th style="width:15%">
+                                        <select class="js-filter  form-control" style="padding-top:0px;padding-right:0px">
+                                            <option value="">Select</option>
+                                            <option value="Director Modified & Assigned">Read</option>
+                                            <option value="Task Owner Change">UnRead</option>
+                                            @*<option value="Owner Modified & Assigned">Owner Modified </option>
+                                            <option value="Owner Created & Assigned">Owner Created</option>
+                                            <option value="Director Created & Assigned">Director Created</option>*@
+                                        </select>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="list_item">
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td style="display:none"></td>
+                                    <td style="display:none"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div><!-- /.table-responsive -->
+                </div><!-- /.box-body -->
+                
+            </div><!-- /.box -->
+        </div>        
+    </div><!-- /.col -->
+</section>
+
+@*<script src="~/Scripts/dynamitable.jquery.min.js"></script>*@
+<script>
+
+    var chart_data = "";
+
+
+    var grid_height = '';
+    var chart_height = '';
+    var default_screen_size = 631;
+    var default_chart_size = 332;
+    var default_grid_size = 152;
+    $(document).ready(function () {
+
+        // Notif_comboload();
+        //var cmb_Notify = $("#cmb_notify").val('READ');
+        //var options = $('#cmb_notify').children();
+        //$('#list_item').empty();
+        //var login_userID = getlocalStorage("User_Id_Value");
+        //cmb_Notify_val = $("#cmb_notify").val();
+        //var optflag = options[2].innerHTML;
+        //var optdt = "";
+        //var dtflag = "";
+
+        //if (optflag != "") {
+        //    notification_details(login_userID, cmb_Notify_val, optflag, optdt, dtflag);
+        //}
+
+        //chart_data=dashboard_detail();
+
+        //if (chart_data.root.set1 != undefined) {
+        //    var task_detail = addDummyRecord(chart_data.root.set1);
+        //    var task_chart = [];
+        //    $.each(task_detail.Record, function (key, task) {
+        //        var obj = {};
+        //        if (task.category != undefined) {
+        //            obj.category = task.category;
+        //            obj.value = task.no_of_record;
+        //            task_chart.push(obj);
+        //        }
+        //    });
+        //    $("#mytask_tot").text(task_chart[0].value);
+        //    $("#mytaskcomp_tot").text(task_chart[1].value);
+        //    $("#teamtask_tot").text(task_chart[2].value);
+        //    $("#teamtaskcomp_tot").text(task_chart[3].value);
+        //}
+        //else {
+        //    var task_chart = [];
+        //}
+
+        //$("#lblchart_header").text('My Tasks');
+        //$("#count").text(task_chart[0].value);
+        //$("#header").css("background-color", "#00c0ef");
+        //$("#top").css("border-top-color", "#00c0ef");
+
+        //if (chart_data.root.set4 != undefined) {
+        //    var mytask_data = addDummyRecord(chart_data.root.set4);
+        //    var mytask_chart = [];
+        //    $.each(mytask_data.Record, function (key, mytask) {
+        //        var obj = {};
+        //        if (mytask.category != undefined) {
+        //            obj.category = mytask.category;
+        //            obj.value = mytask.no_of_record;
+        //            obj.color = mytask.subcategory;
+        //            if (obj.color == "Black") {
+        //                obj.color = "#BFBDBB";
+        //                obj.category = "Over Due";
+        //            }
+        //            else if (obj.color == "Green") {
+        //                obj.color = "#C3F5A6";
+        //                obj.category = "Due >7";
+        //            }
+        //            else if (obj.color == "Yellow") {
+        //                obj.color = "Yellow";
+        //                obj.category = "Due >3";
+        //            }
+        //            else if (obj.color == "Red") {
+        //                obj.color = "Red";
+        //                obj.category = "Due";
+        //            }
+        //            mytask_chart.push(obj);
+        //        }
+        //    });
+
+        //}
+        //else {
+        //    var mytask_chart = [];
+        //}
+        //createChart(mytask_chart);
+
+        //$('form').dirtyForms();
+
+        $("#lblchart_header").text('My Tasks');
+        $("#count").text($("#mytask_tot").text());
+        $("#header").css("background-color", "#FFE5CC");
+        $("#top").css("border-top-color", "#FFE5CC");
+
+
+        var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+        var diff_size = parseInt(full_height) - default_screen_size;
+        var grid_height = default_chart_size + diff_size;
+        $('#chart_body').css("height", grid_height + "px");
+
+
+        var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+        var diff_size = parseInt(full_height) - default_screen_size;
+        var grid_height = default_grid_size + diff_size;
+        //$('#list_item').css("height", grid_height + "px");
+        $('#list_item').css("height", "237px");
+    });
+
+       function loadData() {
+            var uri_dec = '../help/' +  'Dashboard' + '.html';
+            window.open(uri_dec,"_blank", "toolbar=yes, scrollbars=yes, resizable=yes, top=100, bottom = 300, left=400, width=850, height=600, fullscreen=yes");
+        }
+
+    function dashboard_detail() {
+        var data = {};
+        data.userId = getlocalStorage('User_Id_Value');
+        var dashboard_detail = ajaxcall_param("/Home/Dashboard_detail", JSON.stringify(data));
+        var dashboard_data = JSON.parse(dashboard_detail);
+        if (dashboard_data.success == true) {
+            chart_data = JSON.parse(dashboard_data.result);
+            return chart_data;
+        }
+        else {
+            kendoAlert(dashboard_data.errMsg);
+            var data = [];
+            createChart(data);
+        }
+
+    }
+
+    function chart_header(e) {
+        if (e == "new") {
+            $("#lblchart_header").text('My Tasks');
+            $("#count").text($("#mytask_tot").text());
+            $("#header").css("background-color", "#FFE5CC");
+            $("#top").css("border-top-color", "#FFE5CC");
+
+            //if (chart_data.root.set4 != undefined) {
+            //    var mytask_data = addDummyRecord(chart_data.root.set4);
+            //    var mytask_chart = [];
+            //    $.each(mytask_data.Record, function (key, mytask) {
+            //        var obj = {};
+            //        if (mytask.category != undefined) {
+            //            obj.category = mytask.category;
+            //            obj.value = mytask.no_of_record;
+            //            obj.color = mytask.subcategory;
+            //            if (obj.color == "Black") {
+            //                obj.color = "#FFE5CC";
+            //                obj.category = "Over Due";
+            //            }
+            //            else if (obj.color == "Green") {
+            //                obj.color = "#CCE5FF";
+            //                obj.category = "Due > 7";
+            //            }
+            //            else if (obj.color == "Yellow") {
+            //                obj.color = "#FFFFCC";
+            //                obj.category = "Due > 3";
+            //            }
+            //            else if (obj.color == "Red") {
+            //                obj.color = "#FFCCE5";
+            //                obj.category = "Due";
+            //            }
+            //            mytask_chart.push(obj);
+            //        }
+            //    });
+            //}
+            //else {
+            //    var mytask_chart = [];
+            //}
+            //createChart(mytask_chart);
+        }
+        else if (e == "bounce") {
+            $("#lblchart_header").text('My Tasks-Completed');
+            $("#count").text($("#mytaskcomp_tot").text());
+            $("#header").css("background-color", "#CCE5FF");
+            $("#top").css("border-top-color", "#CCE5FF");
+
+            //if (chart_data.root.set5 != undefined) {
+            //    var mytask_data = addDummyRecord(chart_data.root.set5);
+            //    var mytask_chart = [];
+            //    $.each(mytask_data.Record, function (key, mytask) {
+            //        var obj = {};
+            //        if (mytask.category != undefined) {
+            //            obj.category = mytask.category;
+            //            obj.value = mytask.no_of_record;
+            //            obj.color = mytask.subcategory;
+            //            if (obj.color == "Black") {
+            //                obj.color = "#BFBDBB";
+            //                obj.category = "Over Due";
+            //            }
+            //            else if (obj.color == "Green") {
+            //                obj.color = "#C3F5A6";
+            //                obj.category = "Due >7";
+            //            }
+            //            else if (obj.color == "Yellow") {
+            //                obj.color = "Yellow";
+            //                obj.category = "Due >3";
+            //            }
+            //            else if (obj.color == "Red") {
+            //                obj.color = "Red";
+            //                obj.category = "Due";
+            //            }
+            //            mytask_chart.push(obj);
+            //        }
+            //    });
+
+            //}
+            //else {
+            //    var mytask_chart = [];
+            //}
+            // createChart(mytask_chart);
+
+        }
+        else if (e == "user") {
+            $("#lblchart_header").text('Team Tasks');
+            $("#count").text($("#teamtask_tot").text());
+            $("#header").css("background-color", "#FFFFCC");
+            $("#top").css("border-top-color", "#FFFFCC");
+            //if (chart_data.root.set2 != undefined) {
+            //    var teamtask_data = addDummyRecord(chart_data.root.set2);
+            //    var teamtask_chart = [];
+            //    $.each(teamtask_data.Record, function (key, teamtask) {
+            //        var obj = {};
+            //        if (teamtask.category != undefined) {
+            //            obj.category = teamtask.subcategory;
+            //            obj.value = teamtask.no_of_record;
+            //            obj.color = getRandomColor();
+            //            teamtask_chart.push(obj);
+            //        }
+            //    });
+            //}
+            //else
+            //{
+            //    var teamtask_chart = [];
+            //}
+            //createChart(teamtask_chart);
+        }
+        else if (e == "unique") {
+            $("#lblchart_header").text('Team Tasks-Completed');
+            $("#count").text($("#teamtaskcomp_tot").text());
+            $("#header").css("background-color", "#FFCCE5");
+            $("#top").css("border-top-color", "#FFCCE5");
+            //if (chart_data.root.set3 != undefined) {
+            //    var teamtask_data = addDummyRecord(chart_data.root.set3);
+            //    var teamtask_chart = [];
+            //    $.each(teamtask_data.Record, function (key, teamtask) {
+            //        var obj = {};
+            //        if (teamtask.category != undefined) {
+            //            obj.category = teamtask.subcategory;
+            //            obj.value = teamtask.no_of_record;
+            //            obj.color = getRandomColor();
+            //            teamtask_chart.push(obj);
+            //        }
+            //    });
+            //}
+            //else {
+            //    var teamtask_chart = [];
+            //}
+            //createChart(teamtask_chart);
+        }
+    }
+
+
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF'.split('');
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+
+    //cmb_change
+    function Oncmb_notify() {
+        var cmb_Notify_val = $("#cmb_notify").val();
+        $('#list_item').empty();
+        var login_userID = getlocalStorage("User_Id_Value");
+        var optflag = $("#cmb_notify").val();
+        var optdt = "";
+        var dtflag = "";
+
+        if (cmb_Notify_val != "") {
+            notification_details(login_userID, cmb_Notify_val, optflag, optdt, dtflag);
+
+        }
+    }
+
+    //notification comboload
+
+    function Notif_comboload() {
+        $("#cmb_notify").empty()
+        var cmbNotify = load_combo_mastercodes("NOTIFY");
+        $("#cmb_notify").append(cmbNotify);
+    }
+    //notification
+    function notification_details(loginuserID, cmbNotifyval, optionflag, optiondate, dateflag) {
+        var data_notif_details = {};
+        data_notif_details.login_id = loginuserID;
+        data_notif_details.notif_id = cmbNotifyval;
+        data_notif_details.opt_flag = optionflag;
+        data_notif_details.opt_dt = optiondate;
+        data_notif_details.dt_flag = dateflag;
+
+        var Notif_detail = ajaxcall_param("/Home/fetchnotification", JSON.stringify(data_notif_details));
+        Notif_data = JSON.parse(Notif_detail);
+        if ((Notif_data.success == true) && (Notif_data.Notif_list != "null")) {
+            var Notif_list_data = JSON.parse(Notif_data.Notif_list);
+            $.each(Notif_list_data, function (key, Notif_data) {
+                var color = Notif_data.ntf_flag_img_src;
+                var bgcolor = color.replace("0x", "#");
+                var msg_header_code = Notif_data.ntf_mg_header;
+                var msgcolor = "";
+                var msg_header_code_desc = "";
+                if (msg_header_code == "MOD_OA") {
+                    msg_header_code_desc = "Director Modified & Assigned";
+                    msgcolor = "#d81b60";
+                }
+                else if (msg_header_code == "MOD_AO") {
+                    msg_header_code_desc = "Task Owner Changed";
+                    msgcolor = "#dd4b39";
+                }
+                else if (msg_header_code == "MOD_A") {
+                    msg_header_code_desc = "Owner Modified & Assigned";
+                    msgcolor = "#f39c12";
+                }
+                else if (msg_header_code == "TSK_CRT") {
+                    msg_header_code_desc = "Owner Created & Assigned";
+                    msgcolor = "#00c0ef";
+                }
+                else if (msg_header_code == "TSK_CRT1") {
+                    msg_header_code_desc = "Director Created & Assigned";
+                    msgcolor = "#00a65a ";
+                }
+
+                $('#list_item').append('<tr ondblclick="task_data(this)"><td style="background-color:' + bgcolor + ';width:18%">' + Notif_data.notification_id + '</td><td style="width:16%">' + Notif_data.notification_date + '</td><td style="width:51%">' + Notif_data.ntf_msg_body.replace(/<br><br>/g, "<br>") + '</td><td style="width:15%"><span class="label" style="background-color:' + msgcolor + '">' + msg_header_code_desc + '</span></td><td style="display:none">' + Notif_data.Task_Assigned_To + '</td><td style="display:none" >' + Notif_data.Task_Owner_Code + '</td></tr>');//<td></td><td></td><td>' + Notif_data.ntf_mg_header + '</td>
+            });
+        }
+        else {
+            if (Notif_data.msg != "") {
+                kendoAlert(Notif_data.msg);
+            }
+
+        }
+    }
+
+    function task_data(taskid)//
+    {
+        var task_notify_id = taskid.childNodes[0].innerText;
+        $("#txtNotify_taskid").val(task_notify_id);
+        var task_notify_assign = taskid.childNodes[4].innerText;
+        $("#txtassigned_to").val(task_notify_assign);
+        var task_notify_owner = taskid.childNodes[5].innerText;
+        $("#txtOwner_code").val(task_notify_owner);
+
+        var login_userId = getlocalStorage('User_Id_Value');
+
+        if (login_userId == $("#txtOwner_code").val()) {
+            click_btn_val = "Edit";
+            setlocalStorage('btn_clk_val', click_btn_val);
+            setlocalStorage('Task_Id_Value', $("#txtNotify_taskid").val());
+            location.href = "../TeamTask/TeamTaskForm";
+          //  removelocalStorage('ls_pageList');
+            @*window.location.href = "@Url.Action("TeamTaskForm", "TeamTask")";*@
+        }
+        else if (login_userId == $("#txtassigned_to").val()) {
+            click_btn_val = "Edit";
+            setlocalStorage('btn_clk_val', click_btn_val);
+            setlocalStorage('MyTask_Id_Value', $("#txtNotify_taskid").val());
+            location.href = "../MyTask/MyTaskForm";
+          //  removelocalStorage('ls_pageList');
+            @*window.location.href = "@Url.Action("MyTaskForm", "MyTask")";*@
+        }
+    }
+</script>
+
+<script>
+    $(document).ready(function () {
+        $(".cusDate").kendoDatePicker({
+            parseFormats: ["dd/MM/yyyy"],
+            format: "dd/MM/yyyy",
+            change: function () {
+                var value = dateTo_DDMMYYYY(this.value());
+                $("#hdnFltDate").val(value);
+                $(document).find('.js-dynamitable').each(function () {
+                    $(this).dynamitable()
+                        .addFilter('.js-filter')
+                        .addSorter('.js-sorter-asc', 'asc')
+                        .addSorter('.js-sorter-desc', 'desc');
+                });
+            }
+        });
+        $(".cusDate").removeClass("k-widget");
+        $(".cusDate").removeClass("k-header");
+        $(".cusDate").css("width", "100%");
+    });
+
+
+    function date_validate(id) {
+        var value = $("#" + id).val();
+        $("#hdnFltDate").val(value);
+        $(document).find('.js-dynamitable').each(function () {
+            $(this).dynamitable()
+                .addFilter('.js-filter')
+                .addSorter('.js-sorter-asc', 'asc')
+                .addSorter('.js-sorter-desc', 'desc');
+        });
+    }
+
+
+    function createChart(data) {
+        $("#chart").width(250).height(300).kendoChart({
+            //title: {
+            //    text: data[0].title
+            //},
+            legend: {
+                position: "top"
+            },
+            seriesDefaults: {
+                labels: {
+                    //template: "#= category # - #= kendo.format('{0:P}', percentage)#",
+                    format: "{0}",
+                    distance: -10,
+                    visible: true,
+                    background: "transparent",
+                    center: '5%'
+                },
+                //startAngle: 30
+            },
+            series: [{
+                type: "donut",
+                padding: 0,
+                data: data
+            }],
+            tooltip: {
+                visible: true,
+                template: "#= category # - #= kendo.format('{0:P}', percentage) #"
+            }
+        });
+    }
+
+</script>
+
+<style>
+    .container {
+        width: 785px;
+    }
+
+    .content {
+        min-height: 250px;
+    }
+
+    .form-control {
+        height: 32px;
+    }
+
+
+    .glyphicon {
+        cursor: pointer;
+    }
+
+    .second, .glyphicon-chevron-down, .glyphicon-chevron-up {
+        color: #605ca8;
+    }
+
+    /*input, select {
+        width: 100%;
+    }*/
+
+    .k-chart, .k-stockchart {
+        height: 346px;
+    }
+</style>
+
+<style>
+    #home_Notification .label {
+        white-space: normal;
+    }
+
+    table.table-fixedheader {
+        width: 100%;
+    }
+
+        table.table-fixedheader, table.table-fixedheader > thead, table.table-fixedheader > tbody, table.table-fixedheader > thead > tr, table.table-fixedheader > tbody > tr, table.table-fixedheader > thead > tr > th, table.table-fixedheader > tbody > td {
+            display: block;
+        }
+
+            table.table-fixedheader > thead > tr:after, table.table-fixedheader > tbody > tr:after {
+                content: ' ';
+                display: block;
+                visibility: hidden;
+                clear: both;
+            }
+
+            table.table-fixedheader > tbody {
+                overflow-y: scroll;
+                height: 430px;
+            }
+
+            table.table-fixedheader > thead {
+                overflow-y: scroll;
+            }
+
+                table.table-fixedheader > thead::-webkit-scrollbar {
+                    background-color: inherit;
+                }
+
+
+                table.table-fixedheader > thead > tr > th:after, table.table-fixedheader > tbody > tr > td:after {
+                    content: ' ';
+                    display: table-cell;
+                    visibility: hidden;
+                    clear: both;
+                }
+
+                table.table-fixedheader > thead tr th, table.table-fixedheader > tbody tr td {
+                    float: left;
+                    word-wrap: break-word;
+                }
+
+    #list_item td {
+        cursor: pointer;
+        cursor: help;
+    }
+</style>

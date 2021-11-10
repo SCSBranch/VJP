@@ -1,0 +1,156 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Customer Master</title>
+    <script>       
+      
+        $(document).ready(function () {
+
+            $("#frm_Customer").on('hidden.bs.modal', function () {
+                $(this).data('bs.modal', null);
+               
+            });
+            $('#frm_Customer').on('loaded.bs.modal', function (e) {
+                filter_combobox("cmbCustomerCountry", []);
+                filter_combobox("cmbSelector", []);
+                filter_combobox("cmbDomestic", []);
+                filter_combobox("cmbLeadType", []);
+
+                var sData = load_dropdown_list('CUST_MAS', 'SECTOR');
+                filter_combobox("cmbSelector", sData);
+
+                var cData = load_dropdown_list('CUST_MAS', 'COUNTRY');
+                filter_combobox("cmbCustomerCountry", cData);
+
+                var sData = load_dropdown_list('CUST_MAS', 'LEAD_TYPE');
+                filter_combobox("cmbLeadType", sData);
+
+                var doData = load_dropdown_list('CUST_MAS', 'DOM_EXP');
+                filter_combobox("cmbDomestic", doData);
+                if (ScreenId == "ORDER_ENTRY")
+                {
+                    Load_Customer_popup(customer_rowid);
+                }
+                else {
+                    Load_Customer_popup($('#cmbCustomer').data("kendoComboBox").value());
+                }
+
+                $('#cmbCustomerCountry').data("kendoComboBox").enable(false);
+                $('#cmbSelector').data("kendoComboBox").enable(false);
+                $('#cmbDomestic').data("kendoComboBox").enable(false);
+                $('#cmbLeadType').data("kendoComboBox").enable(false);
+
+            });
+
+
+            Form_validate_Name1 = $('form.form-horizontal').attr('id');
+            var container = $("#form_customer_master");
+            kendo.init(container);
+            container.kendoValidator({});
+        });
+
+    </script>   
+    
+</head>
+<body>
+    <div class="modal-header1" style="padding: 5px; color: #fff; background-color: #367FA9; border-radius: 5px;">
+        <a href="#" class="fa fa-close pull-right" data-dismiss="modal" style="color:darkred;font-size:20px;margin-top:3px;"></a>
+        <h3 class="modal-title" style="margin-left:15px;">Customer Master</h3>
+    </div>
+    <div class="modal-body">
+        <form id="form_customer_master" class="form-horizontal" data-role="validator" novalidate="novalidate">
+            <div class="panel panel-default" style="height:400px">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="form-group">
+                                <label for="txtCustomerID" class="col-sm-3 control-label" data-toggle="tooltip" data-placement="bottom">Customer ID</label>
+                                <div class=" col-sm-6">
+                                    <input type="text" class="form-control" name="user_id" data-toggle="tooltip" data-placement="bottom" id="txtCustomerID" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="form-group">
+                                <label for="txtCustomerName" class="col-sm-3 control-label" data-toggle="tooltip" data-placement="bottom">Customer Name</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" name="cust_name" id="txtCustomerName" data-toggle="tooltip" data-placement="bottom" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="form-group">
+                                <label for="txtCustomerCity" class="col-sm-3 control-label" data-toggle="tooltip" data-placement="bottom">Customer City</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" name="cust_city" id="txtCustomerCity" data-toggle="tooltip" data-placement="bottom" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                    <div class="row">
+                        @*<div class="col-sm-10">
+                            <div class="form-group">
+                                <label for="cmbCustomerCountry" class=" col-sm-3 control-label" data-toggle="tooltip" data-placement="bottom">Customer Country</label>
+                                <div class=" col-sm-6">
+                                    <input id="cmbCustomerCountry" name="user_of_code" data-role="filtercombo" data-toggle="tooltip" data-placement="bottom" style="width:100%" />
+                                </div>
+                            </div>
+                        </div>*@  
+                        <div class="col-sm-10">
+                            <div class="form-group">
+                                <label for="cmbCustomerCountry" class="col-sm-3 control-label">Customer Country</label>
+                                <div class="col-sm-6">
+                                    <input id="cmbCustomerCountry" name="poc" data-role="filtercombo" style="width:100%" />
+                                </div>
+                            </div>
+                        </div>                                              
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="form-group">
+                                <label for="cmbSelector" class=" col-sm-3 control-label" data-toggle="tooltip" data-placement="bottom">Sector</label>
+                                <div class="col-sm-6">
+                                    <input id="cmbSelector" name="user_of_code" data-role="filtercombo" data-toggle="tooltip" data-placement="bottom" style="width:100%" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="form-group">
+                                <label for="cmbDomestic" class=" col-sm-3 control-label" data-toggle="tooltip" data-placement="bottom">Type</label>
+                                <div class=" col-sm-6">
+                                    <input id="cmbDomestic" name="domestic_export" data-role="filtercombo" data-toggle="tooltip" data-placement="bottom" style="width:100%" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <div class="form-group">
+                                <label for="cmbLeadType" class=" col-sm-3 control-label" data-toggle="tooltip" data-placement="bottom">Lead Type</label>
+                                <div class=" col-sm-6">
+                                    <input id="cmbLeadType" name="domestic_export" data-role="filtercombo" data-toggle="tooltip" data-placement="bottom" style="width:100%" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            <input type="hidden" id="txt_timestamp" name="timestamp" />
+            <input type="hidden" id="txtRowID" name="cust_rowid" />
+
+        </form>
+    </div>
+</body>
+
+</html>

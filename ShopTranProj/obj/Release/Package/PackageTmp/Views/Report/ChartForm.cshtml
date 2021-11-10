@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = "ChartForm";
+    Layout = "~/Views/Shared/FormLayout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    @*<base href="https://demos.telerik.com/kendo-ui/bar-charts/index">*@
+    <style>
+        html {
+            font-size: 14px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+    <title></title>
+    @*<link rel="stylesheet" href="https://kendo.cdn.telerik.com/2021.3.914/styles/kendo.default-main.min.css" />
+    <script src="https://kendo.cdn.telerik.com/2021.3.914/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2021.3.914/js/kendo.all.min.js"></script>*@
+</head>
+<body>
+    <div class="panel panel-default" style="margin-bottom:-1px">
+        <div class="panel-body">
+            <div class="row" style="padding-top:5px">
+                <div class="col-xs-4">
+                    <div class="form-group">
+                        <label for="cmbChart" id="lbl_cmbChart" class=" col-sm-4 control-label" data-toggle="tooltip" data-placement="bottom">Chart type:</label>
+                        <div class=" col-sm-7">
+                            <input id="cmbChart" name="chart_code" data-role="filtercombo" style="width:100%" data-toggle="tooltip" data-placement="bottom" onchange="chart_change()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="example" style="height:460px">
+                <div class="demo-section k-content wide">
+                    <div id="chart" style="background: center no-repeat url('../content/shared/styles/world-map.png');"></div>
+                </div>
+                <script>
+
+                var sData = [{ code: "area", desc: "area" }, { code: "bar", desc: "bar" },
+                    { code: "bullet", desc: "bullet" }, { code: "column", desc: "column" }, { code: "funnel", desc: "funnel" },
+                    { code: "line", desc: "line" }, { code: "pie", desc: "pie" }, { code: "donut", desc: "donut" }, { code: "radarColumn", desc: "radarColumn" },
+                     { code: "waterfall", desc: "waterfall" },
+                    { code: "polarArea", desc: "polarArea" }];
+                filter_combobox("cmbChart", sData);
+
+                $("#frm_save_lay").hide();
+                $("#multy").hide();
+                $("#div_status").hide();
+
+                function chart_change() {
+                    ct_type = $('#cmbChart').data("kendoComboBox").value();
+                    createChart();
+                }
+
+
+                var ct_type = "area";
+                function createChart() {
+                    $("#chart").kendoChart({
+                        title: {
+                            text: "Site Visitors Stats \n /thousands/"
+                        },
+                        legend: {
+                            visible: false
+                        },
+                        seriesDefaults: {
+                            type: ct_type
+                        },
+                        series: [{
+                            name: "Total Visits",
+                            data: [56000, 63000, 74000, 91000, 117000, 138000]
+                        }, {
+                            name: "Unique visitors",
+                            data: [52000, 34000, 23000, 48000, 67000, 83000]
+                        }],
+                        valueAxis: {
+                            max: 140000,
+                            line: {
+                                visible: false
+                            },
+                            minorGridLines: {
+                                visible: true
+                            },
+                            labels: {
+                                rotation: "auto"
+                            }
+                        },
+                        categoryAxis: {
+                            categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                            majorGridLines: {
+                                visible: false
+                            }
+                        },
+                        tooltip: {
+                            visible: true,
+                            template: "#= series.name #: #= value #"
+                        }
+                    });
+                }
+
+                $(document).ready(createChart);
+                $(document).bind("kendo:skinChange", createChart);
+                </script>
+            </div>
+
+          </div>
+        </div>
+   
+</body>
+</html>
+<style>
+    .content-wrapper
+    {
+        margin-top:-30px;
+    }
+</style>
+

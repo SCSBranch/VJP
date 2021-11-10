@@ -1,0 +1,232 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>CostSummary</title>
+    <script>
+        var summ_rowid = "0";
+        $(document).ready(function () {
+            $(".cusDate").kendoDatePicker({
+                format: "dd/MM/yyyy",
+            });
+            $("#TaskModal").on('hidden.bs.modal', function () {
+                $(this).data('bs.modal', null);
+                dynamicsHTML('COST_SUMMARY_FORM', 'Inputs');
+                dynamicsHTML('COST_SUMMARY_FORM', 'Assumptions');
+                dynamicsHTML('COST_SUMMARY_FORM', 'INR');
+
+                BindingScreen();
+            });
+            $('#TaskModal').on('shown.bs.modal', function (e) {
+                //dynamicsHTML('COST_SUMMARY_FORM', 'Inputs');
+                //dynamicsHTML('COST_SUMMARY_FORM', 'Assumptions');
+                //dynamicsHTML('COST_SUMMARY_FORM', 'INR');
+
+                //BindingScreen();
+               
+            });
+            $('#TaskModal').on('loaded.bs.modal', function (e) {
+                dynamicsHTML('COST_SUMMARY_FORM', 'Inputs');
+                dynamicsHTML('COST_SUMMARY_FORM', 'Assumptions');
+                dynamicsHTML('COST_SUMMARY_FORM', 'INR');
+
+                BindingScreen();
+                $("#apanel0").click();
+               
+               
+            });
+           
+            
+            Form_validate_Name1 = $('form.form-horizontal').attr('id');
+            var container = $("#order_Popup_form");
+            kendo.init(container);
+            container.kendoValidator({});
+          
+        });
+
+
+        function BindingScreen() {
+            BindingTabs(summ_rowid, 'COST_SUMMARY_FORM', 'liCostingSummary', 'tabCostingSummary');
+            dynamicsHTML('COST_SUMMARY_FORM', 'Inputs')
+            dynamicsHTML('COST_SUMMARY_FORM', 'Assumptions')
+            dynamicsHTML('COST_SUMMARY_FORM', 'INR')
+        }
+        function BindingTabs(rowid, menu_Id, li_Id, tab_Id) {
+            var data = {};
+            data.menu_id = menu_Id;
+            data.rowid = rowid;
+            var get_data = ajaxcall_param("/Home/get_TabDetails", JSON.stringify(data));
+            if (get_data != undefined) {
+                var get_val = JSON.parse(get_data);
+                if (get_val.success == true) {
+                    var tab_data = JSON.parse(get_val.detail);
+                    if (tab_data != null) {
+
+                        $.each(tab_data, function (key, value) {
+                            if (key == 0) {
+                                $('<li><a class="accordion-design-start" id="apanel' + key + '" href = "#panel' + key + '" data-toggle="tab" style ="--my-color:' + tab_data[key].tab_color + '"><p  class="accordion-name">' + tab_data[key].tab_name + '</p><br /></a ></li >').appendTo('#' + li_Id);
+                            }
+                            else if (key == (tab_data.length - 1)) {
+                                $('<li><a class="accordion-design-end" id="apanel' + key + '" href = "#panel' + key + '" data-toggle="tab" style ="--my-color:' + tab_data[key].tab_color + '"><p  class="accordion-name">' + tab_data[key].tab_name + '</p><br /> </a ></li >').appendTo('#' + li_Id);
+                            }
+                            else {
+                                $('<li><a class="accordion-design" id="apanel' + key + '" href = "#panel' + key + '" data-toggle="tab" style ="--my-color:' + tab_data[key].tab_color + '" ><p  class="accordion-name">' + tab_data[key].tab_name + '</p><br /> </a ></li >').appendTo('#' + li_Id);
+                            }
+                        });
+
+                        {
+                            $.each(tab_data, function (key, value) {
+                                $('<div class="tab-pane fade" id="panel' + key + '"><div class="panel panel-default" style="overflow-y:scroll"><div class="panel-body" id="' + tab_data[key].panel_name + '"></div></div></div>').appendTo('#' + tab_Id);
+                            });
+
+                        }
+                    }
+                }
+            }
+        }
+
+
+        function Tabs_StatusUpdate(rowid, menu_Id, li_Id, tab_Id) {
+            var data = {};
+            data.menu_id = menu_Id;
+            data.rowid = rowid;
+            var get_data = ajaxcall_param("/Home/get_TabDetails", JSON.stringify(data));
+            if (get_data != undefined) {
+                var get_val = JSON.parse(get_data);
+                if (get_val.success == true) {
+                    var tab_data = JSON.parse(get_val.detail);
+                    if (tab_data != null) {
+                        $.each(tab_data, function (key, value) {
+                            $("#lblPanel" + key).text(tab_data[key].status);
+                        });
+                    }
+                }
+            }
+        }
+    </script>
+
+</head>
+
+<body>
+    <div class="modal-header1" style="padding: 5px; color: #fff; background-color: #367FA9; border-radius: 5px;">
+        <a href="#" class="fa fa-close pull-right" data-dismiss="modal" style="color:darkred;font-size:20px;margin-top:3px;"></a>
+        <h3 class="modal-title" style="margin-left:15px;">Order Entry</h3>
+    </div>
+    <div class="modal-body">
+        <form id="order_Popup_form" class="form-horizontal" data-role="validator" novalidate="novalidate">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtRFQEnquiryNo" class="col-sm-5 control-label">RFQ Enquiry No</label>
+                                <div class="col-sm-7">
+                                    <input type="text" id="txtRFQEnquiryNo" class="form-control" name="enquiry_no">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtCustomerName" id="lbl_txtCustomerName" class="col-sm-5 control-label">Customer Name</label>
+                                <div class="col-sm-7">
+                                    <input type="text" id="txtCustomerName" class="form-control" name="customer_name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtPartName" id="lbl_txtPartName" class="col-sm-5 control-label">Part Name</label>
+                                <div class="col-sm-7">
+                                    <input type="text" id="txtPartName" class="form-control" name="part_name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtQty" class="col-sm-5 control-label">Qty</label>
+                                <div class="col-sm-7">
+                                    <input type="text" id="txtQty" class="form-control" name="qty">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtAnnualVolume" id="lbl_txtAnnualVolume" class="col-sm-5 control-label">Expected annual volume</label>
+                                <div class="col-sm-7">
+                                    <input type="text" id="txtAnnualVolume" class="form-control" name="annual_volume">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtVariableCost" id="lbl_txtVariableCost" class="col-sm-5 control-label">Variable costs per unit</label>
+                                <div class="col-sm-7">
+                                    <input type="text" id="txtVariableCost" class="form-control" name="variable_cost">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtFixedCost" class="col-sm-5 control-label">Fixed costs per unit</label>
+                                <div class="col-sm-7">
+                                    <input type="text" id="txtFixedCost" class="form-control" name="fixed_cost">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtTotalCost" id="lbl_txtTotalCost" class="col-sm-5 control-label">Total costs per unit</label>
+                                <div class="col-sm-7">
+                                    <input type="text" id="txtTotalCost" class="form-control" name="total_cost">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="txtSellingPrice" id="lbl_txtSellingPrice" class="col-sm-5 control-label">Target Selling price</label>
+                                <div class="col-sm-7">
+                                    <input type="text" id="txtSellingPrice" class="form-control" name="selling_price">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <ul id="liCostingSummary" class="nav navbar-nav tabs"></ul>
+                            </div>
+                            <div id="tabCostingSummary" class="tab-content"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class=" modal-footer" style="border-top:0;padding:0">
+                                        @*<a data-toggle="modal" class="file_attach" href="~/FileAttachment/FileAttachment" hdrtitle="" docno="" doctype="" scrnid="" data-target="#fileattachModal" style="font-size: 16px; color: blue; font-weight: 600; text-decoration: underline;">Attachment</a>*@
+                                        <button type="button" class="btn  btn-primary" id="BtnSave">Save</button>
+                                        <button type="button" class="btn  btn-primary" id="BtnClear">Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

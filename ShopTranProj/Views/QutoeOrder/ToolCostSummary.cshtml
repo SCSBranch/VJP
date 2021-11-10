@@ -1,0 +1,1037 @@
+﻿@{
+    ViewBag.Title = "ToolCostSummary";
+    Layout = "~/Views/Shared/Form_Layout.cshtml";
+}
+
+<form class="form-horizontal" id="form_costsummary_master">
+    <div class="row">
+        <div class="col-sm-12 simscrollDiv">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" id="apanel1" data-parent="#accordion" href="#panel1" style="color:black"><i class="glyphicon glyphicon-minus"></i>Tool Cost Summary List</a>
+                    </div>
+                    <div id="panel1" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <div id="grid_tool_list" style="padding-bottom:15px">
+                                <div id="grid_tool_cost_list" class="grid"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" id="apanel2" data-parent="#accordion" href="#panel2" style="color:black"><i class="glyphicon glyphicon-plus"></i>Tool Cost Summary Detail</a>
+                    </div>
+                    <div id="panel2" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="row" style="padding-bottom:10px">
+                                <div class="col-md-12">
+                                    <div class="modal-footer" style="border-top:0;padding:0">
+                                        @*<button type="button" class="btn  btn-primary" id="RFQBtnCreate" onclick="RFQ_Create()">Create</button>*@
+                                        <button type="button" class="btn  btn-primary" id="RFQBtnSave" onclick="Master_Save()">Save</button>
+                                        <button type="button" class="btn  btn-primary" id="RFQBtnClear">Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="txtRFQNO" class="col-sm-5 control-label" style="text-decoration-line:underline" onclick="RFQ_onChange()">RFQ No/ Enquiry No</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" class="form-control" id="txtRFQNO" name="rfq_no">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="txtReceivedDate" id="lbl_txtReceivedDate" class="col-sm-5 control-label">Received Date</label>
+                                        <div class=" col-sm-7">
+                                            <input class="cusDate" id="txtReceivedDate" data-role='datepicker' name="srv_req_date" onkeypress="return date_validate(event)" style="width:100%" />
+                                            <span data-for='valid' class='k-invalid-msg'></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="cmbCustomer" class="col-sm-5 control-label" style="text-decoration-line:underline" onclick="Customer_onChange(this)">Customer Name</label>
+                                        <div class="col-sm-7">
+                                            <input id="cmbCustomer" name="poc" data-role="filtercombo" style="width:100%" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label for="cmbActionTaken" class="col-sm-5 control-label">Action Taken <br />(Serial Production)</label>
+                                        <div class="col-sm-7">
+                                            <input id="cmbActionTaken" name="poc" data-role="filtercombo" style="width:100%" readonly/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-8">
+                                    <div class="form-group">
+                                        <label for="txtRemarks" id="lbl_txtNotes" class="col-sm-2 control-label" style="padding-right:0px">CEO Remarks <br />(Serial Production)</label>
+                                        <div class="col-sm-10" style="padding-left:50px">
+                                            <textarea id="txtRemarks" name="notes" rows="3" style="width:90%" class="form-control" maxlength="4096" readonly></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                            
+                            <div id="tool_grid">
+                                <div id="grid_tool_cost_det" class="grid"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="File__Attachment__Details"></div>
+    <div class="row" style="display:none"> 
+        <a id="rfq_entry_popup" class="file_attach" data-toggle="modal" href="~/FileAttachment/RFQEntryPopup" hdrtitle="" doctype="" scrnid="" data-target="#frm_RFQEntry">
+        </a>      
+        <a id="Customer_popup" class="file_attach" data-toggle="modal" href="~/FileAttachment/CustomerPopup" hdrtitle="" doctype="" scrnid="" data-target="#frm_Customer">
+        </a>       
+    </div>
+
+    <input id="txt_toolcost_rowid" type="hidden" name="toolcost_rowid">
+    <input id="txt_rfq_rowid" type="hidden" name="rfq_rowid">
+    <input id="txt_timestamp" type="hidden" name="timestamp">
+    <input id="txt_status_code" type="hidden" name="toolcost_status_code">
+    <input id="txt_mode_flag" type="hidden" name="mode_flag">
+
+    <input id="txtDocno" type="hidden" name="Doc_no">
+    <input id="txtseqno" type="hidden" name="SeqNo">
+    <input id="txtmodeflag" type="hidden" name="modeflag">
+    <input id="txtfilepath" type="hidden" name="file_path">
+    <input id="txtDocName" type="hidden" name="doc_type">
+</form>
+<script src="~/CommonScripts/Grid_FileAttachment.js"></script>
+
+<style>
+    .k-input[readonly] {
+        background-color: #eee;
+    }
+</style>
+
+<script>
+    // list part
+    var selectIds = $('#panel1,#panel2');
+    $(function ($) {
+        selectIds.on('show.bs.collapse hidden.bs.collapse', function () {
+            $(this).prev().find('.glyphicon').toggleClass('glyphicon-plus glyphicon-minus');
+        })
+    });
+
+
+    var ScreenId = "";
+    var menuId = "";
+    var screen_id = "";
+    Screen_Id = "PROCESSED";
+    var grid_height = '';
+    var default_screen_size = 631;
+    var default_grid_size = 361;
+    var customer_rowid = '';
+    var tool_rowid = '0';
+    var part_combo = [];
+
+    var rfq_number = '';
+    var cust_name = "";  
+
+    $(document).ready(function () {
+        $("#multy").hide();
+        $("#div_status").hide();      
+        listgrid([]);
+        listpageloadfetch();
+        //grid_tool_cost_detail([]);
+        // form part
+        Form_validate_Name = $('form.form-horizontal').attr('id');
+        kendodate_format_validator('form_costsummary_master');
+        //  $("#lblFormTitle").text('Tool Costing Summary');
+
+        $("#txt_toolcost_rowid").val(tool_rowid);
+        $("#txt_mode_flag").val('U');
+
+        $(".file_attach").attr("hdrtitle", "Tool Costing Summary");
+        //$("#btnDelete").hide();
+        filter_combobox("cmbCustomer", []);
+
+        filter_combobox("cmbActionTaken", []);
+        filter_combobox("cmbActionTakenFai", []);
+
+        $("#form_head").hide();
+
+        var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+        grid_height = parseInt(full_height) - 285;
+        $('#grid_tool_cost_list .k-grid-content').height(grid_height);
+        var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+        grid_height = parseInt(full_height) - 470;
+        $('#grid_tool_cost_det .k-grid-content').height(grid_height);
+    });
+
+</script>
+
+<script>
+    function Customer_onChange(arg) {
+        $('#Customer_popup').click();
+        Load_Customer_popup(customer_rowid);
+    }
+    function RFQ_onChange() {
+        $('#rfq_entry_popup').click();
+        rfq_number = $("#txtRFQNO").val();
+        var grid = $("#grid_tool_cost_list").data("kendoGrid");
+        var selectedItem = grid.dataItem(grid.select());
+        cust_name = selectedItem.cust_name;
+        Load_RFQ_popup(rfq_number);
+    }
+
+    var part_name_list = '';
+    function listgrid(data) {
+        try {
+            gridRowID = -1;
+            data = addRandomNum(data);
+            $("#grid_tool_cost_list").kendoGrid({
+                dataSource: {
+                    data: data,
+                    pageSize: 20,
+                    schema: {
+                        model: {
+                            fields: {
+                                rfq_no: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                rfq_received_date: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                cust_name: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                action_taken_prod: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                               
+                                ceo_remarks_prod: {
+                                    type: "string",
+                                    editable: false,
+                                },                               
+                                toolcost_status_code: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                                toolcost_status: {
+                                    type: "string",
+                                    editable: false,
+                                },
+                            }
+                        }
+                    },
+                },
+                dataBound: function (o) {
+                    reset_Selected_GridRows("grid_tool_cost_list", o);
+                },
+                // height: 250,
+                filterable: true,
+                scrollable: true,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                pageable: false,
+                selectable: true,
+                //  change: selectRow,
+                columns: [
+                    {
+                        field: "toolcost_rowid",
+                        title: "Tool Rowid",
+                        width: "150px",
+                        hidden: true
+                    },
+                    {
+                        field: "rfq_rowid",
+                        title: "RFQ Rowid",
+                        width: "150px",
+                        hidden: true
+                    },
+                    {
+                        field: "cust_rowid",
+                        title: "Cust Rowid",
+                        width: "150px",
+                        hidden: true
+                    },
+                    //{
+                    //    field: "rfq_no",
+                    //    title: "RFQ No/ Enquiry No",
+                    //    width: "150px",
+                    //},
+                    {
+                        field: "rfq_no",
+                        title: "RFQ No/ Enquiry No",
+                        template: "<a href='javascript:void(0)' class='rfq_details' data-ID='#=rfq_no#' style='text-decoration: underline; color:black'>#=rfq_no#</a>",
+                        width: "180px",
+                    },
+                    {
+                        field: "rfq_received_date",
+                        title: "Received Date",
+                        width: "150px",
+                    },
+                    {
+                        field: "cust_id",
+                        title: "Customer ID",
+                        width: "150px",
+                        hidden: true,
+                    },
+                    {
+                        field: "cust_name",
+                        title: "Customer Name",
+                        width: "150px",
+                    },
+                     {
+                         field: "action_taken_prod",
+                         title: "Action taken (Production)",
+                         width: "200px",
+                     },
+                    {
+                        field: "ceo_remarks_prod",
+                        title: "CEO Remarks (Production)",
+                        width: "200px",
+                    },                   
+                    {
+                        field: "toolcost_status_code",
+                        title: "Status",
+                        hidden: true,
+                        width: "150px",
+                    },
+                    {
+                        field: "toolcost_status",
+                        title: "Status",                       
+                        width: "100px",
+                    },                    
+                    {
+                        command: [
+                            {
+                                name: "Save",
+                                text: "",
+                                id: "Save",
+                                template: '<input type="button" class="info  k-button k-button-icontext complete" id="save"   name="info" value="Complete"  style="height: 26px; margin: 0px 2px; min-width: 64px;" />',
+                            },                            
+                        ], title: "Actions", width: "120px",
+                    },
+                    {
+                        field: "no_of_attachment",
+                        title: "Attachment",
+                        hidden: true
+                    },
+                    {
+                        name: "Attach",
+                        title: "Attach",
+                        template: "<i class='fa fa-paperclip Attachment' id='no_of_attachment_list' style='padding: 0px; font-size: 20px; margin: 0px 10px' onclick='attachment_header_click()'>(#: no_of_attachment #)</i>",
+                        width: "80px",
+                    },
+                ],
+                editable: true,
+            });
+            $('#grid_tool_cost_list').data('kendoGrid').tbody.find('.complete').click(function (e) {
+                var dataitem = $('#grid_tool_cost_list').data('kendoGrid').dataItem($(e.currentTarget).closest("tr"));
+                tool_rowid = dataitem.toolcost_rowid;
+                single_fetch(tool_rowid);
+                form_complete();
+            });
+
+            $('#grid_tool_cost_list').data('kendoGrid').tbody.find('.rfq_details').click(function (e) {
+                var dataitem = $('#grid_tool_cost_list').data('kendoGrid').dataItem($(e.currentTarget).closest("tr"));
+                $('#rfq_entry_popup').click();
+                toolcost_rowid = dataitem.toolcost_rowid;
+                rfq_number = dataitem.rfq_no;
+                cust_name = dataitem.cust_name;
+                Load_RFQ_popup(rfq_number);
+            });
+
+
+            $("#grid_tool_cost_list").on("dblclick", "tr.k-state-selected", function () {
+                var grid = $("#grid_tool_cost_list").data("kendoGrid");
+                var selectedItem = grid.dataItem(grid.select());
+                $("#txt_mode_flag").val("U");                
+                Load_Customer_Name();
+                $("#apanel2").click();
+
+                tool_rowid = selectedItem.toolcost_rowid;
+                $("#txt_toolcost_rowid").val(tool_rowid);
+                single_fetch(tool_rowid);
+                customer_rowid = $('#cmbCustomer').data("kendoComboBox").value();
+                              
+                grid_mandatory("grid_tool_cost_det", ["Tool Name", "Die/Pattern Costs", "Other Costs", "Development Lead Time(in months)"]);
+
+                $("#txtRFQNO").attr('readonly', 'readonly');
+                $("#txtReceivedDate").attr('readonly', 'readonly');
+
+                $('#cmbCustomer').data("kendoComboBox").enable(false);
+                var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+                grid_height = parseInt(full_height) - 470;
+                $('#grid_tool_cost_det .k-grid-content').height(grid_height);
+
+            });
+
+            $('#grid_tool_cost_list').data('kendoGrid').tbody.find('.Attachment').click(function (e) {
+                var dataitem = $('#grid_tool_cost_list').data('kendoGrid').dataItem($(e.currentTarget).closest("tr"));
+                save__attachment.content($("#DevFile_Attach_Template").html()).center().open();
+                DocType = "RFQ_HDR_TC";
+
+                $('.form-group .k-invalid-msg').remove();
+                $("#txtRFQNumber").val(dataitem.rfq_no);
+                // var grp_data = [{ code: "DEV_SHEET", desc: "Development Sheet Summary" }];
+                var grp_data1 = load_dropdown_list('ATTACHMENT', 'ATTCH_GRP');
+                var grp_data2 = load_dropdown_list('ATTACHMENT', 'ATTCH_SGRP');
+                filter_combobox("cmb_grid_group", grp_data1);
+                filter_combobox("cmb_grid_subgroup", grp_data2);
+
+                $("#txtDocno").val($("#txtRFQNumber").val());
+                $("#txtDocName").val("RFQ_HDR_TC");
+                $("#txtmodeflag").val("I");
+                $("#txtseqno").val("0");
+                $("#txtVersion").val("1");
+                fetch_DocAttach_details($("#txtDocName").val(), $("#txtDocno").val())
+                $('.k-window').css('top', '30px');
+
+            });
+
+
+        } catch (err) {
+            kendoAlert(err);
+        }
+    }
+
+
+    function selectRow() {
+       
+        grid_tool_cost_detail([]);
+
+        $(".k-grid-toolbar").css("pointer-events", "none");
+        $(".k-grid-toolbar").css("opacity", "0.3");
+    }
+
+    function grid_tool_cost_detail(user_data) {
+        $("#grid_tool_cost_det").kendoGrid({
+            dataSource: {
+                data: user_data,
+                schema: {
+                    model: {
+                        fields: {
+                            toolcost_dtl_rowid: {
+                                type: "string",
+                                 defaultValue: "0"
+                            },
+                            part_name: {
+                                type: "string",
+                                editable: true,
+                            },
+                            tool_name: {
+                                type: "string",
+                                editable: true,
+                            },
+                            die_pattern_cost: {
+                                type: "string",
+                                editable: true,
+                            },
+                            other_cost: {
+                                type: "string",
+                                editable: true
+                            },                           
+                            total_tooling_cost: {
+                                type: "number",
+                                editable: true,
+                                defaultValue: ""
+                            },
+                            dev_leadtime_month: {
+                                type: "string",
+                                editable: true
+                            },
+                            no_of_attachment: {
+                                type: "string",
+                                defaultValue: "0"
+                            },
+                            mode_flag: {
+                                type: "string",
+                                defaultValue: "I"
+                            }
+                        }
+                    }
+                },
+            },
+            navigatable: true,
+            sortable: {
+                mode: "multiple",
+                dir: "asc"
+            },
+            //  height:520,
+            selectable: true,
+            selectable: "singl", //  Grid Row Selection
+            dataBinding: setDefaultValues,
+            dataBound: function (e) {
+                resultData = e.sender._data;
+                var rows = $('#grid_tool_cost_det').data('kendoGrid').tbody.children();
+                setColor(rows, resultData);
+            },
+            edit: OnEdit,
+            save: function (data) {
+                amount_calculation(data);
+            },
+            toolbar: "<a class=' k-grid-add'  id = 'btnSave' href=''><span class='fa fa-plus' style='color:Black'></span></a>",
+            columns: [
+                 {
+                     field: "toolcost_dtl_rowid",
+                     hidden: true,
+                     width: 100
+                 },
+                {
+                    field: "part_name_code",
+                    hidden: true,
+                    width: 100
+                },
+                         
+                {
+                    field: "part_name",
+                    title: "Part Name",
+                    editor: function (container, options) {
+                        combo_editor(container, "cmb_" + options.field, eval(options.field + "_list"), options.field, "part_name_code", "grid_tool_cost_det")
+                    },
+                    width: 250,
+                    locked: true
+                },                
+                {
+                    field: "tool_name",
+                    title: "Tool Name",
+                    width: 200,
+                    locked: true
+                },
+                {
+                    field: "die_pattern_cost",
+                    title: "Die/Pattern Costs",
+                    width: 200,
+                    editor: function (container, options) {
+                        numeric_editor_dot(container, options.field, '5');
+                    },
+                    attributes: { class: "text-right" },
+                },
+
+                {
+                    field: "other_cost",
+                    title: "Other Costs",
+                    width: 200,
+                    editor: function (container, options) {
+                        numeric_editor_dot(container, options.field, '5');
+                    },
+                    attributes: { class: "text-right" },
+                },
+                {
+                    field: "total_tooling_cost",
+                    title: "Total Costing Cost",
+                    width: 200,
+                    editor: function (container, options) {
+                        numeric_editor_dot(container, options.field, '5');
+                    },
+                    attributes: { class: "text-right" },
+                },
+                {
+                    field: "dev_leadtime_month",
+                    title: "Development Lead Time(in months)",
+                    width: 300,
+                    editor: function (container, options) {
+                        numeric_editor(container, options.field, '5');
+                    },
+                    attributes: { class: "text-right" },
+
+                },
+                {
+                    field: "no_of_attachment",
+                    title: "Attachment",
+                    hidden: true
+                },
+                {
+                    title: "Attach",
+                    hidden: false,
+                    template: "<i class='fa fa-paperclip Attachment' id='no_of_attachment_det' style='padding: 0px; font-size: 20px; margin: 0px 10px' onclick='attach_load()' >(#: no_of_attachment #)</i>",
+                    width: 100
+                },                                  
+
+                {
+                    field: "mode_flag",
+                    title: "Mode",
+                    width: 30,
+                    hidden: true
+                },                 
+                {
+                    command: [{
+                        name: "Delete",
+                        id: "Delete",
+                        imageClass: "fa fa-close",
+                        click: function (e) {
+                            var grid = $("#grid_tool_cost_det").data("kendoGrid");
+                            var dataItem = $("#grid_tool_cost_det").data("kendoGrid").dataItem($(e.target).closest("tr"));
+                            DeleteWindowEvent(e, dataItem, grid);
+                            e.stopImmediatePropagation()
+                        }
+                    }, ],
+                    title: "&nbsp;",
+                    width: "40px",
+                },
+            ],
+            editable: true,
+        });
+    }
+
+
+    function OnEdit(e) {
+        setDefaultValues(e);
+        e.container.find("input[name='tool_name']").attr('maxlength', '512');
+        e.container.find("input[name='die_pattern_cost']").attr('maxlength', '5');
+        e.container.find("input[name='other_cost']").attr('maxlength', '5');
+        e.container.find("input[name='dev_leadtime_month']").attr('maxlength', '4');
+
+        var columnIndex = this.cellIndex(e.container);
+        var fieldName = this.thead.find("th").eq(columnIndex).data("field");
+        if (!isEditable(fieldName, e.model)) {
+            this.closeCell();
+        }
+    }
+    function isEditable(fieldName, model) {
+        if (fieldName === "toolcost_dtl_rowid") {
+            return ((model.mode_flag !== "U"));  //part name
+        }
+        else if (fieldName === "part_name_code") {
+            return ((model.mode_flag !== "U"));  // tool name
+        }             
+        else if (fieldName === "no_of_attachment") {
+            return ((model.hasOwnProperty("no_of_attachment1")));// total cost
+        }
+                
+        return true; // default to editable
+    }
+
+    var pattern_cost = 0;
+    var total_cost = 0;
+
+
+    function amount_calculation(data) {
+        // Die Pattern cost - cell entry
+        var grid = $("#grid_tool_cost_det").data("kendoGrid");
+        if (data.values.die_pattern_cost) {
+            data.model.set("die_pattern_cost", data.values.die_pattern_cost);
+            var selectedItem = grid.dataItem(grid.select());
+             total_cost = (parseInt(data.model.die_pattern_cost) + (parseInt(data.model.other_cost)));
+            selectedItem.set('total_tooling_cost', total_cost.toFixed(2));
+        }
+        // Ad net amount = 0
+        if (data.values.die_pattern_cost == 0) {
+            data.model.set("die_pattern_cost", data.values.die_pattern_cost);
+            var selectedItem = grid.dataItem(grid.select());
+
+            var total_cost = (parseInt(data.model.die_pattern_cost) + (parseInt(data.model.other_cost)));
+            selectedItem.set('total_tooling_cost', total_cost);           
+        }
+        // Cell clear        
+        if (data.values.total_tooling_cost == 0)
+        {
+            if (data.values.die_pattern_cost == null) {
+                //data.model.set("die_pattern_cost", "0");
+                var selectedItem = grid.dataItem(grid.select());
+
+                var total_cost = (parseInt(0) + (parseInt(data.model.other_cost)));
+                selectedItem.set('total_tooling_cost', total_cost);
+            }
+        }
+        
+        //Other cost - cell entry
+        if (data.values.other_cost) {
+            data.model.set("other_cost", data.values.other_cost);
+            var selectedItem = grid.dataItem(grid.select());
+
+            total_cost = (parseInt(data.model.other_cost) + (parseInt(data.model.die_pattern_cost)));
+            selectedItem.set('total_tooling_cost', total_cost.toFixed(2));
+        }
+        // Ad net amount = 0
+        if (data.values.other_cost == 0) {
+            data.model.set("other_cost", data.values.other_cost);
+            var selectedItem = grid.dataItem(grid.select());
+
+            var total_cost = (parseInt(data.model.other_cost) + (parseInt(data.model.die_pattern_cost)));
+            selectedItem.set('total_tooling_cost', total_cost);
+        }
+        // Cell clear 
+       
+            if (data.values.other_cost == null) {
+                //data.model.set("other_cost", "0");
+                var selectedItem = grid.dataItem(grid.select());
+
+                var total_cost = (parseInt(0) + (parseInt(data.model.die_pattern_cost)));
+                selectedItem.set('total_tooling_cost', total_cost);
+            }      
+        
+    }
+
+    function attach_load() {
+        var grid = $("#grid_tool_cost_det").data("kendoGrid"); //assuming the grid name is gridtemplate
+        var dataitem = grid.dataItem(grid.select());
+        save__attachment.content($("#DevFile_Attach_Template").html()).center().open();
+        DocType = "RFQ_DTL_TC";
+
+        $('.form-group .k-invalid-msg').remove();
+        $("#txtDocName").val(dataitem.qualification);
+        $("#txtRFQNumber").val($("#txtRFQNO").val());
+        $("#txtPartName").val(dataitem.part_name);
+        $("#txtToolName").val(dataitem.tool_name);
+        $("#part_name_value").show(); 
+        $("#tool_name_value").show();
+        // var grp_data = [{ code: "DEV_SHEET", desc: "Development Sheet Summary" }];
+        var grp_data1 = load_dropdown_list('ATTACHMENT', 'RFQ_DTL_TC');
+        var grp_data2 = load_dropdown_list('ATTACHMENT', 'RFQ_SUB_GRP_TC');
+        filter_combobox("cmb_grid_group", grp_data1);
+        filter_combobox("cmb_grid_subgroup", grp_data2);
+        
+
+        var doc_number = $("#txtRFQNumber").val() + "^" + $("#txtPartName").val() + "^" + $("#txtToolName").val();
+
+        $("#txtDocno").val(doc_number);
+        $("#txtDocName").val("RFQ_DTL_TC");
+        $("#txtmodeflag").val("I");
+        $("#txtseqno").val("0");
+        $("#txtVersion").val("1");
+        fetch_DocAttach_details($("#txtDocName").val(), $("#txtDocno").val());
+        $('.k-window').css('top', '30px');
+        //var g_data = [{ seq_no: "1", attach_group: "", attach_subgroup: "", attach_group_desc: "Casting/Machining", attach_subgroup_desc: "Casting drawing", filename: "", file_version: "1" },
+        //{ seq_no: "1", attach_group: "", attach_subgroup: "", attach_group_desc: "Signed NDA", attach_subgroup_desc: "Signed NDA", filename: "", file_version: "1" }];
+        //Attach_Grid(g_data);
+
+        if (dataitem.mode_flag == "I") {
+            $("#btnGNew").prop("disabled", true);
+            $("#btnGUpload").prop("disabled", true);
+            $("#btnGRemove").prop("disabled", true);
+        }
+    }
+    function form_clear() {
+        grid_tool_cost_detail([]);
+
+        $(".k-grid-toolbar").css("pointer-events", "");
+        $(".k-grid-toolbar").css("opacity", "");
+        listgrid([]);
+        var data = [{ rfq_no: "RFQENQ1", status: "Open" }, { rfq_no: "RFQENQ2", status: "Open" }, { rfq_no: "RFQENQ3", status: "Open" }, { rfq_no: "RFQENQ4", status: "Open" }]
+        listgrid(data);
+    }
+    
+    function attachment_close() {
+        save__attachment.close();
+    }
+    function GridBrowseTemplateFile() {
+        try {
+            $("#file").attr("accept", ".pdf,.xlsx,.jpg");
+            $("#file").click();
+        }
+        catch (err) {
+            javascript_log4j_root(arguments.callee.name, err);
+        }
+    }
+
+    function Load_Customer_Name() {
+        try {
+            var sRequest = weburl + '/server/Customer/fetch_customer_list.ashx?org=' + OrgId + '&locn=' + LocnId + '&user=' + User + '&lang=en_us';
+            var s = executeService(sRequest);
+            var responseJSON = JSON.parse(s);
+            if (responseJSON.update == "successful") {
+                //generateGrid_Customer(responseJSON);
+                var cust_data = responseJSON.data.context.Detail;
+                var code = {};
+                var desc = {};
+
+                var combo_data1 = [];
+                $.each(cust_data, function (key, val) {
+                    combo_data1.push({ code: cust_data[key].cust_rowid, desc: cust_data[key].cust_name });
+                });
+                filter_combobox("cmbCustomer", combo_data1);
+
+            }
+            else {
+                filter_combobox("cmbCustomer", []);
+            }
+        } catch (err) {
+            kendoAlert(err);
+        }
+    }
+
+    /*---------------------------------------------------------------------  List Method  ----------------------------------------------------------------------------------*/
+
+    function listpageloadfetch() {
+        try {
+            var sRequest = weburl + '/server/ToolCost/fetch_toolcost_list.ashx?org=' + OrgId + '&locn=' + LocnId + '&user=' + User + '&lang=en_us';
+            var s = executeService(sRequest);
+            var responseJSON = JSON.parse(s);
+            if (responseJSON.update == "successful") {
+                generateRFQ_Tool_list(responseJSON);
+            } else {
+                listgrid([]);                
+            }
+        } catch (err) {
+            kendoAlert(err);
+        }
+    }
+
+    function generateRFQ_Tool_list(res) {
+        try {
+            if (res.data.context.Detail != null) {
+                var data = changedataType(res.data.context.Detail);
+                $("#grid_tool_list").empty();
+                $("#grid_tool_list").append("<div id='grid_tool_cost_list'></div>");
+                listgrid(data);
+               
+            } else {
+                listgrid([]);
+            }
+        } catch (err) {
+            kendoAlert(err);
+        }
+
+    }
+
+    /*---------------------------------------------------------------------  Save Method  ----------------------------------------------------------------------------------*/
+
+
+    function form_save() {
+        var header_data = {};
+        header_data.toolcost_rowid = $("#txt_toolcost_rowid").val();
+        header_data.rfq_no = $("#txtRFQNO").val();
+        header_data.rfq_rowid = $("#txt_rfq_rowid").val();       
+        header_data.toolcost_status_code = $("#txt_status_code").val();
+        header_data.timestamp = $("#txt_timestamp").val();
+        header_data.mode_flag = $("#txt_mode_flag").val();
+
+        var grid_val = JSON.stringify($("#grid_tool_cost_det").data("kendoGrid").dataSource.data());
+        var obj_grid_val = JSON.parse(grid_val);      
+        if (obj_grid_val.length == 0) {
+            kendoAlert("Atleast one record needs to be entered");
+            return false;
+        }
+        var data = {};
+        data.context = context();
+        data.context.Header = header_data;
+        data.context.Detail = obj_grid_val;
+        var sRequest = weburl + '/server/ToolCost/save_toolcost_details.ashx';
+        var sData = executeService(sRequest, data);
+        var responseJSON = JSON.parse(sData);
+        if (responseJSON.update == "successful") {
+            kendoAlert('Tool Cost Details Saved Successfully');
+            // form_clear();                     
+        }
+    }
+
+    /*---------------------------------------------------------------------  Complete Method  ----------------------------------------------------------------------------------*/
+    function form_complete() {
+        var header_data = {};
+        header_data.toolcost_rowid = $("#txt_toolcost_rowid").val();
+        header_data.rfq_no = $("#txtRFQNO").val();
+        header_data.rfq_rowid = $("#txt_rfq_rowid").val();
+        header_data.toolcost_status_code = $("#txt_status_code").val();
+        header_data.timestamp = $("#txt_timestamp").val();
+        header_data.mode_flag = "C";
+
+        var grid_val = JSON.stringify($("#grid_tool_cost_det").data("kendoGrid").dataSource.data());
+        var obj_grid_val = JSON.parse(grid_val);       
+        var data = {};
+        data.context = context();
+        data.context.Header = header_data;
+        data.context.Detail = obj_grid_val;
+        var sRequest = weburl + '/server/ToolCost/save_toolcost_details.ashx';
+        var sData = executeService(sRequest, data);
+        var responseJSON = JSON.parse(sData);
+        if (responseJSON.update == "successful") {
+            kendoAlert('Tool Cost Details Completed Successfully');
+
+            listpageloadfetch();
+            var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+            grid_height = parseInt(full_height) - 285;
+            $('#grid_tool_cost_list .k-grid-content').height(grid_height);
+        }
+    }
+
+
+    /*---------------------------------------------------------------------  Single Fetch Method  ----------------------------------------------------------------------------------*/
+    function single_fetch(tool_rowid) {
+        var sRequest = weburl + '/server/ToolCost/fetch_toolcost_details.ashx?org=' + OrgId + '&locn=' + LocnId + '&user=' + User + '&lang=en_us&toolcost_rowid=' + tool_rowid + '';
+        var s = executeService(sRequest);
+        var responseJSON = JSON.parse(s);
+        if (responseJSON.update == "successful") {
+            generateGrid_Tool_detail(responseJSON);
+        } else {
+            grid_tool_cost_detail([]);
+        }
+
+    }
+
+    function generateGrid_Tool_detail(res) {
+        if (res.data.context.Header != undefined) {
+            var res_data = res.data.context.Header;
+            $('.form-group .k-invalid-msg').remove();
+
+            $('#txt_toolcost_rowid').val(res_data.toolcost_rowid);
+            $('#txt_rfq_rowid').val(res_data.rfq_rowid);
+            $('#txtRFQNO').val(res_data.rfq_no);
+            $('#txtReceivedDate').val(res_data.rfq_received_date);
+            $('#cmbCustomer').data("kendoComboBox").value(res_data.cust_rowid);
+            $('#txtCeoRemarks').val(res_data.ceo_remarks);
+            $('#txt_status_code').val(res_data.toolcost_status_code);
+            $('#txt_timestamp').val(res_data.timestamp);
+        }
+        if (res.data.context.Part != null) {
+            var cust_data = res.data.context.Part;
+            var code = {};
+            var desc = {};
+            part_combo = [];
+            $.each(cust_data, function (key, val) {
+                part_combo.push({ code: cust_data[key].part_name, desc: cust_data[key].part_name });
+            });
+            part_name_list = part_combo;
+        }
+
+        if (res.data.context.Detail == null) {
+            grid_tool_cost_detail([]);
+        } else {
+            var data = changedataType(res.data.context.Detail);
+            $("#tool_grid").empty();
+            $("#tool_grid").append("<div id='grid_tool_cost_det' class='grid'></div>");
+            grid_tool_cost_detail(data);            
+        }
+    }
+   
+
+</script>
+<script type="text/x-kendo-template" id="DevFile_Attach_Template" style="color:Black">
+    <div class="modal-body" style="padding:5px">
+        <form id="form2" class="form-horizontal" data-role="validator" novalidate="novalidate">
+            <div class="row">               
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="txtRFQNumber" class="col-sm-4 control-label">RFQ No</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control input-sm" id="txtRFQNumber" readonly name="rfq_no" style="height:20px">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4" style="display:none" id="part_name_value">
+                    <div class="form-group">
+                        <label for="txtPartName" class="col-sm-4 control-label">Part Name</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control input-sm" id="txtPartName" readonly name="part_name" style="height:20px">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4" style="display:none" id="tool_name_value">
+                    <div class="form-group">
+                        <label for="txtToolName" class="col-sm-4 control-label">Tool Name</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control input-sm" id="txtToolName" readonly name="tool_name" style="height:20px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-11">
+                    <div id="Grid_Attach"></div>
+                </div>
+            </div>
+            <div class="row" style="margin-top:5px">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="cmb_grid_group" class="col-sm-3 control-label required">Group</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="cmb_grid_group" name="Group" style="width:100%">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="cmb_grid_subgroup" class="col-sm-3 control-label required">Sub Group</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="cmb_grid_subgroup" name="SubGroup" style="width:100%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="filename" class="col-sm-3 control-label">File Name</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control input-sm" id="txtfilename" readonly name="filename" style="height:20px">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="col-sm-2">
+                        <input type="file" id="file" style="display:none;" onchange="save_file();" />
+                        <button type="button" id="btn_down1" class="btn btn-sm btn-primary" onclick="GridBrowseTemplateFile();" data-toggle="tooltip" data-placement="bottom">Browse</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="Version" class="col-sm-3 control-label">Version</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control input-sm" id="txtVersion" readonly name="Version" style="height:20px">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="Size" class="col-sm-3 control-label">Size</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control input-sm" id="txtSize" readonly name="Size" style="height:20px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <label for="Notes" class="col-sm-2 control-label">Notes</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control input-sm" rows="2" id="txtnotes" style="width:90%" name="Notes"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <input id="txtDocno" type="hidden" name="SeqNo">
+                <input id="txtseqno" type="hidden" name="SeqNo">
+                <input id="txtmodeflag" type="hidden" name="modeflag">
+                <input id="txtfilepath" type="hidden" name="file_path">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer" style="padding: 10px; border-top: none">
+        <div style=" width: 70%;margin-top: -15px;">
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnGNew" onclick="Grid_btn_new()">New</button>
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnGUpload" onclick="Grid_btn_upload();">Upload</button>
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnGDwnload" onclick="Grid_btn_download();">Download</button>
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnHView" onclick="Grid_btn_view();">View</button>
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnGRemove" onclick="Grid_btn_remove();">Remove</button>
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnFClose" onclick="attachment_close();">Close</button>
+        </div>
+    </div>
+</script>
+<script>
+    save__attachment = $("#File__Attachment__Details").kendoWindow({
+        title: "Tool Cost Summary - Document Upload",
+        modal: true,
+        draggable: false,
+        visible: false,
+        resizable: false,
+        width: 1000,
+    }).data("kendoWindow");
+
+</script>

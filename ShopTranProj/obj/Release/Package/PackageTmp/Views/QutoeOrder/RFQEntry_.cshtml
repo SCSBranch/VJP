@@ -1,0 +1,549 @@
+﻿
+@{
+    ViewBag.Title = "RFQEntry_";
+    Layout = "~/Views/Shared/Form_Layout.cshtml";
+}
+
+
+<form class="form-horizontal" id="form_order_master">
+    <div class="row">
+        <div class="col-sm-12 simscrollDiv">
+            <div class="panel panel-default">
+                <div id="panel1" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <div id="master_grid" style="padding-bottom:15px">
+                            <div id="grid_rfg_entry_list" class="grid"></div>
+                        </div>
+
+                        <div id="master_grid" style="padding-bottom:15px">
+                            <div id="grid_rfg_entry_det" class="grid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="display:none">
+        <a id="rfq_entry_popup" class="file_attach" data-toggle="modal" href="~/FileAttachment/RFQEntryPopup" hdrtitle="" doctype="" scrnid="" data-target="#frm_RFQEntry">
+        </a>
+    </div>
+    <div id="File__Attachment__Details"></div>
+    <input type="hidden" id="txtPPid" />
+    <input type="hidden" id="txtMode" />
+</form>
+<script src="~/CommonScripts/Grid_FileAttachment.js"></script>
+
+<script>
+    // list part
+
+    var ScreenId = "";
+    var menuId = "";
+    var screen_id = "";
+    Screen_Id = "PROCESSED";
+    var grid_height = '';
+    var default_screen_size = 631;
+    var default_grid_size = 361;
+
+    $(document).ready(function () {
+        $("#multy").hide();
+        $("#div_status").hide();
+
+        var g_data = [{ rfq_no: "RFQENQ1", received_date: "10/04/2021", cus_name: "Customer1", status: "Open" },
+        { rfq_no: "RFQENQ2", received_date: "11/04/2021", cus_name: "Customer2", status: "Open" },
+        { rfq_no: "RFQENQ3", received_date: "20/05/2021", cus_name: "Customer3", status: "Open" },
+        { rfq_no: "RFQENQ4", received_date: "06/06/2021", cus_name: "Customer4", status: "Open" }];
+
+        rfglistgrid(g_data);
+        grid_rfg_entry_detail([]);
+        // form part
+        Form_validate_Name = $('form.form-horizontal').attr('id');
+        kendodate_format_validator('form_order_master');
+        $("#lblFormTitle").text('RFQ Entry');
+
+        $(".file_attach").attr("hdrtitle", "RFQ Entry");
+
+        $("#btnDelete").hide();
+        //var full_height = $('.content-wrapper').css('min-height').replace('px', '');
+        //grid_height = parseInt(full_height) - 430;   // 415
+        //$('#grid_rfg_entry_list .k-grid-content').height(grid_height);
+    });
+
+</script>
+
+<script>
+    function onChange(arg) {
+        // Clear selection.
+        var grid = $("#grid_rfg_entry_list").data("kendoGrid");
+        // alert("hello");
+        $('#rfq_entry_popup').click()
+        // grid.clearSelection();
+        //var gridData = $("#grid_rfg_entry_list").data().kendoGrid.dataSource.data();
+        //for (var i = 0; i < gridData.length; i++) {
+        //    if (gridData[i].Id == arg.text) {
+        //        $('#lblId').html(gridData[i].Id);
+        //        $('#lblName').html(gridData[i].Name);
+        //        $('#lblCountry').html(gridData[i].Country);
+        //    }
+        //}
+    }
+
+    var customer_name_list = '';
+    var poc_list = '';
+    var status_list = '';
+    function rfglistgrid(data) {
+        try {
+            gridRowID = -1;
+            data = addRandomNum(data);
+            $("#grid_rfg_entry_list").kendoGrid({
+                dataSource: {
+                    data: data,
+                    pageSize: 20,
+                    schema: {
+                        model: {
+                            fields: {
+                            }
+                        }
+                    },
+                },
+                dataBound: function (o) {
+                    reset_Selected_GridRows("grid_rfg_entry_list", o);
+                },
+                height: 250,
+                filterable: true,
+                scrollable: true,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                pageable: false,
+                selectable: true,
+                change: selectRow,
+                columns: [
+                    //{
+                    //    field: "rfq_no",
+                    //    title: "RFQ No/ Enquiry No",
+                    //    width: "150px",
+                    {
+                        field: "rfq_no",
+                        title: "RFQ No/ Enquiry No",
+                        template: "<a href='javascript:void(0)' data-ID='#=rfq_no#' style='text-decoration: underline;' onclick='onChange(this)'>#=rfq_no#</a>",
+                        //template: "<a data-toggle='modal' class='dropdown-toggle' href='/FileAttachment/Orderpopup' data-target='#TaskModal' id='rfq_no'></a>",
+                        width: "150px",
+                    },
+                    {
+                        field: "received_date",
+                        title: "Received Date",
+                        width: "150px",
+                    },
+                    {
+                        field: "cus_name",
+                        title: "Customer Name",
+                        width: "150px",
+                    },
+                    {
+                        field: "status",
+                        title: "Status",
+                        width: "150px",
+                    },
+                    {
+                        command: [
+                            {
+                                name: "Save",
+                                text: "",
+                                id: "Save",
+                                template: '<input type="button" class="info  k-button k-button-icontext" id="save"   name="info" value="Save"  style="height: 26px; margin: 0px 2px; min-width: 64px;" />',
+                            },
+                            {
+                                name: "Delete",
+                                text: "",
+                                template: '<input type="button" class="release  k-button k-button-icontext" id="delete"  name="release" value="Delete"  style="height: 26px; margin: 0px 2px; min-width: 64px;" />',
+                            },
+                        ], title: "Actions", width: "90px",
+                    },
+                ]
+            });
+
+
+        } catch (err) {
+            kendoAlert(err);
+        }
+    }
+
+    function selectRow() {
+        var data = [{ rfq_no: "RFQENQ1", received_date: "10/04/2021", customer_name: "Customer1", poc: "", part_name: "", pilot_qty: "", cast_draw_no: "", mach_draw_no: "", mode_flag: "S" },
+        { rfq_no: "RFQENQ1", received_date: "10/04/2021", customer_name: "Customer1", poc: "", part_name: "", pilot_qty: "", cast_draw_no: "", mach_draw_no: "", mode_flag: "S" },
+        { rfq_no: "RFQENQ1", received_date: "10/04/2021", customer_name: "Customer1", poc: "", part_name: "", pilot_qty: "", cast_draw_no: "", mach_draw_no: "", mode_flag: "S" }];
+
+        grid_rfg_entry_detail(data);
+
+        $(".k-grid-toolbar").css("pointer-events", "none");
+        $(".k-grid-toolbar").css("opacity", "0.3");
+    }
+
+    function grid_rfg_entry_detail(user_data) {
+        try {
+            $("#grid_rfg_entry_det").kendoGrid({
+                dataSource: {
+                    data: user_data,
+                    schema: {
+                        model: {
+                            fields: {
+                                rfq_no: {
+                                    type: "string",
+                                    editable: true,
+                                },
+                                received_date: {
+                                    type: "date", defaultValue: "",
+                                },
+                                customer_name: {
+                                    type: "string",
+                                    editable: true,
+                                },
+                                poc: {
+                                    type: "string",
+                                    editable: true,
+                                },
+                                part_name: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                pilot_qty: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                cast_draw_no: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                mach_draw_no: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                status: {
+                                    type: "string",
+                                    editable: true
+                                },
+                                mode_flag: {
+                                    type: "string",
+                                    defaultValue: "I"
+                                }
+                            }
+                        }
+                    },
+                },
+                navigatable: true,
+                scrollable: true,
+                sortable: {
+                    mode: "multiple",
+                    dir: "asc"
+                },
+                height: 285,
+                selectable: true,
+                selectable: "singl", //  Grid Row Selection
+                dataBinding: setDefaultValues,
+                dataBound: function (e) {
+                    resultData = e.sender._data;
+                    var rows = $('#grid_rfg_entry_det').data('kendoGrid').tbody.children();
+                    setColor(rows, resultData);
+                },
+                toolbar: "<a class='k-grid-add'  id = 'btnSave' href=''><span class='fa fa-plus' style='color:Black'></span></a>",
+                columns: [{
+                    command: [{
+                        name: "Delete",
+                        id: "Delete",
+                        imageClass: "fa fa-close",
+                        click: function (e) {
+                            var grid = $("#grid_rfg_entry_det").data("kendoGrid");
+                            var dataItem = $("#grid_rfg_entry_det").data("kendoGrid").dataItem($(e.target).closest("tr"));
+                            DeleteWindowEvent(e, dataItem, grid);
+                            e.stopImmediatePropagation()
+                        }
+                    },],
+                    title: "&nbsp;",
+                    width: "40px",
+                },
+                {
+                    field: "rfq_no",
+                    title: "RFQ No/ Enquiry No",
+                    width: 150,
+
+                }, {
+                    field: "received_date",
+                    title: "Received Date",
+                    format: "{0:dd/MM/yyyy}",
+                    width: 150
+                },
+                {
+                    field: "customer_code",
+                    hidden: true,
+                    width: 100
+                },
+                {
+                    field: "customer_name",
+                    title: "Customer Name",
+                    editor: function (container, options) {
+                        combo_editor_man_check(container, "cmb_" + options.field, eval(options.field + "_list"), options.field, "Customer Name", "customer_code", "grid_rfg_entry_det")
+                    },
+                    width: 150,
+                },
+                {
+                    field: "poc_code",
+                    hidden: true,
+                    width: 100
+                },
+                {
+                    field: "poc",
+                    title: "POC",
+                    editor: function (container, options) {
+                        combo_editor_man_check(container, "cmb_" + options.field, eval(options.field + "_list"), options.field, "POC", "poc_code", "grid_rfg_entry_det")
+                    },
+                    width: 150,
+                },
+                {
+                    field: "part_name",
+                    title: "Part Name",
+                    width: 150,
+                },
+                {
+                    field: "pilot_qty",
+                    title: "Pilot lot Qty",
+                    width: 150,
+                },
+                {
+                    field: "cast_draw_no",
+                    title: "Casting Drawing No",
+                    width: 150,
+                },
+                {
+                    field: "mach_draw_no",
+                    title: "Machine Drawing No",
+                    width: 150,
+                },
+                //{
+                //    field: "status_code",
+                //    title: "Status",
+                //    hidden: true,
+                //    width: 100
+                //},
+                //{
+                //    field: "status",
+                //    title: "Status",
+                //    editor: function (container, options) {
+                //        combo_editor_man_check(container, "cmb_" + options.field, eval(options.field + "_list"), options.field, "Status", "status_code", "grid_rfg_entry_det")
+                //    },
+                //    width: 150,
+                //},
+                {
+                    title: "Attach",
+                    template: "<i class='fa fa-paperclip Attachment' style='padding: 0px; font-size: 20px; margin: 0px 10px'></i>",
+                    width: 100
+                },
+                {
+                    field: "mode_flag",
+                    title: "Mode",
+                    width: 30,
+                    hidden: true
+                }
+                ],
+                editable: true,
+            });
+            $('#grid_rfg_entry_det').data('kendoGrid').tbody.find('.Attachment').click(function (e) {
+                var dataitem = $('#grid_rfg_entry_det').data('kendoGrid').dataItem($(e.currentTarget).closest("tr"));
+                save__attachment.content($("#File_Attach_Template").html()).center().open();
+                DocType = Screen_Id;
+
+                $('.form-group .k-invalid-msg').remove();
+                //$("#txtDocName").val(dataitem.qualification);
+                $("#txtRFQNumber").val(dataitem.rfq_no);
+                $("#txtPartName").val(dataitem.part_name);
+                $("#txtDocUser").val($("#txtUserId").val());
+                //var que_data2 = load_dropdown_list('POSP_PROFILE_FORM', 'EDU_DOC');
+                //var que_data1 = load_dropdown_list('EMP_PROFILE_FORM', 'EDUCATION_DOC');
+                var grp_data = [{ code: "CAST_MACHINE", desc: "Casting/Machining" }, { code: "SIG_NDA", desc: "Signed NDA" }];
+                filter_combobox("cmb_grid_group", grp_data);
+                filter_combobox("cmb_grid_subgroup", []);
+
+                $("#txtDocno").val($("#txtPPid").val());
+                $("#txtmodeflag").val("I");
+                $("#txtseqno").val("0");
+                $("#txtVersion").val("1");
+                fetch_DocAttach_details($("#txtDocName").val(), $("#txtDocno").val())
+                $('.k-window').css('top', '30px');
+
+            });
+
+        }
+        catch (err) {
+            alert(err);
+        }
+    }
+
+
+    customer_name_list = [{ code: "1", desc: "Customer1" }, { code: "2", desc: "Customer2" }, { code: "3", desc: "Customer3" }, { code: "4", desc: "Customer4" }]
+    poc_list = [{ code: "1", desc: "Ravi" }, { code: "2", desc: "Arun" }, { code: "3", desc: "Vinoth" }, { code: "4", desc: "Sairam" }]
+    status_list = [{ code: "1", desc: "New" }, { code: "2", desc: "Open" }, { code: "3", desc: "Completed" }]
+
+    function form_clear() {
+        grid_rfg_entry_detail([]);
+
+        $(".k-grid-toolbar").css("pointer-events", "");
+        $(".k-grid-toolbar").css("opacity", "");
+        rfglistgrid([]);
+        var data = [{ rfq_no: "RFQENQ1", received_date: "10/04/2021", cus_name: "Customer1", status: "Open" }, { rfq_no: "RFQENQ2", received_date: "11/04/2021", cus_name: "Customer2", status: "Open" }, { rfq_no: "RFQENQ3", received_date: "20/05/2021", cus_name: "Customer3", status: "Open" }, { rfq_no: "RFQENQ4", received_date: "06/06/2021", cus_name: "Customer4", status: "Open" }]
+        rfglistgrid(data);
+    }
+
+    function sub_group_change() {
+        $('#cmb_grid_subgroup').data("kendoComboBox").value("");
+        if ($('#cmb_grid_group').data("kendoComboBox").value() == "SIG_NDA") {
+            var sgrp_data = [{ code: "SIG_NDA", desc: "Signed NDA" }];
+            filter_combobox("cmb_grid_subgroup", sgrp_data);
+        }
+        else {
+            var sgrp_data = [{ code: "CAST_DRAWING", desc: "Casting drawing" }, { code: "MACHINE_DRA", desc: "Machining drawing" }];
+            filter_combobox("cmb_grid_subgroup", sgrp_data);
+        }
+    }
+
+    function attachment_close() {
+        save__attachment.close();
+    }
+    function GridBrowseTemplateFile() {
+        try {
+            $("#file").attr("accept", ".pdf,.xlsx,.jpg");
+            $("#file").click();
+        }
+        catch (err) {
+            javascript_log4j_root(arguments.callee.name, err);
+        }
+    }
+
+
+</script>
+<script type="text/x-kendo-template" id="File_Attach_Template" style="color:Black">
+    <div class="modal-body" style="padding:5px">
+        <form id="form2" class="form-horizontal" data-role="validator" novalidate="novalidate">
+            <div class="row">
+                @*<div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="txtDocName" class="col-sm-4 control-label">Document Name</label>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control input-sm" id="txtDocName" readonly name="DocName" style="height:20px">
+                            </div>
+                        </div>
+                    </div>*@
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="txtRFQNumber" class="col-sm-4 control-label">RFQ No</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control input-sm" id="txtRFQNumber" readonly name="rfq_no" style="height:20px">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="txtPartName" class="col-sm-4 control-label">Part Name</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control input-sm" id="txtPartName" readonly name="part_name" style="height:20px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-11">
+                    <div id="Grid_Attach"></div>
+                </div>
+            </div>
+            <div class="row" style="margin-top:5px">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="cmb_grid_group" class="col-sm-3 control-label required">Group</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="cmb_grid_group" name="Group" style="width:100%" onchange="sub_group_change()">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="cmb_grid_subgroup" class="col-sm-3 control-label required">Sub Group</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="cmb_grid_subgroup" name="SubGroup" style="width:100%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="filename" class="col-sm-3 control-label">File Name</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control input-sm" id="txtfilename" readonly name="filename" style="height:20px">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="col-sm-2">
+                        <input type="file" id="file" style="display:none;" onchange="save_file();" />
+                        <button type="button" id="btn_down1" class="btn btn-sm btn-primary" onclick="GridBrowseTemplateFile();" data-toggle="tooltip" data-placement="bottom">Browse</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="Version" class="col-sm-3 control-label">Version</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control input-sm" id="txtVersion" readonly name="Version" style="height:20px">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="Size" class="col-sm-3 control-label">Size</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control input-sm" id="txtSize" readonly name="Size" style="height:20px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <label for="Notes" class="col-sm-2 control-label">Notes</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control input-sm" rows="2" id="txtnotes" style="width:90%" name="Notes"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <input id="txtDocno" type="hidden" name="SeqNo">
+                <input id="txtseqno" type="hidden" name="SeqNo">
+                <input id="txtmodeflag" type="hidden" name="modeflag">
+                <input id="txtfilepath" type="hidden" name="file_path">
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer" style="padding: 10px; border-top: none">
+        <div style="margin-left: auto; margin-right: auto; width: 65%;margin-top: -15px;">
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnGNew" onclick="Grid_btn_new()">New</button>
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnGUpload" onclick="Grid_btn_upload();">Upload</button>
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnGDwnload" onclick="Grid_btn_download();">Download</button>
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnHView" onclick="Grid_btn_view();">View</button>
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnGRemove" onclick="Grid_btn_remove();">Remove</button>
+            <button type="button" class="btnUpload btn btn-primary btn-sm" id="btnFClose" onclick="attachment_close();">Close</button>
+        </div>
+    </div>
+</script>
+<script>
+    save__attachment = $("#File__Attachment__Details").kendoWindow({
+        title: "RFQ Entry - Document Upload",
+        modal: true,
+        draggable: false,
+        visible: false,
+        resizable: false,
+        width: 1000,
+    }).data("kendoWindow");
+
+</script>

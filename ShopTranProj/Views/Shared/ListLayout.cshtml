@@ -1,0 +1,91 @@
+﻿
+@{
+   
+    Layout = "~/Views/Shared/MainLayout.cshtml";
+    ViewBag.List = "";
+
+}
+<html>
+<head>
+    <title></title>  
+    <style>
+        .k-grid-toolbar {
+            display:none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box box-info" style=" border-top: #ffffff;margin-bottom:0px">
+        <div class="box-header" style="padding:0px">
+            <div class="row">              
+                <div class="col-sm-12" id="list1">                   
+                        <div class="breadcrumb" id="list" style="background-color: #f5f5f5;">
+                            <button id="btn_New" class="btn-head btn btn-sm btn-primary"  data-placement="bottom">Create</button>
+                            <button id="btn_Edit" class="btn-head btn btn-sm btn-primary"  data-placement="bottom">Edit</button>
+                            <button id="btn_View" class="btn-head btn btn-sm btn-primary"  data-placement="bottom">View</button>
+                        </div>
+                        <div class="breadcrumb" id="listsave" style="background-color: #f5f5f5;display:none">
+                            <button id="btn_Save" class="btn-head btn btn-sm btn-primary" onclick="save()">Save</button>  @* data-placement="bottom"*@
+                        </div>                   
+                </div>
+                <div class="col-sm-12" id="list2" style="margin-top:-20px">
+                    <nav class="navbar navbar-inverse" style="background-color: #e6e6e6; border-color: #e6e6e6; min-height:42px;margin-bottom:0px;">
+                        <div class="col-sm-12" style="padding-top:7px">
+                            <div class="col-sm-4" style="padding-left:0px">
+                                <label class="title" id="lblListTitle">@ViewBag.List</label>
+                            </div>
+                            <div class="col-sm-4"></div>
+
+                            <div class="col-sm-4" id="rightmenu">
+                                <a data-toggle="modal" class="adv_filter" id="ad_filter" href="~/AdvancedFilter/AdvancedFilter" hdrtitle="" fltid="" data-target="#advfilterModal" style="text-decoration:underline"><i id="btn_adv_filter" class="fa fa-filter fa-lg" aria-hidden="true" data-placement="bottom"></i></a>&nbsp;&nbsp;
+                                @*<label id="my_view" style="font-weight:400"> My View :</label>&nbsp;&nbsp;
+        <select style="width:35%;height:25px" id="cmb_view_master" onchange="View_master_selectChange()"></select>&nbsp;&nbsp;
+        <a data-toggle="modal" class="OrgView" id="ReplenishReco_view" href="~/PersonalizeView/PersonalizeView" list_grid_id="" hdrtitle="" data-target="#personalviewModal"><i id="btn_per_view" class="fa fa-eye fa-lg"  data-placement="bottom" ></i></a>&nbsp;*@
+                                <label id="my_view"> My View :</label>&nbsp;&nbsp;
+                                <select style="width:40%" id="cmb_view_master" onchange="View_master_selectChange()"></select>&nbsp;&nbsp;
+                                <a data-toggle="modal" class="OrgView" id="ReplenishReco_view" href="~/PersonalizeView/PersonalizeView" list_grid_id="" hdrtitle="" data-target="#personalviewModal"><i class="fa fa-eye fa-lg " title="My Personalized View"></i></a>&nbsp;
+                                <a data-toggle="modal" class="Export" id="export_excel" href="~/ExportExcel/ExportExcel" hdrtitle="" data-target="#exportexcelModal"><i id="btn_exp_excel" class="fa fa-file-excel-o fa-lg" data-placement="bottom"></i></a>&nbsp;&nbsp;
+                                <a href="#"><i class="fa fa-refresh fa-lg" id="list_refresh" title="Refresh" data-placement="bottom" onclick="master_list_refresh()"></i></a>
+                                <a href="#"><i class="fa fa-eraser" id="groub_eraser" title="Group Remove" style="display:none" data-placement="bottom" onclick="remove_groupable()"></i></a>
+                            </div>
+                        </div>
+                    </nav>
+                </div>               
+            </div>
+
+        </div>
+        <div class="box-body" id="listlayer">
+            @RenderBody()
+            <div class="modal fade" id="exportexcelModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog" style=" width:650px">
+                    <div class="modal-content">
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="personalviewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="advfilterModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            removelocalStorage('btn_clk_val');
+            $("#Topsubheader").hide();
+            $("#bottomFooter").hide();
+            // document.getElementById("lblTitle").innerHTML = getlocalStorage("header_title");
+        });
+    </script>
+</body>
+</html>
+
+
